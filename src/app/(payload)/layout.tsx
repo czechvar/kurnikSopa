@@ -5,6 +5,7 @@ import config from '@payload-config'
 import { RootLayout } from '@payloadcms/next/layouts'
 import React from 'react'
 import '@payloadcms/next/css'
+import { importMap } from './admin/importMap'
 
 import './custom.scss'
 
@@ -17,11 +18,11 @@ const serverFunction: ServerFunctionClient = async function (args) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const utilities = await import('@payloadcms/next/utilities') as any
   const handler = utilities.handleServerFunctions ?? utilities.default
-  return handler({ ...args, config, importMap: {} })
+  return handler({ ...args, config, importMap })
 }
 
 const Layout = ({ children }: Args) => (
-  <RootLayout config={config} serverFunction={serverFunction}>
+  <RootLayout config={config} importMap={importMap} serverFunction={serverFunction}>
     {children}
   </RootLayout>
 )
