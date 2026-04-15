@@ -10,7 +10,8 @@ export function LocaleSwitcher() {
 
   const switchLocale = () => {
     const newLocale = locale === 'cs' ? 'en' : 'cs'
-    router.replace(pathname, { locale: newLocale })
+    // Cast needed because usePathname() may return dynamic routes like /produkty/[slug]
+    router.replace(pathname as '/', { locale: newLocale })
   }
 
   return (
