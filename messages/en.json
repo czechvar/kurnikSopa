@@ -1,0 +1,101 @@
+{
+  "common": {
+    "farmName": "Kurník & Šopa",
+    "tagline": "Regenerative Farm",
+    "readMore": "Learn more",
+    "orderNow": "Order now",
+    "addToCart": "Add to cart",
+    "backToHome": "Back to home",
+    "loading": "Loading...",
+    "price": "Price",
+    "phone": "Phone",
+    "email": "Email",
+    "address": "Address"
+  },
+  "nav": {
+    "home": "Home",
+    "products": "Products",
+    "events": "Events",
+    "about": "About",
+    "contact": "Contact",
+    "blog": "Blog",
+    "cart": "Cart"
+  },
+  "home": {
+    "hero": {
+      "title": "Fresh products from a regenerative farm",
+      "subtitle": "Pastured chicken, eggs, geese, rabbits, and vegetables straight from the farmer",
+      "cta": "Browse products"
+    },
+    "featured": {
+      "title": "Our products",
+      "subtitle": "Quality you can taste"
+    },
+    "about": {
+      "title": "Get to know our farm",
+      "description": "We are a small regenerative farm in Křepice near Hustopeče. We focus on animal welfare and gentle treatment of the soil we farm on."
+    },
+    "events": {
+      "title": "Upcoming events",
+      "subtitle": "Come visit the farm"
+    }
+  },
+  "products": {
+    "title": "Our products",
+    "filterAll": "All",
+    "inStock": "In stock",
+    "outOfStock": "Sold out",
+    "seasonal": "Seasonal",
+    "perUnit": "per {unit}",
+    "minimumOrder": "Minimum order: {count} pcs"
+  },
+  "events": {
+    "title": "Farm events",
+    "upcoming": "Upcoming",
+    "past": "Past",
+    "register": "Register",
+    "full": "Full",
+    "free": "Free",
+    "capacity": "Capacity: {count} spots",
+    "spotsLeft": "{count} spots left"
+  },
+  "cart": {
+    "title": "Cart",
+    "empty": "Your cart is empty",
+    "total": "Total",
+    "checkout": "Proceed to checkout",
+    "remove": "Remove",
+    "quantity": "Quantity"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "delivery": "Delivery method",
+    "pickup": "Farm pickup",
+    "deliveryOption": "Delivery",
+    "balikovna": "Balíkovna",
+    "payment": "Payment",
+    "stripe": "Card payment",
+    "bankTransfer": "Bank transfer",
+    "cashOnDelivery": "Cash on delivery",
+    "submit": "Place order",
+    "success": "Order received!",
+    "orderNumber": "Order number: {number}"
+  },
+  "about": {
+    "title": "About us — Our story",
+    "farmStory": "Our story"
+  },
+  "contact": {
+    "title": "Contact",
+    "formName": "Name",
+    "formEmail": "Email",
+    "formMessage": "Message",
+    "formSubmit": "Send",
+    "orderInfo": "Orders"
+  },
+  "footer": {
+    "copyright": "© {year} Kurník & Šopa. All rights reserved.",
+    "privacy": "Privacy policy",
+    "terms": "Terms & conditions"
+  }
+}

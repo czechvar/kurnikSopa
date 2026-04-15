@@ -1,0 +1,101 @@
+{
+  "common": {
+    "farmName": "Kurník & Šopa",
+    "tagline": "Regenerativní farma",
+    "readMore": "Zjistit více",
+    "orderNow": "Objednat",
+    "addToCart": "Přidat do košíku",
+    "backToHome": "Zpět na úvod",
+    "loading": "Načítání...",
+    "price": "Cena",
+    "phone": "Telefon",
+    "email": "E-mail",
+    "address": "Adresa"
+  },
+  "nav": {
+    "home": "Úvod",
+    "products": "Produkty",
+    "events": "Akce",
+    "about": "O nás",
+    "contact": "Kontakt",
+    "blog": "Blog",
+    "cart": "Košík"
+  },
+  "home": {
+    "hero": {
+      "title": "Čerstvé produkty z regenerativní farmy",
+      "subtitle": "Pasená kuřata, vejce, husy, králíci a zelenina přímo od farmáře",
+      "cta": "Prohlédnout produkty"
+    },
+    "featured": {
+      "title": "Naše produkty",
+      "subtitle": "Kvalita, kterou ochutnáte"
+    },
+    "about": {
+      "title": "Poznejte naši farmu",
+      "description": "Jsme malá regenerativní farma v Křepicích u Hustopečí. Klademe velký důraz na welfare zvířat a šetrné zacházení s půdou."
+    },
+    "events": {
+      "title": "Nadcházející akce",
+      "subtitle": "Přijďte se podívat na farmu"
+    }
+  },
+  "products": {
+    "title": "Naše produkty",
+    "filterAll": "Vše",
+    "inStock": "Skladem",
+    "outOfStock": "Vyprodáno",
+    "seasonal": "Sezónní",
+    "perUnit": "za {unit}",
+    "minimumOrder": "Minimální objednávka: {count} ks"
+  },
+  "events": {
+    "title": "Akce na farmě",
+    "upcoming": "Nadcházející",
+    "past": "Proběhlé",
+    "register": "Registrovat se",
+    "full": "Obsazeno",
+    "free": "Zdarma",
+    "capacity": "Kapacita: {count} míst",
+    "spotsLeft": "Zbývá {count} míst"
+  },
+  "cart": {
+    "title": "Košík",
+    "empty": "Váš košík je prázdný",
+    "total": "Celkem",
+    "checkout": "Přejít k pokladně",
+    "remove": "Odebrat",
+    "quantity": "Počet"
+  },
+  "checkout": {
+    "title": "Pokladna",
+    "delivery": "Způsob doručení",
+    "pickup": "Osobní odběr",
+    "deliveryOption": "Doručení",
+    "balikovna": "Balíkovna",
+    "payment": "Platba",
+    "stripe": "Platba kartou",
+    "bankTransfer": "Bankovní převod",
+    "cashOnDelivery": "Dobírka",
+    "submit": "Odeslat objednávku",
+    "success": "Objednávka přijata!",
+    "orderNumber": "Číslo objednávky: {number}"
+  },
+  "about": {
+    "title": "O nás — Náš příběh",
+    "farmStory": "Náš příběh"
+  },
+  "contact": {
+    "title": "Kontakt",
+    "formName": "Jméno",
+    "formEmail": "E-mail",
+    "formMessage": "Zpráva",
+    "formSubmit": "Odeslat",
+    "orderInfo": "Objednávky"
+  },
+  "footer": {
+    "copyright": "© {year} Kurník & Šopa. Všechna práva vyhrazena.",
+    "privacy": "Ochrana soukromí",
+    "terms": "Obchodní podmínky"
+  }
+}
