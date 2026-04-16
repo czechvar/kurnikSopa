@@ -10,7 +10,8 @@
     "lint": "next lint",
     "payload": "cross-env NODE_OPTIONS=\"--no-deprecation\" payload",
     "generate:types": "payload generate:types",
-    "generate:importmap": "payload generate:importmap"
+    "generate:importmap": "payload generate:importmap",
+    "seed": "cross-env NODE_OPTIONS=\"--no-deprecation\" npx tsx src/seed.ts"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "^3.0.0",

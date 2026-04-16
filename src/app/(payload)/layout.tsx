@@ -2,7 +2,7 @@
 /* DO NOT MODIFY IT BECAUSE IT COULD BE REWRITTEN AT ANY TIME. */
 import type { ServerFunctionClient } from 'payload'
 import config from '@payload-config'
-import { RootLayout } from '@payloadcms/next/layouts'
+import { handleServerFunctions, RootLayout } from '@payloadcms/next/layouts'
 import React from 'react'
 import '@payloadcms/next/css'
 import { importMap } from './admin/importMap'
@@ -15,10 +15,7 @@ type Args = {
 
 const serverFunction: ServerFunctionClient = async function (args) {
   'use server'
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const utilities = await import('@payloadcms/next/utilities') as any
-  const handler = utilities.handleServerFunctions ?? utilities.default
-  return handler({ ...args, config, importMap })
+  return handleServerFunctions({ ...args, config, importMap })
 }
 
 const Layout = ({ children }: Args) => (
