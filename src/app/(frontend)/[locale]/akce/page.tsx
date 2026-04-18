@@ -37,7 +37,7 @@ export default async function EventsPage() {
               return (
                 <Link
                   key={event.id}
-                  href={`/akce/${event.slug}` as '/akce/[slug]'}
+                  href={{ pathname: '/akce/[slug]', params: { slug: event.slug } }}
                   className="group block bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden"
                 >
                   <div className="aspect-[16/9] bg-surface-muted flex items-center justify-center relative">
