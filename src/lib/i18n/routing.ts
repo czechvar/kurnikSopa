@@ -4,6 +4,7 @@ import { createNavigation } from 'next-intl/navigation'
 export const routing = defineRouting({
   locales: ['cs', 'en'],
   defaultLocale: 'cs',
+  localeDetection: false,
   pathnames: {
     '/': '/',
     '/produkty': {
