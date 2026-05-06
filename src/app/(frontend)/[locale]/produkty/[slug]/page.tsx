@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 import { getPayload } from '@/lib/payload'
+import { getMediaUrl } from '@/lib/media'
 import { Link } from '@/lib/i18n/routing'
 import { RichText } from '@payloadcms/richtext-lexical/react'
 
@@ -40,9 +41,26 @@ export default async function ProductDetailPage({ params }: Props) {
         </Link>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-          {/* Image placeholder */}
-          <div className="aspect-square bg-surface-muted rounded-xl flex items-center justify-center">
-            <span className="text-text-secondary">Foto produktu</span>
+          {/* Product image */}
+          <div className="aspect-square bg-surface-muted rounded-xl relative overflow-hidden">
+            {(() => {
+              const firstImage =
+                product.images?.[0]?.image && typeof product.images[0].image === 'object'
+                  ? product.images[0].image
+                  : null
+              const imageUrl = getMediaUrl(firstImage)
+              return imageUrl ? (
+                <img
+                  src={imageUrl}
+                  alt={firstImage?.alt || product.name}
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+              ) : (
+                <div className="flex items-center justify-center h-full">
+                  <span className="text-text-secondary">Foto produktu</span>
+                </div>
+              )
+            })()}
           </div>
 
           {/* Product info */}

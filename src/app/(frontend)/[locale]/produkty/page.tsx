@@ -1,5 +1,6 @@
 import { getTranslations } from 'next-intl/server'
 import { getPayload } from '@/lib/payload'
+import { getMediaUrl } from '@/lib/media'
 import { Link } from '@/lib/i18n/routing'
 
 export default async function ProductsPage() {
@@ -47,14 +48,30 @@ export default async function ProductsPage() {
                 ? product.category
                 : null
 
+            const firstImage =
+              product.images?.[0]?.image && typeof product.images[0].image === 'object'
+                ? product.images[0].image
+                : null
+            const imageUrl = getMediaUrl(firstImage)
+
             return (
               <Link
                 key={product.id}
                 href={{ pathname: '/produkty/[slug]', params: { slug: product.slug } }}
                 className="group block bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden"
               >
-                <div className="aspect-[4/3] bg-surface-muted flex items-center justify-center">
-                  <span className="text-text-secondary text-sm">Foto</span>
+                <div className="aspect-[4/3] bg-surface-muted relative overflow-hidden">
+                  {imageUrl ? (
+                    <img
+                      src={imageUrl}
+                      alt={firstImage?.alt || product.name}
+                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  ) : (
+                    <div className="flex items-center justify-center h-full">
+                      <span className="text-text-secondary text-sm">Foto</span>
+                    </div>
+                  )}
                 </div>
                 <div className="p-5">
                   {category && (
