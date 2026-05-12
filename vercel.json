@@ -1,5 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "installCommand": "npm install --legacy-peer-deps",
+  "buildCommand": "npx payload migrate && next build",
   "framework": "nextjs"
 }
