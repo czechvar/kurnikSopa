@@ -14,15 +14,15 @@
     "seed": "cross-env NODE_OPTIONS=\"--no-deprecation\" npx tsx src/seed.ts"
   },
   "dependencies": {
-    "@payloadcms/db-postgres": "^3.0.0",
-    "@payloadcms/next": "^3.0.0",
-    "@payloadcms/richtext-lexical": "^3.0.0",
+    "@payloadcms/db-postgres": "^3.84.1",
+    "@payloadcms/next": "^3.84.1",
+    "@payloadcms/richtext-lexical": "^3.84.1",
     "@payloadcms/storage-s3": "^3.84.1",
     "cross-env": "^7.0.3",
     "graphql": "^16.9.0",
     "next": "15.4.11",
     "next-intl": "^3.25.0",
-    "payload": "^3.0.0",
+    "payload": "^3.84.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "sharp": "^0.33.0"
