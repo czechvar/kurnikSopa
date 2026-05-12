@@ -90,6 +90,7 @@ export default buildConfig({
         media: { prefix: 'media' },
       },
       bucket: process.env.S3_BUCKET || '',
+      clientUploads: true,
       config: {
         endpoint: process.env.S3_ENDPOINT,
         region: process.env.S3_REGION || 'auto',
