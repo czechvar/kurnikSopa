@@ -22,14 +22,6 @@ import { Footer } from '@/globals/Footer'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
-console.log('[boot] S3 vars:', {
-  bucket: !!process.env.S3_BUCKET,
-  endpoint: !!process.env.S3_ENDPOINT,
-  region: !!process.env.S3_REGION,
-  accessKey: !!process.env.S3_ACCESS_KEY_ID,
-  secret: !!process.env.S3_SECRET_ACCESS_KEY,
-})
-
 export default buildConfig({
   admin: {
     user: Users.slug,
