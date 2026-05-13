@@ -8,13 +8,14 @@ type Props = {
 }
 
 export default async function EventDetailPage({ params }: Props) {
-  const { slug } = await params
+  const { locale, slug } = await params
   const payload = await getPayload()
 
   const result = await payload.find({
     collection: 'events',
     where: { slug: { equals: slug } },
     limit: 1,
+    locale: locale as 'cs' | 'en',
   })
 
   const event = result.docs[0]
@@ -111,7 +112,7 @@ export default async function EventDetailPage({ params }: Props) {
         )}
 
         {event.description && (
-          <div className="prose prose-lg max-w-none">
+          <div className="prose prose-lg prose-invert max-w-none">
             <RichText data={event.description} />
           </div>
         )}

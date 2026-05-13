@@ -52,23 +52,23 @@ export default function HomePage() {
 
       {/* Highlight blocks — cream cards on green, like the live site */}
       <section className="px-6 py-16">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-brand-cream text-brand-green-deep py-6 px-7">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+          <div className="bg-brand-cream text-brand-green-deep py-6 px-7 flex flex-col">
             <h2 className="text-2xl mb-2">{t('about.title')}</h2>
             <p className="leading-relaxed">{t('about.description')}</p>
             <Link
               href="/o-nas"
-              className="inline-block mt-4 font-semibold underline underline-offset-4"
+              className="inline-block mt-auto pt-4 font-semibold underline underline-offset-4 self-start"
             >
               {tNav('about')}
             </Link>
           </div>
-          <div className="bg-brand-cream text-brand-green-deep py-6 px-7">
+          <div className="bg-brand-cream text-brand-green-deep py-6 px-7 flex flex-col">
             <h2 className="text-2xl mb-2">{t('events.title')}</h2>
             <p className="leading-relaxed">{t('events.subtitle')}</p>
             <Link
               href="/akce"
-              className="inline-block mt-4 font-semibold underline underline-offset-4"
+              className="inline-block mt-auto pt-4 font-semibold underline underline-offset-4 self-start"
             >
               {tNav('events')}
             </Link>

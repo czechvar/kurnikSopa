@@ -1,12 +1,17 @@
 import { getTranslations } from 'next-intl/server'
 import { getPayload } from '@/lib/payload'
 
-export default async function ContactPage() {
+type Props = {
+  params: Promise<{ locale: 'cs' | 'en' }>
+}
+
+export default async function ContactPage({ params }: Props) {
+  const { locale } = await params
   const t = await getTranslations('contact')
   const tCommon = await getTranslations('common')
   const payload = await getPayload()
 
-  const settings = await payload.findGlobal({ slug: 'site-settings' })
+  const settings = await payload.findGlobal({ slug: 'site-settings', locale })
 
   return (
     <div className="py-12 px-6">

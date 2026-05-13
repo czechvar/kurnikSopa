@@ -9,7 +9,7 @@ type Props = {
 }
 
 export default async function ProductDetailPage({ params }: Props) {
-  const { slug } = await params
+  const { locale, slug } = await params
   const payload = await getPayload()
 
   const result = await payload.find({
@@ -20,6 +20,7 @@ export default async function ProductDetailPage({ params }: Props) {
     },
     depth: 1,
     limit: 1,
+    locale: locale as 'cs' | 'en',
   })
 
   const product = result.docs[0]
@@ -130,7 +131,7 @@ export default async function ProductDetailPage({ params }: Props) {
 
         {/* Full description */}
         {product.description && (
-          <div className="mt-12 prose prose-lg max-w-none">
+          <div className="mt-12 prose prose-lg prose-invert max-w-none">
             <h2 className="font-heading text-2xl mb-4">Popis</h2>
             <RichText data={product.description} />
           </div>

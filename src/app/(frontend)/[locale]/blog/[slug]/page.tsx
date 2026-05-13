@@ -1,19 +1,18 @@
 import { notFound } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
 import { RichText } from '@payloadcms/richtext-lexical/react'
+import type { Metadata } from 'next'
 import { getPayload } from '@/lib/payload'
 import { getMediaUrl } from '@/lib/media'
 import { Link } from '@/lib/i18n/routing'
+import { SITE_URL, absoluteUrl } from '@/lib/site'
 
 type Props = {
   params: Promise<{ locale: 'cs' | 'en'; slug: string }>
 }
 
-export default async function BlogPostPage({ params }: Props) {
-  const { locale, slug } = await params
-  const t = await getTranslations('blog')
+async function fetchPost(slug: string, locale: 'cs' | 'en') {
   const payload = await getPayload()
-
   const result = await payload.find({
     collection: 'posts',
     where: {
@@ -24,8 +23,61 @@ export default async function BlogPostPage({ params }: Props) {
     limit: 1,
     locale,
   })
+  return result.docs[0] ?? null
+}
 
-  const post = result.docs[0]
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale, slug } = await params
+  const post = await fetchPost(slug, locale)
+  if (!post) return {}
+
+  const seo = post.seo ?? {}
+  const title = seo.metaTitle || post.title
+  const description = seo.metaDescription || post.excerpt || undefined
+
+  const ogImageRaw =
+    seo.metaImage && typeof seo.metaImage === 'object'
+      ? seo.metaImage
+      : post.coverImage && typeof post.coverImage === 'object'
+        ? post.coverImage
+        : null
+  const ogImageUrl = getMediaUrl(ogImageRaw)
+  const ogImageAbsolute = ogImageUrl ? absoluteUrl(ogImageUrl) : null
+
+  const canonicalPath = `/${locale}/blog/${slug}`
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: canonicalPath,
+      languages: {
+        cs: `/cs/blog/${slug}`,
+        en: `/en/blog/${slug}`,
+      },
+    },
+    openGraph: {
+      type: 'article',
+      title,
+      description,
+      url: absoluteUrl(canonicalPath),
+      locale: locale === 'cs' ? 'cs_CZ' : 'en_GB',
+      publishedTime: post.publishedAt || undefined,
+      images: ogImageAbsolute ? [{ url: ogImageAbsolute }] : undefined,
+    },
+    twitter: {
+      card: ogImageAbsolute ? 'summary_large_image' : 'summary',
+      title,
+      description,
+      images: ogImageAbsolute ? [ogImageAbsolute] : undefined,
+    },
+  }
+}
+
+export default async function BlogPostPage({ params }: Props) {
+  const { locale, slug } = await params
+  const t = await getTranslations('blog')
+  const post = await fetchPost(slug, locale)
   if (!post) notFound()
 
   const cover =
@@ -42,12 +94,46 @@ export default async function BlogPostPage({ params }: Props) {
     ? post.categories.filter((c) => typeof c === 'object')
     : []
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.excerpt || post.seo?.metaDescription || undefined,
+    datePublished: post.publishedAt || undefined,
+    dateModified: post.updatedAt || post.publishedAt || undefined,
+    image: coverUrl ? absoluteUrl(coverUrl) : undefined,
+    author: author
+      ? {
+          '@type': 'Person',
+          name: author.name,
+        }
+      : undefined,
+    publisher: {
+      '@type': 'Organization',
+      name: 'Kurník & Šopa',
+      logo: {
+        '@type': 'ImageObject',
+        url: `${SITE_URL}/logo-kurnik-sopa.svg`,
+      },
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `${SITE_URL}/${locale}/blog/${slug}`,
+    },
+    inLanguage: locale === 'cs' ? 'cs-CZ' : 'en-GB',
+  }
+
   return (
     <article className="py-12 px-6">
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className="max-w-3xl mx-auto">
         <Link
           href="/blog"
-          className="text-brand-green hover:underline mb-6 inline-block"
+          className="text-brand-cream/80 hover:text-brand-cream hover:underline mb-6 inline-block"
         >
           &larr; {t('backToList')}
         </Link>
@@ -57,7 +143,7 @@ export default async function BlogPostPage({ params }: Props) {
             {categories.map((cat) => (
               <span
                 key={cat.id}
-                className="text-xs font-medium text-brand-green uppercase tracking-wide"
+                className="text-xs font-semibold text-brand-cream/80 uppercase tracking-wide"
               >
                 {cat.name}
               </span>

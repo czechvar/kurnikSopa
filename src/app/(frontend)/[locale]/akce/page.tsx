@@ -2,7 +2,12 @@ import { getTranslations } from 'next-intl/server'
 import { getPayload } from '@/lib/payload'
 import { Link } from '@/lib/i18n/routing'
 
-export default async function EventsPage() {
+type Props = {
+  params: Promise<{ locale: 'cs' | 'en' }>
+}
+
+export default async function EventsPage({ params }: Props) {
+  const { locale } = await params
   const t = await getTranslations('events')
   const payload = await getPayload()
 
@@ -13,6 +18,7 @@ export default async function EventsPage() {
     },
     sort: 'date',
     limit: 50,
+    locale,
   })
 
   return (
