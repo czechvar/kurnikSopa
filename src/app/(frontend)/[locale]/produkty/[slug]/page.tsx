@@ -42,7 +42,7 @@ export default async function ProductDetailPage({ params }: Props) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
           {/* Product image */}
-          <div className="aspect-square bg-surface-muted rounded-xl relative overflow-hidden">
+          <div className="aspect-square bg-brand-green-light rounded-xl relative overflow-hidden">
             {(() => {
               const firstImage =
                 product.images?.[0]?.image && typeof product.images[0].image === 'object'
@@ -57,7 +57,7 @@ export default async function ProductDetailPage({ params }: Props) {
                 />
               ) : (
                 <div className="flex items-center justify-center h-full">
-                  <span className="text-text-secondary">Foto produktu</span>
+                  <span className="text-brand-cream/80">Foto produktu</span>
                 </div>
               )
             })()}
@@ -88,10 +88,10 @@ export default async function ProductDetailPage({ params }: Props) {
             )}
 
             {product.seasonal && (
-              <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 mb-4 text-sm">
+              <div className="bg-brand-gold/20 border border-brand-gold/50 text-brand-cream rounded-lg p-3 mb-4 text-sm">
                 <span className="font-medium">Sezónní produkt</span>
                 {product.availableFrom && product.availableTo && (
-                  <span className="text-text-secondary">
+                  <span className="text-brand-cream/80">
                     {' '}— dostupné {new Date(product.availableFrom).toLocaleDateString('cs-CZ', { month: 'long' })}
                     {' '}až {new Date(product.availableTo).toLocaleDateString('cs-CZ', { month: 'long' })}
                   </span>
@@ -108,7 +108,7 @@ export default async function ProductDetailPage({ params }: Props) {
             <div className="flex gap-3 mb-6">
               <a
                 href="tel:+420774801667"
-                className="inline-block bg-brand-green text-white font-semibold px-6 py-3 rounded-lg hover:bg-brand-green/90 transition-colors"
+                className="inline-block bg-brand-cream text-brand-green-deep font-semibold px-6 py-3 rounded-lg hover:bg-brand-cream-dark transition-colors"
               >
                 Objednat: 774 801 667
               </a>
@@ -116,7 +116,7 @@ export default async function ProductDetailPage({ params }: Props) {
                 href="https://wa.me/420774801667"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block border-2 border-brand-green text-brand-green font-semibold px-6 py-3 rounded-lg hover:bg-brand-green hover:text-white transition-colors"
+                className="inline-block border-2 border-brand-cream text-brand-cream font-semibold px-6 py-3 rounded-lg hover:bg-brand-cream hover:text-brand-green-deep transition-colors"
               >
                 WhatsApp
               </a>

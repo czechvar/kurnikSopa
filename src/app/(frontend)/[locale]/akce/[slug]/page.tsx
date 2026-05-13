@@ -37,14 +37,14 @@ export default async function EventDetailPage({ params }: Props) {
         </Link>
 
         {event.eventType && (
-          <span className="inline-block bg-brand-green text-white text-xs px-3 py-1 rounded-full capitalize mb-4">
+          <span className="inline-block bg-brand-cream text-brand-green-deep text-xs px-3 py-1 rounded-full capitalize mb-4">
             {event.eventType}
           </span>
         )}
 
         <h1 className="font-heading text-4xl mb-4">{event.title}</h1>
 
-        <div className="bg-surface-muted rounded-xl p-6 mb-8 space-y-3">
+        <div className="bg-brand-cream text-brand-green-deep rounded-xl p-6 mb-8 space-y-3">
           <div className="flex items-start gap-3">
             <span className="font-medium w-24">Kdy:</span>
             <span>
@@ -95,7 +95,7 @@ export default async function EventDetailPage({ params }: Props) {
           <div className="flex gap-3 mb-8">
             <a
               href="tel:+420774801667"
-              className="inline-block bg-brand-green text-white font-semibold px-6 py-3 rounded-lg hover:bg-brand-green/90 transition-colors"
+              className="inline-block bg-brand-cream text-brand-green-deep font-semibold px-6 py-3 rounded-lg hover:bg-brand-cream-dark transition-colors"
             >
               Registrovat se: 774 801 667
             </a>
@@ -103,7 +103,7 @@ export default async function EventDetailPage({ params }: Props) {
               href="https://wa.me/420774801667"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block border-2 border-brand-green text-brand-green font-semibold px-6 py-3 rounded-lg hover:bg-brand-green hover:text-white transition-colors"
+              className="inline-block border-2 border-brand-cream text-brand-cream font-semibold px-6 py-3 rounded-lg hover:bg-brand-cream hover:text-brand-green-deep transition-colors"
             >
               WhatsApp
             </a>

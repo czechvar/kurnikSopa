@@ -38,18 +38,18 @@ export default async function EventsPage() {
                 <Link
                   key={event.id}
                   href={{ pathname: '/akce/[slug]', params: { slug: event.slug } }}
-                  className="group block bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden"
+                  className="group block bg-brand-cream text-brand-green-deep rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden"
                 >
-                  <div className="aspect-[16/9] bg-surface-muted flex items-center justify-center relative">
-                    <span className="text-text-secondary text-sm">Foto</span>
+                  <div className="aspect-[16/9] bg-brand-green-light flex items-center justify-center relative">
+                    <span className="text-brand-cream/80 text-sm">Foto</span>
                     {event.eventType && (
-                      <span className="absolute top-3 left-3 bg-brand-green text-white text-xs px-2 py-1 rounded-full capitalize">
+                      <span className="absolute top-3 left-3 bg-brand-green-deep text-brand-cream text-xs px-2 py-1 rounded-full capitalize">
                         {event.eventType}
                       </span>
                     )}
                   </div>
                   <div className="p-5">
-                    <div className="text-sm text-brand-green font-medium mb-1">
+                    <div className="text-sm text-brand-green font-semibold mb-1">
                       {eventDate.toLocaleDateString('cs-CZ', {
                         weekday: 'long',
                         day: 'numeric',
@@ -63,7 +63,7 @@ export default async function EventsPage() {
                       {event.title}
                     </h3>
                     {event.location && (
-                      <p className="text-text-secondary text-sm mb-3">
+                      <p className="text-brand-green-deep/75 text-sm mb-3">
                         {event.location}
                       </p>
                     )}
@@ -72,11 +72,11 @@ export default async function EventsPage() {
                         {event.price === 0 ? t('free') : `${event.price} Kč`}
                       </span>
                       {event.status === 'full' ? (
-                        <span className="text-xs bg-red-100 text-red-800 px-2 py-1 rounded-full">
+                        <span className="text-xs bg-brand-green-deep text-brand-cream px-2 py-1 rounded-full">
                           {t('full')}
                         </span>
                       ) : spotsLeft !== null ? (
-                        <span className="text-xs text-text-secondary">
+                        <span className="text-xs text-brand-green-deep/70">
                           {t('spotsLeft', { count: spotsLeft })}
                         </span>
                       ) : null}

@@ -58,9 +58,9 @@ export default async function ProductsPage() {
               <Link
                 key={product.id}
                 href={{ pathname: '/produkty/[slug]', params: { slug: product.slug } }}
-                className="group block bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden"
+                className="group block bg-brand-cream text-brand-green-deep rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden"
               >
-                <div className="aspect-[4/3] bg-surface-muted relative overflow-hidden">
+                <div className="aspect-[4/3] bg-brand-green-light relative overflow-hidden">
                   {imageUrl ? (
                     <img
                       src={imageUrl}
@@ -69,13 +69,13 @@ export default async function ProductsPage() {
                     />
                   ) : (
                     <div className="flex items-center justify-center h-full">
-                      <span className="text-text-secondary text-sm">Foto</span>
+                      <span className="text-brand-cream/80 text-sm">Foto</span>
                     </div>
                   )}
                 </div>
                 <div className="p-5">
                   {category && (
-                    <span className="text-xs font-medium text-brand-green uppercase tracking-wide">
+                    <span className="text-xs font-semibold text-brand-green uppercase tracking-wide">
                       {category.name}
                     </span>
                   )}
@@ -83,7 +83,7 @@ export default async function ProductsPage() {
                     {product.name}
                   </h3>
                   {product.shortDescription && (
-                    <p className="text-text-secondary text-sm mb-3 line-clamp-2">
+                    <p className="text-brand-green-deep/75 text-sm mb-3 line-clamp-2">
                       {product.shortDescription}
                     </p>
                   )}
@@ -91,13 +91,13 @@ export default async function ProductsPage() {
                     <span className="font-bold text-lg">
                       {product.price} Kč
                       {product.unit && (
-                        <span className="text-sm font-normal text-text-secondary">
+                        <span className="text-sm font-normal text-brand-green-deep/70">
                           /{product.unit}
                         </span>
                       )}
                     </span>
                     {product.seasonal && (
-                      <span className="text-xs bg-amber-100 text-amber-800 px-2 py-1 rounded-full">
+                      <span className="text-xs bg-brand-gold/30 text-brand-green-deep px-2 py-1 rounded-full">
                         {t('seasonal')}
                       </span>
                     )}

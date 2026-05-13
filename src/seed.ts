@@ -14,7 +14,7 @@ const seed = async () => {
   await payload.updateGlobal({
     slug: 'site-settings',
     data: {
-      farmName: 'Kurník & Šopa',
+      farmName: 'kurník & šopa',
       tagline: 'Regenerativní farma',
       contact: {
         email: 'info@kurniksopa.cz',

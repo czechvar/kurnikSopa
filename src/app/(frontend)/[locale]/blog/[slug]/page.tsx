@@ -67,7 +67,7 @@ export default async function BlogPostPage({ params }: Props) {
 
         <h1 className="font-heading text-4xl mb-4">{post.title}</h1>
 
-        <div className="flex items-center gap-3 text-sm text-text-secondary mb-8">
+        <div className="flex items-center gap-3 text-sm text-brand-cream/80 mb-8">
           {author && (
             <div className="flex items-center gap-2">
               {avatarUrl && (
@@ -78,7 +78,7 @@ export default async function BlogPostPage({ params }: Props) {
                 />
               )}
               <span>{author.name}</span>
-              {author.role && <span className="text-text-secondary">· {author.role}</span>}
+              {author.role && <span className="text-brand-cream/60">· {author.role}</span>}
             </div>
           )}
           {author && post.publishedAt && <span>·</span>}
@@ -90,7 +90,7 @@ export default async function BlogPostPage({ params }: Props) {
         </div>
 
         {coverUrl && (
-          <div className="aspect-[16/9] bg-surface-muted rounded-xl relative overflow-hidden mb-10">
+          <div className="aspect-[16/9] bg-brand-green-light rounded-xl relative overflow-hidden mb-10">
             <img
               src={coverUrl}
               alt={cover?.alt || post.title}
@@ -100,13 +100,13 @@ export default async function BlogPostPage({ params }: Props) {
         )}
 
         {post.excerpt && (
-          <p className="text-lg text-text-secondary mb-8 leading-relaxed">
+          <p className="text-lg text-brand-cream/90 mb-8 leading-relaxed">
             {post.excerpt}
           </p>
         )}
 
         {post.content && (
-          <div className="prose prose-lg max-w-none">
+          <div className="prose prose-lg prose-invert max-w-none">
             <RichText data={post.content} />
           </div>
         )}

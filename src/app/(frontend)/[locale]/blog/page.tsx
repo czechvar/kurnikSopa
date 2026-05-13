@@ -49,9 +49,9 @@ export default async function BlogPage({ params }: Props) {
                 <Link
                   key={post.id}
                   href={{ pathname: '/blog/[slug]', params: { slug: post.slug } }}
-                  className="group block bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden"
+                  className="group block bg-brand-cream text-brand-green-deep rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden"
                 >
-                  <div className="aspect-[16/9] bg-surface-muted relative overflow-hidden">
+                  <div className="aspect-[16/9] bg-brand-green-light relative overflow-hidden">
                     {imageUrl ? (
                       <img
                         src={imageUrl}
@@ -66,7 +66,7 @@ export default async function BlogPage({ params }: Props) {
                         {categories.map((cat) => (
                           <span
                             key={cat.id}
-                            className="text-xs font-medium text-brand-green uppercase tracking-wide"
+                            className="text-xs font-semibold text-brand-green uppercase tracking-wide"
                           >
                             {cat.name}
                           </span>
@@ -77,11 +77,11 @@ export default async function BlogPage({ params }: Props) {
                       {post.title}
                     </h2>
                     {post.excerpt && (
-                      <p className="text-text-secondary mb-3 line-clamp-3">
+                      <p className="text-brand-green-deep/75 mb-3 line-clamp-3">
                         {post.excerpt}
                       </p>
                     )}
-                    <div className="flex items-center gap-3 text-sm text-text-secondary">
+                    <div className="flex items-center gap-3 text-sm text-brand-green-deep/70">
                       {author && <span>{author.name}</span>}
                       {author && post.publishedAt && <span>·</span>}
                       {post.publishedAt && (
