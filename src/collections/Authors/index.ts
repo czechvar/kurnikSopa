@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { slugField } from '@/fields/slug'
 
 export const Authors: CollectionConfig = {
   slug: 'authors',
@@ -15,15 +16,7 @@ export const Authors: CollectionConfig = {
       type: 'text',
       required: true,
     },
-    {
-      name: 'slug',
-      type: 'text',
-      unique: true,
-      required: true,
-      admin: {
-        position: 'sidebar',
-      },
-    },
+    slugField({ sourceField: 'name' }),
     {
       name: 'role',
       type: 'text',

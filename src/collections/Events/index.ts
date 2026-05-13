@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { slugField } from '@/fields/slug'
 
 export const Events: CollectionConfig = {
   slug: 'events',
@@ -13,12 +14,7 @@ export const Events: CollectionConfig = {
       localized: true,
       required: true,
     },
-    {
-      name: 'slug',
-      type: 'text',
-      unique: true,
-      required: true,
-    },
+    slugField({ sourceField: 'title' }),
     {
       name: 'description',
       type: 'richText',

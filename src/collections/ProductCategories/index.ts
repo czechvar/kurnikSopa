@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { slugField } from '@/fields/slug'
 
 export const ProductCategories: CollectionConfig = {
   slug: 'product-categories',
@@ -12,12 +13,7 @@ export const ProductCategories: CollectionConfig = {
       localized: true,
       required: true,
     },
-    {
-      name: 'slug',
-      type: 'text',
-      unique: true,
-      required: true,
-    },
+    slugField({ sourceField: 'name' }),
     {
       name: 'description',
       type: 'textarea',
