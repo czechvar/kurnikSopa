@@ -22,19 +22,18 @@ export const Media: CollectionConfig = {
       },
       {
         name: 'hero',
-        width: 1920,
-        height: undefined,
-        position: 'centre',
+        width: 2200,
+        height: 1000,
+        fit: 'inside',
+        withoutEnlargement: true,
+        formatOptions: {
+          format: 'webp',
+          options: { quality: 80 },
+        },
       },
     ],
     adminThumbnail: 'thumbnail',
     focalPoint: true,
-    formatOptions: {
-      format: 'webp',
-      options: {
-        quality: 80,
-      },
-    },
   },
   admin: {
     useAsTitle: 'alt',

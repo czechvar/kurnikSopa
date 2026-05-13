@@ -85,6 +85,13 @@
     "title": "O nás — Náš příběh",
     "farmStory": "Náš příběh"
   },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Články o regenerativním zemědělství, kvalitě potravin a receptech",
+    "empty": "Zatím tu žádné články nejsou. Brzy přibudou.",
+    "backToList": "Zpět na blog",
+    "readMore": "Číst dál"
+  },
   "contact": {
     "title": "Kontakt",
     "formName": "Jméno",

@@ -14,6 +14,9 @@ import { Events } from '@/collections/Events'
 import { EventRegistrations } from '@/collections/EventRegistrations'
 import { Orders } from '@/collections/Orders'
 import { Pages } from '@/collections/Pages'
+import { Posts } from '@/collections/Posts'
+import { PostCategories } from '@/collections/PostCategories'
+import { Authors } from '@/collections/Authors'
 
 import { SiteSettings } from '@/globals/SiteSettings'
 import { Navigation } from '@/globals/Navigation'
@@ -39,6 +42,9 @@ export default buildConfig({
     EventRegistrations,
     Orders,
     Pages,
+    Posts,
+    PostCategories,
+    Authors,
   ],
 
   globals: [

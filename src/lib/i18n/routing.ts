@@ -43,6 +43,10 @@ export const routing = defineRouting({
       cs: '/blog',
       en: '/blog',
     },
+    '/blog/[slug]': {
+      cs: '/blog/[slug]',
+      en: '/blog/[slug]',
+    },
   },
 })
 

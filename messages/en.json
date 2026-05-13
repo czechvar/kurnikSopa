@@ -85,6 +85,13 @@
     "title": "About us — Our story",
     "farmStory": "Our story"
   },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Articles on regenerative farming, food quality, and recipes",
+    "empty": "No posts yet. Check back soon.",
+    "backToList": "Back to blog",
+    "readMore": "Read more"
+  },
   "contact": {
     "title": "Contact",
     "formName": "Name",
