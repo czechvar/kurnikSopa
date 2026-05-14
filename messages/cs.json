@@ -57,7 +57,24 @@
     "full": "Obsazeno",
     "free": "Zdarma",
     "capacity": "Kapacita: {count} míst",
-    "spotsLeft": "Zbývá {count} míst"
+    "spotsLeft": "Zbývá {count} míst",
+    "empty": "Momentálně nejsou naplánované žádné akce. Sledujte nás na sociálních sítích.",
+    "backToList": "Zpět na akce",
+    "when": "Kdy",
+    "where": "Kde",
+    "price": "Cena",
+    "capacityLabel": "Kapacita",
+    "capacityCount": "{count} míst",
+    "spotsRemaining": "zbývá {count}",
+    "registerBy": "Registrace do",
+    "registerCta": "Registrovat se: {phone}",
+    "whatsapp": "WhatsApp",
+    "eventType": {
+      "workshop": "Workshop",
+      "conference": "Konference",
+      "seasonal": "Sezónní akce",
+      "other": "Jiné"
+    }
   },
   "cart": {
     "title": "Košík",

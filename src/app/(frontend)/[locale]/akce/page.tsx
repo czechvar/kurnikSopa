@@ -1,6 +1,8 @@
-import { getTranslations } from 'next-intl/server'
+import Image from 'next/image'
+import { getTranslations, getFormatter } from 'next-intl/server'
 import { getPayload } from '@/lib/payload'
 import { Link } from '@/lib/i18n/routing'
+import { getMediaUrl } from '@/lib/media'
 
 type Props = {
   params: Promise<{ locale: 'cs' | 'en' }>
@@ -9,6 +11,7 @@ type Props = {
 export default async function EventsPage({ params }: Props) {
   const { locale } = await params
   const t = await getTranslations('events')
+  const format = await getFormatter()
   const payload = await getPayload()
 
   const events = await payload.find({
@@ -28,9 +31,7 @@ export default async function EventsPage({ params }: Props) {
         <p className="text-center text-text-secondary mb-12">{t('upcoming')}</p>
 
         {events.docs.length === 0 ? (
-          <p className="text-center text-text-secondary">
-            Momentálně nejsou naplánované žádné akce. Sledujte nás na sociálních sítích.
-          </p>
+          <p className="text-center text-text-secondary">{t('empty')}</p>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {events.docs.map((event) => {
@@ -40,30 +41,44 @@ export default async function EventsPage({ params }: Props) {
                   ? event.capacity - event.registeredCount
                   : null
 
+              const firstImage =
+                event.images?.[0]?.image && typeof event.images[0].image === 'object'
+                  ? event.images[0].image
+                  : null
+              const imageUrl = getMediaUrl(firstImage)
+
               return (
                 <Link
                   key={event.id}
                   href={{ pathname: '/akce/[slug]', params: { slug: event.slug } }}
                   className="group block bg-brand-cream text-brand-green-deep rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden"
                 >
-                  <div className="aspect-[16/9] bg-brand-green-light flex items-center justify-center relative">
-                    <span className="text-brand-cream/80 text-sm">Foto</span>
+                  <div className="aspect-[16/9] bg-brand-green-light relative">
+                    {imageUrl ? (
+                      <Image
+                        src={imageUrl}
+                        alt={firstImage?.alt || event.title}
+                        fill
+                        sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                        className="object-cover"
+                      />
+                    ) : null}
                     {event.eventType && (
-                      <span className="absolute top-3 left-3 bg-brand-green-deep text-brand-cream text-xs px-2 py-1 rounded-full capitalize">
-                        {event.eventType}
+                      <span className="absolute top-3 left-3 bg-brand-green-deep text-brand-cream text-xs px-2 py-1 rounded-full">
+                        {t(`eventType.${event.eventType}`)}
                       </span>
                     )}
                   </div>
                   <div className="p-5">
                     <div className="text-sm text-brand-green font-semibold mb-1">
-                      {eventDate.toLocaleDateString('cs-CZ', {
+                      {format.dateTime(eventDate, {
                         weekday: 'long',
                         day: 'numeric',
                         month: 'long',
                         year: 'numeric',
                       })}
                       {event.startTime && ` · ${event.startTime}`}
-                      {event.endTime && `–${event.endTime}`}
+                      {event.startTime && event.endTime && `–${event.endTime}`}
                     </div>
                     <h3 className="font-heading text-xl mb-2 group-hover:text-brand-green transition-colors">
                       {event.title}
