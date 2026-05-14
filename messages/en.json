@@ -51,13 +51,30 @@
   },
   "events": {
     "title": "Farm events",
-    "upcoming": "Upcoming",
+    "upcoming": "Upcoming events",
     "past": "Past",
     "register": "Register",
     "full": "Full",
     "free": "Free",
     "capacity": "Capacity: {count} spots",
-    "spotsLeft": "{count} spots left"
+    "spotsLeft": "{count} spots left",
+    "empty": "No events scheduled right now. Follow us on social media.",
+    "backToList": "Back to events",
+    "when": "When",
+    "where": "Where",
+    "price": "Price",
+    "capacityLabel": "Capacity",
+    "capacityCount": "{count} spots",
+    "spotsRemaining": "{count} left",
+    "registerBy": "Register by",
+    "registerCta": "Register: {phone}",
+    "whatsapp": "WhatsApp",
+    "eventType": {
+      "workshop": "Workshop",
+      "conference": "Conference",
+      "seasonal": "Seasonal event",
+      "other": "Other"
+    }
   },
   "cart": {
     "title": "Cart",
