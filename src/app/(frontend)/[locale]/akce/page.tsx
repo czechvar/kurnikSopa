@@ -78,7 +78,7 @@ export default async function EventsPage({ params }: Props) {
                         year: 'numeric',
                       })}
                       {event.startTime && ` · ${event.startTime}`}
-                      {event.endTime && `–${event.endTime}`}
+                      {event.startTime && event.endTime && `–${event.endTime}`}
                     </div>
                     <h3 className="font-heading text-xl mb-2 group-hover:text-brand-green transition-colors">
                       {event.title}
