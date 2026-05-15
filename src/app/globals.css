@@ -25,7 +25,10 @@
 }
 
 @layer base {
-  body {
+  /* Storefront body styling — applied via the .farm-frontend class on the
+     (frontend) layout's body. Not applied app-wide so the Payload admin keeps
+     its own light theme. */
+  .farm-frontend {
     background-color: var(--color-brand-green);
     background-image: url('/body-bg.svg');
     background-repeat: no-repeat;
@@ -34,7 +37,8 @@
     color: var(--color-brand-cream);
   }
 
-  h1, h2 {
+  .farm-frontend h1,
+  .farm-frontend h2 {
     font-family: var(--font-heading);
     font-weight: 800;
     font-optical-sizing: auto;

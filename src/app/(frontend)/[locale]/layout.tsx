@@ -36,7 +36,7 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <html lang={locale} className={`${bricolage.variable} ${parkinsans.variable}`}>
-      <body className="min-h-screen flex flex-col bg-surface text-text-primary font-sans antialiased">
+      <body className="farm-frontend min-h-screen flex flex-col bg-surface text-text-primary font-sans antialiased">
         <NextIntlClientProvider messages={messages}>
           <Header userMenu={<HeaderUserMenu />} />
           <main className="flex-1">{children}</main>
