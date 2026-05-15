@@ -50,7 +50,7 @@ export default async function EventDetailPage({ params }: Props) {
 
   const images =
     event.images
-      ?.map((entry) =>
+      ?.map((entry: NonNullable<typeof event.images>[number]) =>
         entry.image && typeof entry.image === 'object' ? entry.image : null
       )
       .filter((img): img is NonNullable<typeof img> => img !== null) ?? []
