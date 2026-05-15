@@ -6,6 +6,7 @@ import { getPayload } from '@/lib/payload'
 import { getSiteSettings } from '@/lib/site-settings'
 import { Link } from '@/lib/i18n/routing'
 import { getMediaUrl } from '@/lib/media'
+import type { Media } from '@/payload-types'
 
 type Props = {
   params: Promise<{ locale: string; slug: string }>
@@ -48,12 +49,11 @@ export default async function EventDetailPage({ params }: Props) {
       ? event.capacity - event.registeredCount
       : null
 
-  const images =
-    event.images
-      ?.map((entry) =>
-        entry.image && typeof entry.image === 'object' ? entry.image : null
-      )
-      .filter((img): img is NonNullable<typeof img> => img !== null) ?? []
+  const images: Media[] = (event.images ?? [])
+    .map((entry): Media | null =>
+      entry.image && typeof entry.image === 'object' ? entry.image : null,
+    )
+    .filter((img): img is Media => img !== null)
   const hero = images[0] ?? null
   const heroUrl = getMediaUrl(hero)
   const thumbs = images.slice(1)

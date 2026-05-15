@@ -4,8 +4,9 @@ import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 import { Link } from '@/lib/i18n/routing'
 import { LocaleSwitcher } from '@/components/common/LocaleSwitcher'
+import type { ReactNode } from 'react'
 
-export function Header() {
+export function Header({ userMenu }: { userMenu?: ReactNode }) {
   const t = useTranslations('nav')
 
   return (
@@ -23,25 +24,16 @@ export function Header() {
         </Link>
 
         <nav className="hidden md:flex items-center gap-6">
-          <Link href="/produkty" className="hover:text-brand-cream/70 transition-colors">
-            {t('products')}
-          </Link>
-          <Link href="/akce" className="hover:text-brand-cream/70 transition-colors">
-            {t('events')}
-          </Link>
-          <Link href="/o-nas" className="hover:text-brand-cream/70 transition-colors">
-            {t('about')}
-          </Link>
-          <Link href="/kontakt" className="hover:text-brand-cream/70 transition-colors">
-            {t('contact')}
-          </Link>
-          <Link href="/blog" className="hover:text-brand-cream/70 transition-colors">
-            {t('blog')}
-          </Link>
+          <Link href="/produkty" className="hover:text-brand-cream/70 transition-colors">{t('products')}</Link>
+          <Link href="/akce" className="hover:text-brand-cream/70 transition-colors">{t('events')}</Link>
+          <Link href="/o-nas" className="hover:text-brand-cream/70 transition-colors">{t('about')}</Link>
+          <Link href="/kontakt" className="hover:text-brand-cream/70 transition-colors">{t('contact')}</Link>
+          <Link href="/blog" className="hover:text-brand-cream/70 transition-colors">{t('blog')}</Link>
         </nav>
 
         <div className="flex items-center gap-4">
           <LocaleSwitcher />
+          {userMenu}
           <Link
             href="/kosik"
             className="bg-brand-cream text-brand-green-deep px-4 py-2 rounded-lg font-semibold hover:bg-brand-cream-dark transition-colors"

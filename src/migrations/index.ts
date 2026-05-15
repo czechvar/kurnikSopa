@@ -1,6 +1,7 @@
 import * as migration_20260415_223941 from './20260415_223941';
 import * as migration_20260512_230623_add_media_prefix from './20260512_230623_add_media_prefix';
 import * as migration_20260513_001033_add_blog_collections from './20260513_001033_add_blog_collections';
+import * as migration_20260515_084541 from './20260515_084541';
 
 export const migrations = [
   {
@@ -16,6 +17,11 @@ export const migrations = [
   {
     up: migration_20260513_001033_add_blog_collections.up,
     down: migration_20260513_001033_add_blog_collections.down,
-    name: '20260513_001033_add_blog_collections'
+    name: '20260513_001033_add_blog_collections',
+  },
+  {
+    up: migration_20260515_084541.up,
+    down: migration_20260515_084541.down,
+    name: '20260515_084541'
   },
 ];

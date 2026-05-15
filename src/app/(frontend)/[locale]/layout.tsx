@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import { Bricolage_Grotesque, Parkinsans } from 'next/font/google'
 import { routing } from '@/lib/i18n/routing'
 import { Header } from '@/components/layout/Header'
+import { HeaderUserMenu } from '@/components/layout/HeaderUserMenu'
 import { FooterComponent } from '@/components/layout/Footer'
 
 const bricolage = Bricolage_Grotesque({
@@ -35,9 +36,9 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <html lang={locale} className={`${bricolage.variable} ${parkinsans.variable}`}>
-      <body className="min-h-screen flex flex-col bg-surface text-text-primary font-sans antialiased">
+      <body className="farm-frontend min-h-screen flex flex-col bg-surface text-text-primary font-sans antialiased">
         <NextIntlClientProvider messages={messages}>
-          <Header />
+          <Header userMenu={<HeaderUserMenu />} />
           <main className="flex-1">{children}</main>
           <FooterComponent />
         </NextIntlClientProvider>

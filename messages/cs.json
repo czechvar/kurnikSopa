@@ -19,7 +19,13 @@
     "about": "O nás",
     "contact": "Kontakt",
     "blog": "Blog",
-    "cart": "Košík"
+    "cart": "Košík",
+    "auth": {
+      "login": "Přihlásit se",
+      "register": "Registrovat",
+      "account": "Můj účet",
+      "logout": "Odhlásit se"
+    }
   },
   "home": {
     "hero": {
@@ -121,5 +127,140 @@
     "copyright": "© {year} Kurník & Šopa. Všechna práva vyhrazena.",
     "privacy": "Ochrana soukromí",
     "terms": "Obchodní podmínky"
+  },
+  "auth": {
+    "signup": {
+      "title": "Registrace",
+      "fields": {
+        "firstName": "Jméno",
+        "lastName": "Příjmení",
+        "email": "E-mail",
+        "phone": "Telefon",
+        "password": "Heslo",
+        "passwordConfirm": "Heslo znovu",
+        "street": "Ulice a č.p.",
+        "city": "Město",
+        "zip": "PSČ"
+      },
+      "submit": "Vytvořit účet",
+      "agreement": "Souhlasím se zpracováním osobních údajů a obchodními podmínkami.",
+      "haveAccount": "Už máte účet?",
+      "loginLink": "Přihlásit se",
+      "errors": {
+        "emailTaken": "Tento e-mail je již registrován.",
+        "emailInvalid": "Neplatný e-mail.",
+        "passwordTooShort": "Heslo musí mít alespoň 8 znaků.",
+        "passwordMismatch": "Hesla se neshodují.",
+        "zipInvalid": "PSČ musí mít 5 číslic (např. 110 00).",
+        "required": "Toto pole je povinné.",
+        "agreementRequired": "Pro registraci je potřeba souhlas.",
+        "generic": "Registrace selhala. Zkuste to prosím znovu."
+      },
+      "success": {
+        "checkEmailTitle": "Zkontrolujte svou schránku",
+        "checkEmailBody": "Poslali jsme vám e-mail s odkazem pro ověření účtu."
+      }
+    },
+    "login": {
+      "title": "Přihlášení",
+      "email": "E-mail",
+      "password": "Heslo",
+      "submit": "Přihlásit se",
+      "forgotLink": "Zapomněli jste heslo?",
+      "noAccount": "Nemáte účet?",
+      "registerLink": "Registrovat",
+      "banners": {
+        "verified": "E-mail ověřen, můžete se přihlásit.",
+        "resetOk": "Heslo bylo změněno. Přihlaste se novým heslem."
+      },
+      "errors": {
+        "invalidCredentials": "Špatný e-mail nebo heslo.",
+        "notVerified": "E-mail dosud nebyl ověřen. Zkontrolujte svou schránku.",
+        "generic": "Přihlášení selhalo. Zkuste to prosím znovu."
+      }
+    },
+    "forgot": {
+      "title": "Zapomenuté heslo",
+      "intro": "Zadejte svou e-mailovou adresu a my vám pošleme odkaz pro obnovení hesla.",
+      "email": "E-mail",
+      "submit": "Odeslat odkaz",
+      "successBody": "Pokud k zadanému e-mailu existuje účet, odeslali jsme na něj odkaz pro obnovení hesla."
+    },
+    "reset": {
+      "title": "Obnovení hesla",
+      "password": "Nové heslo",
+      "passwordConfirm": "Nové heslo znovu",
+      "submit": "Nastavit nové heslo",
+      "errors": {
+        "tokenExpired": "Odkaz vypršel nebo je neplatný.",
+        "passwordTooShort": "Heslo musí mít alespoň 8 znaků.",
+        "passwordMismatch": "Hesla se neshodují.",
+        "generic": "Obnovení hesla selhalo. Zkuste to prosím znovu."
+      }
+    },
+    "verify": {
+      "verifying": "Ověřujeme váš e-mail…",
+      "success": "E-mail ověřen.",
+      "tokenExpired": "Odkaz vypršel nebo je neplatný.",
+      "resendLink": "Poslat nový odkaz",
+      "resendSent": "Pokud k tomuto e-mailu existuje účet, poslali jsme nový odkaz."
+    }
+  },
+  "account": {
+    "title": "Můj účet",
+    "personal": {
+      "title": "Osobní údaje",
+      "firstName": "Jméno",
+      "lastName": "Příjmení",
+      "phone": "Telefon",
+      "save": "Uložit",
+      "successSaved": "Údaje uloženy.",
+      "errors": {
+        "generic": "Uložení selhalo. Zkuste to prosím znovu."
+      }
+    },
+    "addresses": {
+      "title": "Adresy",
+      "addRow": "Přidat adresu",
+      "label": "Označení (volitelné)",
+      "street": "Ulice a č.p.",
+      "city": "Město",
+      "zip": "PSČ",
+      "save": "Uložit změny",
+      "remove": "Odstranit",
+      "confirmRemove": "Opravdu odstranit tuto adresu?",
+      "empty": "Zatím nemáte žádné adresy.",
+      "successSaved": "Adresy uloženy."
+    },
+    "password": {
+      "title": "Změna hesla",
+      "current": "Současné heslo",
+      "new": "Nové heslo",
+      "confirm": "Nové heslo znovu",
+      "save": "Změnit heslo",
+      "successSaved": "Heslo změněno.",
+      "errors": {
+        "currentWrong": "Současné heslo není správné.",
+        "tooShort": "Heslo musí mít alespoň 8 znaků.",
+        "mismatch": "Hesla se neshodují.",
+        "generic": "Změna hesla selhala. Zkuste to prosím znovu."
+      }
+    },
+    "delete": {
+      "title": "Smazání účtu",
+      "warning": "Tato akce je nevratná. Smaže se váš účet i historie objednávek.",
+      "button": "Smazat účet",
+      "confirmModal": {
+        "title": "Opravdu smazat účet?",
+        "body": "Pro potvrzení napište svůj e-mail.",
+        "typeEmailPrompt": "Váš e-mail",
+        "confirm": "Smazat trvale",
+        "cancel": "Zrušit"
+      },
+      "errors": {
+        "emailMismatch": "Zadaný e-mail se neshoduje.",
+        "generic": "Mazání selhalo. Zkuste to prosím znovu."
+      }
+    }
   }
 }
