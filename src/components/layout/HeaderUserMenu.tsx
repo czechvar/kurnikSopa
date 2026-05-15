@@ -11,16 +11,7 @@ export async function HeaderUserMenu() {
   const t = await getTranslations('nav.auth')
 
   if (!user) {
-    return (
-      <div className="flex items-center gap-3 text-sm">
-        <Link href="/prihlaseni" className="hover:text-brand-cream/70 transition-colors">
-          {t('login')}
-        </Link>
-        <Link href="/registrace" className="hover:text-brand-cream/70 transition-colors">
-          {t('register')}
-        </Link>
-      </div>
-    )
+    return null
   }
 
   return (

@@ -2,9 +2,12 @@ import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 import { Link } from '@/lib/i18n/routing'
 
+const FARM_CARDS = ['chickens', 'rabbits', 'hens', 'geese', 'vegetables', 'microgreens'] as const
+
 export default function HomePage() {
   const t = useTranslations('home')
   const tNav = useTranslations('nav')
+  const tFarm = useTranslations('home.farm')
 
   return (
     <>
@@ -24,6 +27,22 @@ export default function HomePage() {
           <h1 className="md:col-span-7 lg:col-span-8 text-3xl md:text-4xl lg:text-5xl leading-tight pb-2">
             {t('hero.title')}
           </h1>
+        </div>
+      </section>
+
+      {/* What we do — 6 cards describing the farm's offerings */}
+      <section className="px-6 pb-16 md:pb-24">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-10">
+          {FARM_CARDS.map((key) => (
+            <article key={key}>
+              <h2 className="text-2xl md:text-3xl mb-3 leading-tight">
+                {tFarm(`${key}.title`)}
+              </h2>
+              <p className="leading-relaxed text-brand-cream/90">
+                {tFarm(`${key}.body`)}
+              </p>
+            </article>
+          ))}
         </div>
       </section>
 

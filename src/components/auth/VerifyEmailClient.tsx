@@ -21,7 +21,7 @@ export function VerifyEmailClient({ token, email }: { token: string; email?: str
         if (cancelled) return
         if (res.ok) {
           setState('success')
-          router.replace('/prihlaseni?status=verified')
+          router.replace('/prihlaseni?toast=emailVerified&type=success')
         } else {
           setState('expired')
         }
