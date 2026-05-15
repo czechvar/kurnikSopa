@@ -1,12 +1,60 @@
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig, Access, FieldAccess } from 'payload'
+import { verifyEmailTemplate, forgotPasswordTemplate } from '@/lib/email/templates'
+
+const isAdmin: Access = ({ req }) => req.user?.role === 'admin'
+
+const isAdminOrSelf: Access = ({ req }) => {
+  if (!req.user) return false
+  if (req.user.role === 'admin') return true
+  return { id: { equals: req.user.id } }
+}
+
+const adminFieldOnly: FieldAccess = ({ req }) => req.user?.role === 'admin'
 
 export const Users: CollectionConfig = {
   slug: 'users',
-  auth: true,
+  auth: {
+    verify: {
+      generateEmailSubject: ({ req }) =>
+        req.locale === 'en' ? 'Verify your email' : 'Ověřte svůj e-mail',
+      generateEmailHTML: ({ req, token, user }) =>
+        verifyEmailTemplate({
+          locale: (req.locale === 'en' ? 'en' : 'cs'),
+          token,
+          email: (user as { email: string }).email,
+          firstName: (user as { firstName?: string }).firstName,
+        }),
+    },
+    forgotPassword: {
+      generateEmailSubject: ({ req }) =>
+        req.locale === 'en' ? 'Reset your password' : 'Obnovení hesla',
+      generateEmailHTML: ({ req, token, user }) =>
+        forgotPasswordTemplate({
+          locale: (req.locale === 'en' ? 'en' : 'cs'),
+          token: token ?? '',
+          firstName: (user as { firstName?: string } | undefined)?.firstName,
+        }),
+    },
+  },
   admin: {
     useAsTitle: 'email',
   },
+  access: {
+    create: () => true,
+    read: isAdminOrSelf,
+    update: isAdminOrSelf,
+    delete: isAdminOrSelf,
+  },
   fields: [
+    {
+      name: 'email',
+      type: 'email',
+      required: true,
+      unique: true,
+      access: {
+        update: adminFieldOnly,
+      },
+    },
     {
       name: 'firstName',
       type: 'text',
@@ -28,6 +76,9 @@ export const Users: CollectionConfig = {
         { label: 'Customer', value: 'customer' },
       ],
       required: true,
+      access: {
+        update: adminFieldOnly,
+      },
     },
     {
       name: 'addresses',
