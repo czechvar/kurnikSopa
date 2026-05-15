@@ -3,6 +3,7 @@ import { fileURLToPath } from 'url'
 import { buildConfig } from 'payload'
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { resendAdapter } from '@payloadcms/email-resend'
 import { s3Storage } from '@payloadcms/storage-s3'
 import sharp from 'sharp'
 
@@ -52,6 +53,14 @@ export default buildConfig({
     Navigation,
     Footer,
   ],
+
+  email: process.env.RESEND_API_KEY
+    ? resendAdapter({
+        defaultFromAddress: process.env.EMAIL_FROM ?? 'info@kurniksopa.cz',
+        defaultFromName: 'Kurník Šopa',
+        apiKey: process.env.RESEND_API_KEY,
+      })
+    : undefined,
 
   editor: lexicalEditor(),
 
