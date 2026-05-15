@@ -44,6 +44,32 @@
     "events": {
       "title": "Nadcházející akce",
       "subtitle": "Přijďte se podívat na farmu"
+    },
+    "farm": {
+      "chickens": {
+        "title": "kuřata na louce",
+        "body": "Do věku 8 týdnů žijí na louce v oplocené ohradě s přístřeškem, kterou pravidelně posouváme. Mají tak stálý přístup k čerstvé trávě a hmyzu. Díky tomu má naše kuře plnou, přirozenou chuť, nesrovnatelnou s intenzivním chovem."
+      },
+      "rabbits": {
+        "title": "naši králíci",
+        "body": "Chováme je na louce v mobilních ohrádkách, které posouváme dvakrát denně. Tento způsob zajišťuje zdraví a čistotu zvířat a zároveň obohacuje půdu o živiny potřebné pro přirozenou regeneraci louky."
+      },
+      "hens": {
+        "title": "naše slepice",
+        "body": "Chováme je v sadu od jara do podzimu, kdy roste tráva. Kombinace čerstvé trávy, možnosti hledat brouky, slunce a čerstvého vzduchu zaručuje dobrou chuť vajíček a spokojený život našich slepiček."
+      },
+      "geese": {
+        "title": "pasené husy",
+        "body": "Husy na naší farmě mají od jara do podzimu k dispozici prostornou louku s kvalitní pastvou, která jim umožňuje přirozený růst a vývoj. Díky tomu má maso vynikající chuť a kvalitu. Většinu hus prodáváme na svatého Martina."
+      },
+      "vegetables": {
+        "title": "zelenina bez chemie",
+        "body": "Naši zeleninu pěstujeme bez chemických herbicidů a pesticidů. Používáme pouze přírodní hnojivo z kompostu od vlastních zvířat."
+      },
+      "microgreens": {
+        "title": "microgreens",
+        "body": "Mladé výhonky hrášku, ředkvičky a slunečnice. Plné vitamínů a intenzivní chuti dospělých rostlin. Skvělé do salátů, na chleba nebo jako dekorace na talíř."
+      }
     }
   },
   "products": {

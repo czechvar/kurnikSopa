@@ -44,6 +44,32 @@
     "events": {
       "title": "Upcoming events",
       "subtitle": "Come visit the farm"
+    },
+    "farm": {
+      "chickens": {
+        "title": "pasture-raised chickens",
+        "body": "Until 8 weeks of age they live on pasture inside a fenced enclosure with a movable shelter we shift regularly. They have constant access to fresh grass and insects. The result is meat with a full, natural flavour incomparable with intensively farmed birds."
+      },
+      "rabbits": {
+        "title": "our rabbits",
+        "body": "We raise them on pasture in mobile enclosures we move twice a day. This keeps the animals healthy and clean while enriching the soil with the nutrients it needs for natural meadow regeneration."
+      },
+      "hens": {
+        "title": "our hens",
+        "body": "We keep them in the orchard from spring through autumn while the grass is growing. Fresh grass, foraging for beetles, sunshine, and clean air guarantee great-tasting eggs and a contented life for our hens."
+      },
+      "geese": {
+        "title": "pastured geese",
+        "body": "Our geese have access to a spacious meadow with quality pasture from spring through autumn, supporting natural growth and development. The meat has outstanding taste and quality. Most of our geese are sold around St. Martin's Day."
+      },
+      "vegetables": {
+        "title": "chemical-free vegetables",
+        "body": "We grow our vegetables without chemical herbicides or pesticides. We use only natural fertiliser made from our own animals' compost."
+      },
+      "microgreens": {
+        "title": "microgreens",
+        "body": "Young shoots of pea, radish, and sunflower. Packed with vitamins and the intense flavour of mature plants. Great in salads, on bread, or as a plate garnish."
+      }
     }
   },
   "products": {
