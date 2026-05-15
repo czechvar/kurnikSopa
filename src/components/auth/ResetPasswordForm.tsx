@@ -40,7 +40,7 @@ export function ResetPasswordForm({ token }: { token: string }) {
         setSubmitting(false)
         return
       }
-      router.push('/prihlaseni?status=reset-ok')
+      router.push('/prihlaseni?toast=passwordReset&type=success')
     } catch {
       setErrorKey('generic')
       setSubmitting(false)
