@@ -1,5 +1,6 @@
 import type { CollectionConfig, Access, FieldAccess } from 'payload'
 import { verifyEmailTemplate, forgotPasswordTemplate } from '@/lib/email/templates'
+import { resendVerification } from './endpoints/resendVerification'
 
 const isAdmin: Access = ({ req }) => req.user?.role === 'admin'
 
@@ -39,6 +40,7 @@ export const Users: CollectionConfig = {
   admin: {
     useAsTitle: 'email',
   },
+  endpoints: [resendVerification],
   access: {
     create: () => true,
     read: isAdminOrSelf,
