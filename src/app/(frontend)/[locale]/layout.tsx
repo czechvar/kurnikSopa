@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages } from 'next-intl/server'
 import { notFound } from 'next/navigation'
@@ -7,6 +8,8 @@ import { Header } from '@/components/layout/Header'
 import { HeaderUserMenu } from '@/components/layout/HeaderUserMenu'
 import { FooterComponent } from '@/components/layout/Footer'
 import { FooterAuthActions } from '@/components/layout/FooterAuthActions'
+import { Toaster } from '@/components/common/Toaster'
+import { ToastFromQuery } from '@/components/common/ToastFromQuery'
 
 const bricolage = Bricolage_Grotesque({
   subsets: ['latin', 'latin-ext'],
@@ -42,6 +45,10 @@ export default async function LocaleLayout({ children, params }: Props) {
           <Header userMenu={<HeaderUserMenu />} />
           <main className="flex-1">{children}</main>
           <FooterComponent authActions={<FooterAuthActions />} />
+          <Toaster />
+          <Suspense fallback={null}>
+            <ToastFromQuery />
+          </Suspense>
         </NextIntlClientProvider>
       </body>
     </html>
