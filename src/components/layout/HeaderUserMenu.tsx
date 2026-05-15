@@ -28,8 +28,8 @@ export async function HeaderUserMenu() {
       <summary className="cursor-pointer list-none text-sm hover:text-brand-cream/70">
         {user.firstName ?? user.email}
       </summary>
-      <div className="absolute right-0 mt-2 bg-white text-text-primary rounded-lg shadow-lg p-2 min-w-44 z-50">
-        <Link href="/ucet" className="block px-3 py-2 rounded hover:bg-surface text-sm">
+      <div className="absolute right-0 mt-2 bg-white text-gray-900 rounded-lg shadow-lg p-2 min-w-44 z-50">
+        <Link href="/ucet" className="block px-3 py-2 rounded hover:bg-gray-100 text-sm">
           {t('account')}
         </Link>
         <LogoutButton label={t('logout')} />

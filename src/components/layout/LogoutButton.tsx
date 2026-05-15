@@ -13,7 +13,7 @@ export function LogoutButton({ label }: { label: string }) {
     <button
       type="button"
       onClick={onClick}
-      className="block w-full text-left px-3 py-2 rounded hover:bg-surface text-sm"
+      className="block w-full text-left px-3 py-2 rounded hover:bg-gray-100 text-sm"
     >
       {label}
     </button>
