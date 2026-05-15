@@ -6,6 +6,7 @@ import { routing } from '@/lib/i18n/routing'
 import { Header } from '@/components/layout/Header'
 import { HeaderUserMenu } from '@/components/layout/HeaderUserMenu'
 import { FooterComponent } from '@/components/layout/Footer'
+import { FooterAuthActions } from '@/components/layout/FooterAuthActions'
 
 const bricolage = Bricolage_Grotesque({
   subsets: ['latin', 'latin-ext'],
@@ -40,7 +41,7 @@ export default async function LocaleLayout({ children, params }: Props) {
         <NextIntlClientProvider messages={messages}>
           <Header userMenu={<HeaderUserMenu />} />
           <main className="flex-1">{children}</main>
-          <FooterComponent />
+          <FooterComponent authActions={<FooterAuthActions />} />
         </NextIntlClientProvider>
       </body>
     </html>

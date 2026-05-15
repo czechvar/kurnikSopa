@@ -1,7 +1,7 @@
 import { useTranslations } from 'next-intl'
-import { Link } from '@/lib/i18n/routing'
+import type { ReactNode } from 'react'
 
-export function FooterComponent() {
+export function FooterComponent({ authActions }: { authActions?: ReactNode }) {
   const t = useTranslations('footer')
   const tCommon = useTranslations('common')
 
@@ -38,8 +38,9 @@ export function FooterComponent() {
           </div>
         </div>
 
-        <div className="border-t border-brand-cream/20 mt-8 pt-8 text-center text-sm">
+        <div className="border-t border-brand-cream/20 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm">
           <p>{t('copyright', { year: currentYear })}</p>
+          {authActions}
         </div>
       </div>
     </footer>

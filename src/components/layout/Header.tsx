@@ -3,7 +3,6 @@
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 import { Link } from '@/lib/i18n/routing'
-import { LocaleSwitcher } from '@/components/common/LocaleSwitcher'
 import type { ReactNode } from 'react'
 
 export function Header({ userMenu }: { userMenu?: ReactNode }) {
@@ -32,7 +31,6 @@ export function Header({ userMenu }: { userMenu?: ReactNode }) {
         </nav>
 
         <div className="flex items-center gap-4">
-          <LocaleSwitcher />
           {userMenu}
           <Link
             href="/kosik"
