@@ -19,7 +19,13 @@
     "about": "About",
     "contact": "Contact",
     "blog": "Blog",
-    "cart": "Cart"
+    "cart": "Cart",
+    "auth": {
+      "login": "Log in",
+      "register": "Sign up",
+      "account": "My account",
+      "logout": "Log out"
+    }
   },
   "home": {
     "hero": {
@@ -121,5 +127,140 @@
     "copyright": "© {year} Kurník & Šopa. All rights reserved.",
     "privacy": "Privacy policy",
     "terms": "Terms & conditions"
+  },
+  "auth": {
+    "signup": {
+      "title": "Sign up",
+      "fields": {
+        "firstName": "First name",
+        "lastName": "Last name",
+        "email": "Email",
+        "phone": "Phone",
+        "password": "Password",
+        "passwordConfirm": "Repeat password",
+        "street": "Street and number",
+        "city": "City",
+        "zip": "ZIP"
+      },
+      "submit": "Create account",
+      "agreement": "I agree to the privacy policy and the terms of service.",
+      "haveAccount": "Already have an account?",
+      "loginLink": "Log in",
+      "errors": {
+        "emailTaken": "This email is already registered.",
+        "emailInvalid": "Invalid email.",
+        "passwordTooShort": "Password must be at least 8 characters.",
+        "passwordMismatch": "Passwords do not match.",
+        "zipInvalid": "ZIP must be 5 digits (e.g. 110 00).",
+        "required": "This field is required.",
+        "agreementRequired": "Consent is required to sign up.",
+        "generic": "Signup failed. Please try again."
+      },
+      "success": {
+        "checkEmailTitle": "Check your inbox",
+        "checkEmailBody": "We sent you an email with a link to verify your account."
+      }
+    },
+    "login": {
+      "title": "Log in",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Log in",
+      "forgotLink": "Forgot your password?",
+      "noAccount": "Don't have an account?",
+      "registerLink": "Sign up",
+      "banners": {
+        "verified": "Email verified. You can now log in.",
+        "resetOk": "Password changed. Log in with your new password."
+      },
+      "errors": {
+        "invalidCredentials": "Wrong email or password.",
+        "notVerified": "Email not yet verified. Check your inbox.",
+        "generic": "Login failed. Please try again."
+      }
+    },
+    "forgot": {
+      "title": "Forgot password",
+      "intro": "Enter your email and we'll send you a link to reset your password.",
+      "email": "Email",
+      "submit": "Send link",
+      "successBody": "If an account exists for this email, we've sent a reset link to it."
+    },
+    "reset": {
+      "title": "Reset password",
+      "password": "New password",
+      "passwordConfirm": "Repeat new password",
+      "submit": "Set new password",
+      "errors": {
+        "tokenExpired": "The link expired or is invalid.",
+        "passwordTooShort": "Password must be at least 8 characters.",
+        "passwordMismatch": "Passwords do not match.",
+        "generic": "Reset failed. Please try again."
+      }
+    },
+    "verify": {
+      "verifying": "Verifying your email…",
+      "success": "Email verified.",
+      "tokenExpired": "The link expired or is invalid.",
+      "resendLink": "Send a new link",
+      "resendSent": "If an account exists for this email, we've sent a new link."
+    }
+  },
+  "account": {
+    "title": "My account",
+    "personal": {
+      "title": "Personal info",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "phone": "Phone",
+      "save": "Save",
+      "successSaved": "Saved.",
+      "errors": {
+        "generic": "Save failed. Please try again."
+      }
+    },
+    "addresses": {
+      "title": "Addresses",
+      "addRow": "Add address",
+      "label": "Label (optional)",
+      "street": "Street and number",
+      "city": "City",
+      "zip": "ZIP",
+      "save": "Save changes",
+      "remove": "Remove",
+      "confirmRemove": "Remove this address?",
+      "empty": "You have no addresses yet.",
+      "successSaved": "Addresses saved."
+    },
+    "password": {
+      "title": "Change password",
+      "current": "Current password",
+      "new": "New password",
+      "confirm": "Repeat new password",
+      "save": "Change password",
+      "successSaved": "Password changed.",
+      "errors": {
+        "currentWrong": "Current password is not correct.",
+        "tooShort": "Password must be at least 8 characters.",
+        "mismatch": "Passwords do not match.",
+        "generic": "Password change failed. Please try again."
+      }
+    },
+    "delete": {
+      "title": "Delete account",
+      "warning": "This action is irreversible. Your account and order history will be deleted.",
+      "button": "Delete account",
+      "confirmModal": {
+        "title": "Really delete your account?",
+        "body": "Type your email to confirm.",
+        "typeEmailPrompt": "Your email",
+        "confirm": "Delete permanently",
+        "cancel": "Cancel"
+      },
+      "errors": {
+        "emailMismatch": "Email does not match.",
+        "generic": "Delete failed. Please try again."
+      }
+    }
   }
 }
