@@ -632,6 +632,64 @@ const seed = async () => {
   await payload.create({
     collection: 'pages',
     data: {
+      title: 'Ochrana osobních údajů',
+      slug: 'ochrana-osobnich-udaju',
+      content: {
+        root: {
+          type: 'root',
+          children: [
+            {
+              type: 'paragraph',
+              version: 1,
+              format: '',
+              indent: 0,
+              direction: 'ltr',
+              textFormat: 0,
+              children: [{ type: 'text', version: 1, format: 0, detail: 0, mode: 'normal', style: '', text: 'Připravujeme — placeholder pro účely vývoje.' }],
+            },
+          ],
+          direction: 'ltr',
+          format: '',
+          indent: 0,
+          version: 1,
+        },
+      },
+      status: 'published',
+    },
+  })
+
+  await payload.create({
+    collection: 'pages',
+    data: {
+      title: 'Obchodní podmínky',
+      slug: 'obchodni-podminky',
+      content: {
+        root: {
+          type: 'root',
+          children: [
+            {
+              type: 'paragraph',
+              version: 1,
+              format: '',
+              indent: 0,
+              direction: 'ltr',
+              textFormat: 0,
+              children: [{ type: 'text', version: 1, format: 0, detail: 0, mode: 'normal', style: '', text: 'Připravujeme — placeholder pro účely vývoje.' }],
+            },
+          ],
+          direction: 'ltr',
+          format: '',
+          indent: 0,
+          version: 1,
+        },
+      },
+      status: 'published',
+    },
+  })
+
+  await payload.create({
+    collection: 'pages',
+    data: {
       title: 'Kontakt',
       slug: 'kontakt',
       content: {
@@ -798,7 +856,7 @@ const seed = async () => {
   console.log('   - 3 globals configured')
   console.log('   - 4 product categories')
   console.log('   - 8 products')
-  console.log('   - 2 pages (O nás, Kontakt)')
+  console.log('   - 4 pages (O nás, Kontakt, Ochrana osobních údajů, Obchodní podmínky)')
   console.log('   - 3 events')
 
   process.exit(0)
