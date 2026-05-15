@@ -114,7 +114,8 @@
     "total": "Celkem",
     "checkout": "Přejít k pokladně",
     "remove": "Odebrat",
-    "quantity": "Počet"
+    "quantity": "Počet",
+    "comingSoon": "Košík zatím připravujeme. Vracíme se s ním brzy."
   },
   "checkout": {
     "title": "Pokladna",
@@ -231,6 +232,24 @@
       "resendLink": "Poslat nový odkaz",
       "resendSent": "Pokud k tomuto e-mailu existuje účet, poslali jsme nový odkaz."
     }
+  },
+  "toasts": {
+    "loginRequiredCart": {
+      "title": "Tady na farmě se nepouští každý do kurníku.",
+      "body": "Zaregistruj se a objednej si produkty."
+    },
+    "emailVerified": {
+      "title": "Vajíčko snesené, e-mail ověřený.",
+      "body": "Můžeš se přihlásit."
+    },
+    "passwordReset": {
+      "title": "Husy ti dávají zelenou.",
+      "body": "Přihlas se s novým heslem."
+    }
+  },
+  "notFound": {
+    "body": "Tady kuřata nebydlí. Stránka, kterou hledáš, neexistuje.",
+    "home": "Zpět na úvod"
   },
   "account": {
     "title": "Můj účet",

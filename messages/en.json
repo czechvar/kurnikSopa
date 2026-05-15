@@ -114,7 +114,8 @@
     "total": "Total",
     "checkout": "Proceed to checkout",
     "remove": "Remove",
-    "quantity": "Quantity"
+    "quantity": "Quantity",
+    "comingSoon": "We're still building the cart. Coming soon."
   },
   "checkout": {
     "title": "Checkout",
@@ -231,6 +232,24 @@
       "resendLink": "Send a new link",
       "resendSent": "If an account exists for this email, we've sent a new link."
     }
+  },
+  "toasts": {
+    "loginRequiredCart": {
+      "title": "The henhouse is for members only.",
+      "body": "Sign up to order products."
+    },
+    "emailVerified": {
+      "title": "Egg laid, email verified.",
+      "body": "You can now log in."
+    },
+    "passwordReset": {
+      "title": "The geese give you the green light.",
+      "body": "Log in with your new password."
+    }
+  },
+  "notFound": {
+    "body": "No chickens live here. The page you're looking for doesn't exist.",
+    "home": "Back to home"
   },
   "account": {
     "title": "My account",
