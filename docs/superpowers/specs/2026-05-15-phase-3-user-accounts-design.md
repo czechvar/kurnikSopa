@@ -133,9 +133,9 @@ Components in `src/components/account/`:
 
 ### 5.3 Header user menu
 
-Add `src/components/layout/HeaderUserMenu.tsx` (Server Component) and slot it into the existing `Header`.
+Add `src/components/layout/HeaderUserMenu.tsx` as a **Server Component** and pass it as a child prop into the existing client `Header` (which gets a `userMenu?: ReactNode` prop). This Server-Component-into-Client-Component composition is the standard Next 15 pattern for embedding server-fetched data into a client tree without making the whole header a Server Component.
 
-- **Not logged in:** two `next-intl` `<Link/>`s — "Přihlásit se" → `/prihlaseni`, "Registrovat" → `/registrace`. Desktop: inline; mobile: inside the existing burger drawer.
+- **Not logged in:** two `next-intl` `<Link/>`s — "Přihlásit se" → `/prihlaseni`, "Registrovat" → `/registrace`. Rendered inline next to the cart button on all viewports (the header has no mobile burger drawer yet — that's a separate concern outside this slice).
 - **Logged in:** user's first name + a `<details>`/`<summary>` disclosure menu. Items: "Můj účet" → `/ucet`, then `<LogoutButton/>` (client; POSTs `/api/users/logout`, then `router.refresh()` and `router.push('/')`).
 
 Native `<details>` keeps the dependency surface zero and is accessible. Tailwind styling.
@@ -195,7 +195,7 @@ export const buildAuthUrl = (
   token: string,
   email?: string,
 ): string => {
-  const base = process.env.NEXT_PUBLIC_SERVER_URL ?? 'http://localhost:3000'
+  const base = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
   const slug = kind === 'verify'
     ? (locale === 'en' ? 'verify-email' : 'overeni-emailu')
     : (locale === 'en' ? 'reset-password' : 'obnova-hesla')
@@ -332,7 +332,7 @@ Added to `.env.example` and required on Vercel **Production** scope before deplo
 |---|---|
 | `RESEND_API_KEY` | Resend transactional email. If empty locally, Payload's console adapter logs the email body instead. |
 | `EMAIL_FROM` | From-address. Use `onboarding@resend.dev` on preview until `kurniksopa.cz` is verified in Resend. |
-| `NEXT_PUBLIC_SERVER_URL` | Base URL used in verification/reset links. Local: `http://localhost:3000`; Vercel: the deployment URL (or final domain once DNS lands). |
+| `NEXT_PUBLIC_SITE_URL` | Base URL used in verification/reset links. Already present in `.env.example`. Local: `http://localhost:3000`; Vercel: the deployment URL (or final domain once DNS lands). |
 
 Per CLAUDE.md, **Vercel env var changes only apply on new deployments** — trigger a redeploy after adding these.
 
