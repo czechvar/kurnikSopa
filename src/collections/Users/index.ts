@@ -27,13 +27,13 @@ export const Users: CollectionConfig = {
         }),
     },
     forgotPassword: {
-      generateEmailSubject: ({ req }) =>
-        req.locale === 'en' ? 'Reset your password' : 'Obnovení hesla',
-      generateEmailHTML: ({ req, token, user }) =>
+      generateEmailSubject: (args) =>
+        args?.req?.locale === 'en' ? 'Reset your password' : 'Obnovení hesla',
+      generateEmailHTML: (args) =>
         forgotPasswordTemplate({
-          locale: (req.locale === 'en' ? 'en' : 'cs'),
-          token: token ?? '',
-          firstName: (user as { firstName?: string } | undefined)?.firstName,
+          locale: args?.req?.locale === 'en' ? 'en' : 'cs',
+          token: args?.token ?? '',
+          firstName: (args?.user as { firstName?: string } | undefined)?.firstName,
         }),
     },
   },
