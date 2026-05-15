@@ -47,6 +47,30 @@ export const routing = defineRouting({
       cs: '/blog/[slug]',
       en: '/blog/[slug]',
     },
+    '/registrace': {
+      cs: '/registrace',
+      en: '/register',
+    },
+    '/prihlaseni': {
+      cs: '/prihlaseni',
+      en: '/login',
+    },
+    '/zapomenute-heslo': {
+      cs: '/zapomenute-heslo',
+      en: '/forgot-password',
+    },
+    '/obnova-hesla/[token]': {
+      cs: '/obnova-hesla/[token]',
+      en: '/reset-password/[token]',
+    },
+    '/overeni-emailu/[token]': {
+      cs: '/overeni-emailu/[token]',
+      en: '/verify-email/[token]',
+    },
+    '/ucet': {
+      cs: '/ucet',
+      en: '/account',
+    },
   },
 })
 
