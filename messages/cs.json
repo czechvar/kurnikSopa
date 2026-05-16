@@ -19,7 +19,10 @@
     "about": "O nás",
     "contact": "Kontakt",
     "blog": "Blog",
-    "cart": "Košík",
+    "cart": {
+      "cart": "Košík",
+      "items": "{count, plural, =0 {prázdný} one {# položka} few {# položky} other {# položek}}"
+    },
     "auth": {
       "login": "Přihlásit se",
       "register": "Registrovat",
@@ -110,15 +113,88 @@
   },
   "cart": {
     "title": "Košík",
-    "empty": "Váš košík je prázdný",
-    "total": "Celkem",
-    "checkout": "Přejít k pokladně",
-    "remove": "Odebrat",
-    "quantity": "Počet",
+    "empty": {
+      "title": "Košík je prázdný",
+      "body": "Procházejte naše produkty a přidejte si něco do košíku.",
+      "cta": "Pokračovat v nákupu"
+    },
+    "lineItem": {
+      "remove": "Odebrat",
+      "qty": "Množství"
+    },
+    "summary": {
+      "subtotal": "Mezisoučet",
+      "shipping": "Doprava",
+      "shippingFree": "Zdarma v rámci regionu",
+      "total": "Celkem"
+    },
+    "cta": {
+      "continueShopping": "Pokračovat v nákupu",
+      "checkout": "Pokračovat k pokladně"
+    },
+    "added": {
+      "toast": "Přidáno do košíku",
+      "action": "Otevřít košík"
+    },
     "comingSoon": "Košík zatím připravujeme. Vracíme se s ním brzy."
   },
   "checkout": {
     "title": "Pokladna",
+    "sections": {
+      "customer": "Vaše údaje",
+      "delivery": "Doručení",
+      "payment": "Platba",
+      "note": "Poznámka k objednávce"
+    },
+    "fields": {
+      "firstName": "Jméno",
+      "lastName": "Příjmení",
+      "email": "E-mail",
+      "phone": "Telefon",
+      "street": "Ulice a č.p.",
+      "city": "Město",
+      "zip": "PSČ",
+      "preferredDate": "Preferované datum",
+      "customerNote": "Poznámka (čas, dietní preference apod.)",
+      "useOtherAddress": "Použít jinou doručovací adresu",
+      "agreement": "Souhlasím s [obchodními podmínkami](/cs/obchodni-podminky) a [zpracováním osobních údajů](/cs/ochrana-osobnich-udaju)."
+    },
+    "deliveryMethod": {
+      "pickup": "Osobní odběr",
+      "delivery": "Doručení",
+      "pickupInfo": "Vyzvedněte si objednávku na farmě v Křepicích.",
+      "deliveryFreeRegion": "Doručení zdarma v rámci regionu"
+    },
+    "paymentMethod": {
+      "bankTransfer": "Bankovní převod (QR platba)",
+      "cashOnDelivery": "Hotově při odběru / doručení"
+    },
+    "submit": "Závazně objednat",
+    "errors": {
+      "required": "Toto pole je povinné",
+      "zipInvalid": "PSČ musí mít formát 123 45",
+      "generic": "Něco se pokazilo, zkuste to prosím znovu",
+      "agreementRequired": "Pro pokračování musíte souhlasit s podmínkami",
+      "outOfStock": "Položka {name} už není skladem",
+      "insufficientStock": "Položky {name} máme méně, než je ve vašem košíku",
+      "belowMinimumOrder": "Položku {name} je třeba objednat v minimálním množství {min}",
+      "outOfSeason": "Položka {name} aktuálně není dostupná",
+      "productNotFound": "Položka už není v nabídce",
+      "paymentMethodMissingBankDetails": "Bankovní účet pro převod není nastaven. Zvolte prosím platbu v hotovosti nebo nás kontaktujte."
+    },
+    "thankYou": {
+      "title": "Děkujeme za objednávku",
+      "body": "Vaše objednávka č. {orderNumber} byla přijata. Potvrzení jsme vám poslali e-mailem.",
+      "paymentTitle": "Platba",
+      "paymentBankTransfer": "Naskenujte QR kód ve své bankovní aplikaci, nebo zadejte údaje ručně:",
+      "paymentCashOnDelivery": "Částku uhradíte v hotovosti při odběru / doručení.",
+      "qrAlt": "QR kód pro platbu",
+      "accountLabel": "Číslo účtu",
+      "vsLabel": "Variabilní symbol",
+      "amountLabel": "Částka",
+      "bankLabel": "Banka",
+      "manualFallback": "Pokud vám QR kód nefunguje, použijte tyto údaje:"
+    },
     "delivery": "Způsob doručení",
     "pickup": "Osobní odběr",
     "deliveryOption": "Doručení",
@@ -127,9 +203,44 @@
     "stripe": "Platba kartou",
     "bankTransfer": "Bankovní převod",
     "cashOnDelivery": "Dobírka",
-    "submit": "Odeslat objednávku",
     "success": "Objednávka přijata!",
     "orderNumber": "Číslo objednávky: {number}"
+  },
+  "email": {
+    "orderConfirmation": {
+      "subject": "Objednávka č. {orderNumber} přijata",
+      "greeting": "Dobrý den {name},",
+      "intro": "Děkujeme za objednávku v Kurníku Šopa. Níže najdete shrnutí a pokyny k platbě.",
+      "summaryTitle": "Vaše objednávka",
+      "deliveryTitle": "Doručení",
+      "pickupInfo": "Osobní odběr na adrese: {address}. Otevírací doba: {hours}. Tel.: {phone}.",
+      "deliveryInfo": "Doručíme na: {address}. Doprava zdarma v rámci regionu.",
+      "preferredDate": "Preferované datum: {date}",
+      "customerNote": "Poznámka: {note}",
+      "paymentTitle": "Platba",
+      "paymentBankTransferPrompt": "Prosíme uhraďte částku {amount} převodem na náš účet.",
+      "paymentBankTransferScan": "Naskenujte QR kód v aplikaci své banky:",
+      "paymentBankTransferManual": "Pokud váš banking nepodporuje QR, vyplňte údaje ručně:",
+      "paymentCash": "Částku {amount} uhradíte v hotovosti při odběru / doručení.",
+      "closing": "Brzy se vám ozveme. S pozdravem, {owner}"
+    },
+    "staffNotification": {
+      "subject": "Nová objednávka {orderNumber} — {customerName}",
+      "intro": "Přišla nová objednávka.",
+      "viewInAdmin": "Otevřít v administraci"
+    },
+    "paymentReceived": {
+      "subject": "Platba k objednávce {orderNumber} přijata",
+      "body": "Děkujeme, platba dorazila. Vaši objednávku již připravujeme.",
+      "pickupNote": "Až bude objednávka připravená k odběru, dáme vědět dalším e-mailem.",
+      "deliveryNote": "Brzy vás budeme kontaktovat ohledně termínu doručení."
+    },
+    "orderShipped": {
+      "subjectPickup": "Vaše objednávka {orderNumber} je připravena k odběru",
+      "subjectDelivery": "Vaše objednávka {orderNumber} je na cestě",
+      "bodyPickup": "Objednávku si můžete vyzvednout na adrese: {address}. Otevírací doba: {hours}. Tel.: {phone}.",
+      "bodyDelivery": "Vaši objednávku právě vezeme. Brzy vás budeme kontaktovat ohledně času doručení."
+    }
   },
   "about": {
     "title": "O nás",
