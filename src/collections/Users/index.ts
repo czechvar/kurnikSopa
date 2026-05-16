@@ -39,6 +39,7 @@ export const Users: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'email',
+    hidden: ({ user }) => user?.role !== 'admin',
   },
   endpoints: [resendVerification],
   access: {
@@ -75,6 +76,7 @@ export const Users: CollectionConfig = {
       defaultValue: 'customer',
       options: [
         { label: 'Admin', value: 'admin' },
+        { label: 'Staff', value: 'staff' },
         { label: 'Customer', value: 'customer' },
       ],
       required: true,
