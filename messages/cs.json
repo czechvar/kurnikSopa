@@ -356,6 +356,18 @@
     "passwordReset": {
       "title": "Husy ti dávají zelenou.",
       "body": "Přihlas se s novým heslem."
+    },
+    "addedToCart": {
+      "title": "Přidáno do košíku",
+      "body": ""
+    },
+    "orderPlaced": {
+      "title": "Objednávka odeslána",
+      "body": ""
+    },
+    "paymentMethodMissingBankDetails": {
+      "title": "Bankovní účet pro převod není nastaven",
+      "body": "Zvolte prosím platbu v hotovosti nebo nás kontaktujte."
     }
   },
   "notFound": {

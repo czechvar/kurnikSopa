@@ -356,6 +356,18 @@
     "passwordReset": {
       "title": "The geese give you the green light.",
       "body": "Log in with your new password."
+    },
+    "addedToCart": {
+      "title": "Added to cart",
+      "body": ""
+    },
+    "orderPlaced": {
+      "title": "Order placed",
+      "body": ""
+    },
+    "paymentMethodMissingBankDetails": {
+      "title": "Bank transfer is not configured",
+      "body": "Please choose cash payment or contact us."
     }
   },
   "notFound": {
