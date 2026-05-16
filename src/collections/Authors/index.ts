@@ -9,6 +9,7 @@ export const Authors: CollectionConfig = {
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'role'],
+    hidden: ({ user }) => user?.role !== 'admin',
   },
   fields: [
     {

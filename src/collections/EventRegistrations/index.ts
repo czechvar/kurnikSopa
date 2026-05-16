@@ -5,6 +5,7 @@ export const EventRegistrations: CollectionConfig = {
   admin: {
     useAsTitle: 'guestName',
     defaultColumns: ['event', 'guestName', 'numberOfPeople', 'paymentStatus'],
+    hidden: ({ user }) => user?.role !== 'admin',
   },
   fields: [
     {

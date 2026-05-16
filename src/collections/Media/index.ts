@@ -37,6 +37,7 @@ export const Media: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'alt',
+    hidden: ({ user }) => user?.role !== 'admin',
   },
   fields: [
     {

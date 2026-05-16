@@ -8,6 +8,7 @@ export const PostCategories: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'name',
+    hidden: ({ user }) => user?.role !== 'admin',
   },
   fields: [
     {

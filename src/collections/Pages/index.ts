@@ -5,6 +5,7 @@ export const Pages: CollectionConfig = {
   slug: 'pages',
   admin: {
     useAsTitle: 'title',
+    hidden: ({ user }) => user?.role !== 'admin',
   },
   fields: [
     {
