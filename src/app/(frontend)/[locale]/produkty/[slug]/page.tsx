@@ -1,8 +1,10 @@
+import { headers } from 'next/headers'
 import { notFound } from 'next/navigation'
 import { getPayload } from '@/lib/payload'
 import { getMediaUrl } from '@/lib/media'
 import { Link } from '@/lib/i18n/routing'
 import { RichText } from '@payloadcms/richtext-lexical/react'
+import { AddToCartButton } from '@/components/cart/AddToCartButton'
 
 type Props = {
   params: Promise<{ locale: string; slug: string }>
@@ -11,6 +13,7 @@ type Props = {
 export default async function ProductDetailPage({ params }: Props) {
   const { locale, slug } = await params
   const payload = await getPayload()
+  const { user } = await payload.auth({ headers: await headers() })
 
   const result = await payload.find({
     collection: 'products',
@@ -105,6 +108,16 @@ export default async function ProductDetailPage({ params }: Props) {
                 Minimální objednávka: {product.minimumOrder} {product.unit || 'ks'}
               </p>
             )}
+
+            <div className="mb-6">
+              <AddToCartButton
+                productId={product.id}
+                productName={product.name}
+                minimumOrder={product.minimumOrder ?? 1}
+                isLoggedIn={Boolean(user)}
+                loginRedirectPath={`/produkty/${product.slug}`}
+              />
+            </div>
 
             <div className="flex gap-3 mb-6">
               <a
