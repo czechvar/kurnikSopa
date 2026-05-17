@@ -1,4 +1,4 @@
-import type { CollectionConfig, Access, FieldAccess } from 'payload'
+import type { CollectionConfig, Access, FieldAccess, Where } from 'payload'
 import { placeOrderEndpoint } from './endpoints/placeOrder'
 import { sendStatusEmails } from './hooks/sendStatusEmails'
 
@@ -9,12 +9,9 @@ const adminOrStaff: FieldAccess = ({ req }) =>
 const isAdminOrStaffOrOrderOwner: Access = ({ req }) => {
   if (!req.user) return false
   if (req.user.role === 'admin' || req.user.role === 'staff') return true
-  return {
-    or: [
-      { customer: { equals: req.user.id } },
-      { guestEmail: { equals: req.user.email } },
-    ],
-  }
+  const clauses: Where[] = [{ customer: { equals: req.user.id } }]
+  if (req.user.email) clauses.push({ guestEmail: { equals: req.user.email } })
+  return { or: clauses }
 }
 
 const isAdminOrStaff: Access = ({ req }) =>
