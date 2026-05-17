@@ -5,6 +5,7 @@ export const ProductCategories: CollectionConfig = {
   slug: 'product-categories',
   admin: {
     useAsTitle: 'name',
+    hidden: ({ user }) => user?.role !== 'admin',
   },
   fields: [
     {

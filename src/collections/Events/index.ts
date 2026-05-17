@@ -6,6 +6,7 @@ export const Events: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'eventType', 'date', 'status'],
+    hidden: ({ user }) => user?.role !== 'admin',
   },
   fields: [
     {

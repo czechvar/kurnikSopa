@@ -8,6 +8,7 @@ import { s3Storage } from '@payloadcms/storage-s3'
 import sharp from 'sharp'
 
 import { Users } from '@/collections/Users'
+import { Carts } from '@/collections/Carts'
 import { Media } from '@/collections/Media'
 import { Products } from '@/collections/Products'
 import { ProductCategories } from '@/collections/ProductCategories'
@@ -36,6 +37,7 @@ export default buildConfig({
 
   collections: [
     Users,
+    Carts,
     Media,
     Products,
     ProductCategories,

@@ -3,6 +3,9 @@ import type { GlobalConfig } from 'payload'
 export const SiteSettings: GlobalConfig = {
   slug: 'site-settings',
   label: 'Nastavení webu',
+  admin: {
+    hidden: ({ user }) => user?.role !== 'admin',
+  },
   fields: [
     {
       name: 'farmName',
@@ -32,6 +35,42 @@ export const SiteSettings: GlobalConfig = {
         { name: 'street', type: 'text', defaultValue: 'Č.p. 313' },
         { name: 'city', type: 'text', defaultValue: 'Křepice u Hustopečí' },
         { name: 'zip', type: 'text', defaultValue: '691 65' },
+      ],
+    },
+    {
+      name: 'notificationEmail',
+      type: 'email',
+      admin: {
+        description: 'Kam chodí upozornění na nové objednávky (např. info@kurniksopa.cz)',
+      },
+    },
+    {
+      name: 'payment',
+      type: 'group',
+      fields: [
+        {
+          name: 'bankName',
+          type: 'text',
+          defaultValue: 'FIO banka',
+          required: true,
+        },
+        {
+          name: 'accountPrefix',
+          type: 'text',
+          admin: { description: 'Předčíslí účtu (volitelné, 0–6 číslic)' },
+        },
+        {
+          name: 'accountNumber',
+          type: 'text',
+          required: true,
+          admin: { description: 'Číslo účtu, 2–10 číslic' },
+        },
+        {
+          name: 'bankCode',
+          type: 'text',
+          required: true,
+          admin: { description: 'Kód banky, 4 číslice (FIO = 2010)' },
+        },
       ],
     },
     {

@@ -31,6 +31,10 @@ export const routing = defineRouting({
       cs: '/pokladna',
       en: '/checkout',
     },
+    '/pokladna/dekujeme/[orderNumber]': {
+      cs: '/pokladna/dekujeme/[orderNumber]',
+      en: '/checkout/thank-you/[orderNumber]',
+    },
     '/o-nas': {
       cs: '/o-nas',
       en: '/about',
@@ -70,6 +74,14 @@ export const routing = defineRouting({
     '/ucet': {
       cs: '/ucet',
       en: '/account',
+    },
+    '/ucet/objednavky': {
+      cs: '/ucet/objednavky',
+      en: '/account/orders',
+    },
+    '/ucet/objednavky/[orderNumber]': {
+      cs: '/ucet/objednavky/[orderNumber]',
+      en: '/account/orders/[orderNumber]',
     },
   },
 })

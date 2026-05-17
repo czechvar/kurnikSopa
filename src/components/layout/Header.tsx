@@ -32,12 +32,6 @@ export function Header({ userMenu }: { userMenu?: ReactNode }) {
 
         <div className="flex items-center gap-4">
           {userMenu}
-          <Link
-            href="/kosik"
-            className="bg-brand-cream text-brand-green-deep px-4 py-2 rounded-lg font-semibold hover:bg-brand-cream-dark transition-colors"
-          >
-            {t('cart')}
-          </Link>
         </div>
       </div>
     </header>

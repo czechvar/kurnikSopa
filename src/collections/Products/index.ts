@@ -6,6 +6,7 @@ export const Products: CollectionConfig = {
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'category', 'price', 'inStock', 'status'],
+    hidden: ({ user }) => user?.role !== 'admin',
   },
   fields: [
     {

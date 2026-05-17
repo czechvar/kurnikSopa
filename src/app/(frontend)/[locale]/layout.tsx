@@ -42,7 +42,7 @@ export default async function LocaleLayout({ children, params }: Props) {
     <html lang={locale} className={`${bricolage.variable} ${parkinsans.variable}`}>
       <body className="farm-frontend min-h-screen flex flex-col bg-surface text-text-primary font-sans antialiased">
         <NextIntlClientProvider messages={messages}>
-          <Header userMenu={<HeaderUserMenu />} />
+          <Header userMenu={<HeaderUserMenu locale={locale as 'cs' | 'en'} />} />
           <main className="flex-1">{children}</main>
           <FooterComponent authActions={<FooterAuthActions />} />
           <Toaster />

@@ -46,7 +46,7 @@ export function ForgotPasswordForm() {
       <button
         type="submit"
         disabled={submitting}
-        className="w-full bg-brand-green text-brand-cream font-semibold rounded-lg py-2.5 hover:bg-brand-green-deep disabled:opacity-60"
+        className="w-full bg-brand-cream text-brand-green font-semibold rounded-lg py-2.5 hover:bg-brand-cream-dark disabled:opacity-60"
       >
         {t('submit')}
       </button>

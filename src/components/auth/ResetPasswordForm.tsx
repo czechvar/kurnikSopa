@@ -62,7 +62,7 @@ export function ResetPasswordForm({ token }: { token: string }) {
         <label htmlFor="passwordConfirm" className="block text-sm font-medium mb-1">{t('passwordConfirm')}</label>
         <input id="passwordConfirm" type="password" required minLength={8} value={confirm} onChange={(e) => setConfirm(e.target.value)} className="w-full rounded-lg border border-gray-300 px-3 py-2" autoComplete="new-password" />
       </div>
-      <button type="submit" disabled={submitting} className="w-full bg-brand-green text-brand-cream font-semibold rounded-lg py-2.5 hover:bg-brand-green-deep disabled:opacity-60">
+      <button type="submit" disabled={submitting} className="w-full bg-brand-cream text-brand-green font-semibold rounded-lg py-2.5 hover:bg-brand-cream-dark disabled:opacity-60">
         {t('submit')}
       </button>
     </form>
