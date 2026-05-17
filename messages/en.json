@@ -27,6 +27,7 @@
       "login": "Log in",
       "register": "Sign up",
       "account": "My account",
+      "orders": "My orders",
       "logout": "Log out"
     }
   },
@@ -430,6 +431,62 @@
         "emailMismatch": "Email does not match.",
         "generic": "Delete failed. Please try again."
       }
+    },
+    "orders": {
+      "title": "My orders",
+      "linkCardCta": "View order history",
+      "empty": {
+        "title": "No orders yet",
+        "body": "Once you place an order, you'll find it here.",
+        "cta": "Browse products"
+      },
+      "columns": {
+        "orderNumber": "Order #",
+        "date": "Date",
+        "total": "Total",
+        "paymentStatus": "Payment",
+        "orderStatus": "Status"
+      },
+      "detail": {
+        "breadcrumb": "Orders",
+        "backToList": "← Back to orders",
+        "unpaidNotice": "This order is awaiting payment. Scan the QR code below or enter the details manually."
+      },
+      "paymentStatus": {
+        "pending": "Awaiting payment",
+        "paid": "Paid",
+        "failed": "Failed",
+        "refunded": "Refunded"
+      },
+      "orderStatus": {
+        "received": "Received",
+        "preparing": "Preparing",
+        "shipped": "Shipped",
+        "delivered": "Delivered",
+        "cancelled": "Cancelled"
+      }
     }
+  },
+  "orderDetail": {
+    "itemsTitle": "Items",
+    "deliveryTitle": "Delivery",
+    "paymentTitle": "Payment",
+    "qty": "Quantity",
+    "unitPrice": "Unit price",
+    "lineTotal": "Total",
+    "total": "Total",
+    "pickup": "Pickup at farm",
+    "delivery": "Delivery",
+    "preferredDate": "Preferred date",
+    "customerNote": "Note",
+    "paymentBankTransfer": "Scan the QR code in your banking app, or enter the details manually:",
+    "paymentCashOnDelivery": "You'll pay in cash on pickup / delivery.",
+    "paymentPaid": "Payment received.",
+    "qrAlt": "QR code for payment",
+    "accountLabel": "Account number",
+    "vsLabel": "Variable symbol",
+    "amountLabel": "Amount",
+    "bankLabel": "Bank",
+    "manualFallback": "If the QR code doesn't work for you, use these details:"
   }
 }

@@ -33,6 +33,9 @@ export async function HeaderUserMenu({ locale }: Props) {
           <Link href="/ucet" className="block px-3 py-2 rounded hover:bg-gray-100 text-sm">
             {t('account')}
           </Link>
+          <Link href="/ucet/objednavky" className="block px-3 py-2 rounded hover:bg-gray-100 text-sm">
+            {t('orders')}
+          </Link>
           <LogoutButton label={t('logout')} />
         </div>
       </details>

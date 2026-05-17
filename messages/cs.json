@@ -27,6 +27,7 @@
       "login": "Přihlásit se",
       "register": "Registrovat",
       "account": "Můj účet",
+      "orders": "Moje objednávky",
       "logout": "Odhlásit se"
     }
   },
@@ -430,6 +431,62 @@
         "emailMismatch": "Zadaný e-mail se neshoduje.",
         "generic": "Mazání selhalo. Zkuste to prosím znovu."
       }
+    },
+    "orders": {
+      "title": "Moje objednávky",
+      "linkCardCta": "Zobrazit historii objednávek",
+      "empty": {
+        "title": "Zatím nemáte žádné objednávky",
+        "body": "Až si u nás něco objednáte, najdete to tady.",
+        "cta": "Procházet produkty"
+      },
+      "columns": {
+        "orderNumber": "Číslo",
+        "date": "Datum",
+        "total": "Celkem",
+        "paymentStatus": "Platba",
+        "orderStatus": "Stav"
+      },
+      "detail": {
+        "breadcrumb": "Objednávky",
+        "backToList": "← Zpět na seznam objednávek",
+        "unpaidNotice": "Tato objednávka čeká na platbu. Naskenujte QR kód níže nebo zadejte údaje ručně."
+      },
+      "paymentStatus": {
+        "pending": "Čeká na platbu",
+        "paid": "Zaplaceno",
+        "failed": "Selhalo",
+        "refunded": "Vráceno"
+      },
+      "orderStatus": {
+        "received": "Přijato",
+        "preparing": "Připravuje se",
+        "shipped": "Odesláno",
+        "delivered": "Doručeno",
+        "cancelled": "Zrušeno"
+      }
     }
+  },
+  "orderDetail": {
+    "itemsTitle": "Položky",
+    "deliveryTitle": "Doručení",
+    "paymentTitle": "Platba",
+    "qty": "Množství",
+    "unitPrice": "Cena/ks",
+    "lineTotal": "Celkem",
+    "total": "Celkem",
+    "pickup": "Osobní odběr",
+    "delivery": "Doručení",
+    "preferredDate": "Preferované datum",
+    "customerNote": "Poznámka",
+    "paymentBankTransfer": "Naskenujte QR kód ve své bankovní aplikaci, nebo zadejte údaje ručně:",
+    "paymentCashOnDelivery": "Částku uhradíte v hotovosti při odběru / doručení.",
+    "paymentPaid": "Platba přijata.",
+    "qrAlt": "QR kód pro platbu",
+    "accountLabel": "Číslo účtu",
+    "vsLabel": "Variabilní symbol",
+    "amountLabel": "Částka",
+    "bankLabel": "Banka",
+    "manualFallback": "Pokud vám QR kód nefunguje, použijte tyto údaje:"
   }
 }
