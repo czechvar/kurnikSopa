@@ -6,10 +6,11 @@ import { useTranslations } from 'next-intl'
 
 type Props = {
   userId: number
+  email: string
   defaultValues: { firstName: string; lastName: string; phone: string }
 }
 
-export function PersonalInfoForm({ userId, defaultValues }: Props) {
+export function PersonalInfoForm({ userId, email, defaultValues }: Props) {
   const t = useTranslations('account.personal')
   const router = useRouter()
   const [values, setValues] = useState(defaultValues)
@@ -53,6 +54,10 @@ export function PersonalInfoForm({ userId, defaultValues }: Props) {
         {errorKey && (
           <div role="alert" className="rounded-lg bg-red-50 text-red-800 px-4 py-3">{t(errorKey)}</div>
         )}
+        <div>
+          <span className="block text-sm font-medium mb-1">{t('email')}</span>
+          <p className="rounded-lg border border-brand-green-dark bg-brand-green-dark/50 px-3 py-2 text-brand-cream/80">{email}</p>
+        </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label htmlFor="firstName" className="block text-sm font-medium mb-1">{t('firstName')}</label>

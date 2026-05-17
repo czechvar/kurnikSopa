@@ -157,7 +157,7 @@
       "preferredDate": "Preferred date",
       "customerNote": "Note (time, dietary preferences, etc.)",
       "useOtherAddress": "Use a different delivery address",
-      "agreement": "I agree to the [terms](/en/terms) and [privacy policy](/en/privacy)."
+      "agreement": "I agree to the <a href=\"/en/terms\" class=\"underline\">terms</a> and <a href=\"/en/privacy\" class=\"underline\">privacy policy</a>."
     },
     "deliveryMethod": {
       "pickup": "Pickup at farm",
@@ -378,6 +378,7 @@
     "title": "My account",
     "personal": {
       "title": "Personal info",
+      "email": "Email",
       "firstName": "First name",
       "lastName": "Last name",
       "phone": "Phone",

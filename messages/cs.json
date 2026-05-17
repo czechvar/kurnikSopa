@@ -157,7 +157,7 @@
       "preferredDate": "Preferované datum",
       "customerNote": "Poznámka (čas, dietní preference apod.)",
       "useOtherAddress": "Použít jinou doručovací adresu",
-      "agreement": "Souhlasím s [obchodními podmínkami](/cs/obchodni-podminky) a [zpracováním osobních údajů](/cs/ochrana-osobnich-udaju)."
+      "agreement": "Souhlasím s <a href=\"/cs/obchodni-podminky\" class=\"underline\">obchodními podmínkami</a> a <a href=\"/cs/ochrana-osobnich-udaju\" class=\"underline\">zpracováním osobních údajů</a>."
     },
     "deliveryMethod": {
       "pickup": "Osobní odběr",
@@ -378,6 +378,7 @@
     "title": "Můj účet",
     "personal": {
       "title": "Osobní údaje",
+      "email": "E-mail",
       "firstName": "Jméno",
       "lastName": "Příjmení",
       "phone": "Telefon",

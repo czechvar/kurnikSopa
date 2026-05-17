@@ -25,6 +25,7 @@ export default async function AccountPage({ params }: Props) {
       <h1 className="text-3xl font-bold">{t('title')}</h1>
       <PersonalInfoForm
         userId={user!.id}
+        email={user!.email}
         defaultValues={{
           firstName: user!.firstName ?? '',
           lastName: user!.lastName ?? '',
