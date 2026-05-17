@@ -54,7 +54,7 @@ export function VerifyEmailClient({ token, email }: { token: string; email?: str
       {email && (
         <button
           onClick={resend}
-          className="bg-brand-green text-brand-cream font-semibold rounded-lg px-4 py-2 hover:bg-brand-green-deep"
+          className="bg-brand-cream text-brand-green font-semibold rounded-lg px-4 py-2 hover:bg-brand-cream-dark"
         >
           {t('resendLink')}
         </button>

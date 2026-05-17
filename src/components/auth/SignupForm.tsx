@@ -224,12 +224,12 @@ export function SignupForm() {
         <FieldError name="agreement" />
       </div>
 
-      <button type="submit" disabled={submitting} className="w-full bg-brand-green text-brand-cream font-semibold rounded-lg py-2.5 hover:bg-brand-green-deep disabled:opacity-60">
+      <button type="submit" disabled={submitting} className="w-full bg-brand-cream text-brand-green font-semibold rounded-lg py-2.5 hover:bg-brand-cream-dark disabled:opacity-60">
         {t('submit')}
       </button>
 
       <p className="text-sm text-center pt-2">
-        {t('haveAccount')} <Link href="/prihlaseni" className="text-brand-green hover:underline">{t('loginLink')}</Link>
+        {t('haveAccount')} <Link href="/prihlaseni" className="text-brand-gold hover:underline">{t('loginLink')}</Link>
       </p>
     </form>
   )

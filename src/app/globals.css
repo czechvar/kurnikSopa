@@ -59,3 +59,13 @@
     --tw-prose-invert-links: var(--color-brand-cream);
   }
 }
+
+/* White cards sit on the dark green page background; their text must not
+   inherit the cream body color or it disappears. These rules are intentionally
+   unlayered so they win over Tailwind's @layer utilities (e.g. text-text-secondary). */
+.farm-frontend .bg-white {
+  color: var(--color-brand-green-deep);
+}
+.farm-frontend .bg-white .text-text-secondary {
+  color: #6b7280; /* gray-500 — readable secondary on white */
+}

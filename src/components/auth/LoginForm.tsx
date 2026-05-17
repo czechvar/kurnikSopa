@@ -73,14 +73,14 @@ export function LoginForm() {
       <button
         type="submit"
         disabled={submitting}
-        className="w-full bg-brand-green text-brand-cream font-semibold rounded-lg py-2.5 hover:bg-brand-green-deep disabled:opacity-60"
+        className="w-full bg-brand-cream text-brand-green font-semibold rounded-lg py-2.5 hover:bg-brand-cream-dark disabled:opacity-60"
       >
         {t('submit')}
       </button>
       <div className="flex justify-between text-sm pt-2">
-        <Link href="/zapomenute-heslo" className="text-brand-green hover:underline">{t('forgotLink')}</Link>
+        <Link href="/zapomenute-heslo" className="text-brand-gold hover:underline">{t('forgotLink')}</Link>
         <span>
-          {t('noAccount')} <Link href="/registrace" className="text-brand-green hover:underline">{t('registerLink')}</Link>
+          {t('noAccount')} <Link href="/registrace" className="text-brand-gold hover:underline">{t('registerLink')}</Link>
         </span>
       </div>
     </form>

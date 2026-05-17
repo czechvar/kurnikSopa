@@ -81,7 +81,7 @@ export default async function ContactPage({ params }: Props) {
                     href={settings.social.facebook}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-block border-2 border-brand-green text-brand-green font-semibold px-5 py-2 rounded-lg hover:bg-brand-green hover:text-white transition-colors text-sm"
+                    className="inline-block border-2 border-brand-cream text-brand-cream font-semibold px-5 py-2 rounded-lg hover:bg-brand-cream hover:text-brand-green transition-colors text-sm"
                   >
                     Facebook
                   </a>
@@ -91,7 +91,7 @@ export default async function ContactPage({ params }: Props) {
                     href={settings.social.instagram}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-block border-2 border-brand-green text-brand-green font-semibold px-5 py-2 rounded-lg hover:bg-brand-green hover:text-white transition-colors text-sm"
+                    className="inline-block border-2 border-brand-cream text-brand-cream font-semibold px-5 py-2 rounded-lg hover:bg-brand-cream hover:text-brand-green transition-colors text-sm"
                   >
                     Instagram
                   </a>
@@ -139,7 +139,7 @@ export default async function ContactPage({ params }: Props) {
               </div>
               <button
                 type="submit"
-                className="bg-brand-green text-white font-semibold px-6 py-3 rounded-lg hover:bg-brand-green/90 transition-colors"
+                className="bg-brand-cream text-brand-green font-semibold px-6 py-3 rounded-lg hover:bg-brand-cream-dark transition-colors"
               >
                 {t('formSubmit')}
               </button>
