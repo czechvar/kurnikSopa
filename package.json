@@ -11,7 +11,9 @@
     "payload": "cross-env NODE_OPTIONS=\"--no-deprecation\" payload",
     "generate:types": "payload generate:types",
     "generate:importmap": "payload generate:importmap",
-    "seed": "cross-env NODE_OPTIONS=\"--no-deprecation\" npx tsx src/seed.ts"
+    "seed": "cross-env NODE_OPTIONS=\"--no-deprecation\" npx tsx src/seed.ts",
+    "test": "vitest run --passWithNoTests",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "^3.84.1",
@@ -41,7 +43,8 @@
     "eslint": "^9.0.0",
     "eslint-config-next": "15.4.11",
     "tailwindcss": "^4.0.0",
-    "typescript": "^5.7.0"
+    "typescript": "^5.7.0",
+    "vitest": "^4.1.6"
   },
   "engines": {
     "node": "22.x"
