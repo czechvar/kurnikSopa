@@ -33,6 +33,25 @@ pnpm dev
 Admin panel: `http://localhost:3000/admin`
 Storefront: `http://localhost:3000`
 
+## Running tests
+
+The repo uses Vitest with two projects: `unit` (pure functions, no DB) and `integration` (real Postgres via Payload Local API).
+
+```bash
+# All tests (requires docker-compose Postgres running)
+npm test
+
+# Unit tests only (no Postgres needed)
+npm test -- --project unit
+
+# Watch mode
+npm run test:watch
+```
+
+The integration suite uses a separate database `kurnik_sopa_test` on the same local Postgres as dev (`kurnik_sopa`). It is dropped and recreated at the start of each run; **running tests does not affect dev data**.
+
+CI runs both suites against a fresh Postgres on every push and PR — see `.github/workflows/test.yml`.
+
 ## Project Structure
 
 ```
