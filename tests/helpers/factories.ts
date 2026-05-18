@@ -25,7 +25,7 @@ export async function createTestUser(
       firstName: overrides.firstName ?? 'Test',
       lastName: overrides.lastName ?? `User${userCounter}`,
       phone: overrides.phone ?? '+420123456789',
-    } as Parameters<Payload['create']>[0]['data'],
+    } as any,
   })
 }
 
@@ -63,7 +63,7 @@ export async function createTestProduct(
       availableFrom: overrides.availableFrom ?? null,
       availableTo: overrides.availableTo ?? null,
       status: overrides.status ?? 'published',
-    } as Parameters<Payload['create']>[0]['data'],
+    } as any,
   })
 }
 
@@ -82,7 +82,7 @@ export async function setTestSiteSettings(payload: Payload): Promise<void> {
         bankCode: '2010',
       },
       owner: 'Test Owner',
-    } as Parameters<Payload['updateGlobal']>[0]['data'],
+    } as any,
   })
 }
 
@@ -96,6 +96,6 @@ export async function createTestCart(
     data: {
       user: user.id,
       items: items.map(it => ({ product: it.product.id, quantity: it.quantity })),
-    } as Parameters<Payload['create']>[0]['data'],
+    } as any,
   })
 }

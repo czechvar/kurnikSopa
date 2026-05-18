@@ -45,7 +45,7 @@ describe('Users access control', () => {
     const result = await payload.update({
       collection: 'users',
       id: user.id,
-      data: { role: 'admin' } as Parameters<typeof payload.update>[0]['data'],
+      data: { role: 'admin' } as any,
       user,
       overrideAccess: false,
     })
@@ -58,7 +58,7 @@ describe('Users access control', () => {
     const result = await payload.update({
       collection: 'users',
       id: user.id,
-      data: { email: 'hijacked@kurnik-sopa.cz' } as Parameters<typeof payload.update>[0]['data'],
+      data: { email: 'hijacked@kurnik-sopa.cz' } as any,
       user,
       overrideAccess: false,
     })
@@ -72,7 +72,7 @@ describe('Users access control', () => {
     const result = await payload.update({
       collection: 'users',
       id: target.id,
-      data: { role: 'staff' } as Parameters<typeof payload.update>[0]['data'],
+      data: { role: 'staff' } as any,
       user: admin,
       overrideAccess: false,
     })

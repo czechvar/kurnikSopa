@@ -35,4 +35,5 @@ jobs:
           cache: 'npm'
       - run: npm install --legacy-peer-deps
       - run: npx payload generate:types
+      - run: npx tsc --noEmit
       - run: npm test

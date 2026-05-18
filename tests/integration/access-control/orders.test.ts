@@ -25,7 +25,7 @@ async function seedOrder(
       orderStatus: 'received',
       preferredDate: '2026-06-01',
       locale: 'cs',
-    } as Parameters<typeof payload.create>[0]['data'],
+    } as any,
   })
 }
 
@@ -50,10 +50,11 @@ describe('Orders access control', () => {
       overrideAccess: false,
     })
     expect(result.docs).toHaveLength(1)
+    const customer = result.docs[0].customer
     const ownerId =
-      typeof result.docs[0].customer === 'object'
-        ? result.docs[0].customer.id
-        : result.docs[0].customer
+      typeof customer === 'object' && customer !== null
+        ? customer.id
+        : customer
     expect(ownerId).toBe(customerA.id)
   })
 
@@ -70,7 +71,7 @@ describe('Orders access control', () => {
       payload.update({
         collection: 'orders',
         id: order.id,
-        data: { paymentStatus: 'paid' } as Parameters<typeof payload.update>[0]['data'],
+        data: { paymentStatus: 'paid' } as any,
         user: customer,
         overrideAccess: false,
       }),
@@ -91,7 +92,7 @@ describe('Orders access control', () => {
         paymentStatus: 'paid',
         orderStatus: 'shipped',
         notes: 'picked up',
-      } as Parameters<typeof payload.update>[0]['data'],
+      } as any,
       user: staff,
       overrideAccess: false,
     })
@@ -104,7 +105,7 @@ describe('Orders access control', () => {
     const tryTotal = await payload.update({
       collection: 'orders',
       id: sameOrder.id,
-      data: { totalAmount: 0 } as Parameters<typeof payload.update>[0]['data'],
+      data: { totalAmount: 0 } as any,
       user: staff,
       overrideAccess: false,
     })
@@ -121,7 +122,7 @@ describe('Orders access control', () => {
     const updated = await payload.update({
       collection: 'orders',
       id: order.id,
-      data: { totalAmount: 999 } as Parameters<typeof payload.update>[0]['data'],
+      data: { totalAmount: 999 } as any,
       user: admin,
       overrideAccess: false,
     })
