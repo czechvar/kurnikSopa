@@ -58,7 +58,7 @@ export default buildConfig({
 
   email: process.env.RESEND_API_KEY
     ? resendAdapter({
-        defaultFromAddress: process.env.EMAIL_FROM ?? 'info@kurniksopa.cz',
+        defaultFromAddress: process.env.EMAIL_FROM ?? 'info@kurnik-sopa.cz',
         defaultFromName: 'Kurník Šopa',
         apiKey: process.env.RESEND_API_KEY,
       })
