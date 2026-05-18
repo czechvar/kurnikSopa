@@ -42,6 +42,19 @@ export const Users: CollectionConfig = {
     hidden: ({ user }) => user?.role !== 'admin',
   },
   endpoints: [resendVerification],
+  hooks: {
+    beforeChange: [
+      ({ data }) => {
+        // Admin and staff users don't go through the customer email-verification
+        // flow; without this, the first admin on a fresh deploy gets locked out
+        // with _verified=false and no way to bootstrap.
+        if (data.role === 'admin' || data.role === 'staff') {
+          return { ...data, _verified: true }
+        }
+        return data
+      },
+    ],
+  },
   access: {
     create: () => true,
     read: isAdminOrSelf,
