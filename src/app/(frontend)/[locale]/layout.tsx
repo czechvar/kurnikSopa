@@ -10,6 +10,11 @@ import { FooterComponent } from '@/components/layout/Footer'
 import { FooterAuthActions } from '@/components/layout/FooterAuthActions'
 import { Toaster } from '@/components/common/Toaster'
 import { ToastFromQuery } from '@/components/common/ToastFromQuery'
+import {
+  CookieConsentHeadScripts,
+  CookieConsentBodyNoscript,
+} from '@/components/cookies/CookieConsentHeadScripts'
+import { CookieConsentClient } from '@/components/cookies/CookieConsentClient'
 
 const bricolage = Bricolage_Grotesque({
   subsets: ['latin', 'latin-ext'],
@@ -40,7 +45,11 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <html lang={locale} className={`${bricolage.variable} ${parkinsans.variable}`}>
+      <head>
+        <CookieConsentHeadScripts />
+      </head>
       <body className="farm-frontend min-h-screen flex flex-col bg-surface text-text-primary font-sans antialiased">
+        <CookieConsentBodyNoscript />
         <NextIntlClientProvider messages={messages}>
           <Header userMenu={<HeaderUserMenu locale={locale as 'cs' | 'en'} />} />
           <main className="flex-1">{children}</main>
@@ -49,6 +58,7 @@ export default async function LocaleLayout({ children, params }: Props) {
           <Suspense fallback={null}>
             <ToastFromQuery />
           </Suspense>
+          <CookieConsentClient locale={locale as 'cs' | 'en'} />
         </NextIntlClientProvider>
       </body>
     </html>

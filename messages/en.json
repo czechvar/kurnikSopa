@@ -488,5 +488,84 @@
     "amountLabel": "Amount",
     "bankLabel": "Bank",
     "manualFallback": "If the QR code doesn't work for you, use these details:"
+  },
+  "cookieConsent": {
+    "consentModal": {
+      "title": "We use cookies",
+      "description": "This site uses cookies to give you the best browsing experience. Necessary cookies are required for the site to function. Others (analytics, marketing) are used only with your consent. Learn more in our <a href=\"/en/cookies\">Cookie policy</a>.",
+      "acceptAllBtn": "Accept all",
+      "acceptNecessaryBtn": "Reject all",
+      "showPreferencesBtn": "Manage preferences",
+      "footer": ""
+    },
+    "preferencesModal": {
+      "title": "Cookie preferences",
+      "acceptAllBtn": "Accept all",
+      "acceptNecessaryBtn": "Reject all",
+      "savePreferencesBtn": "Save preferences",
+      "closeIconLabel": "Close",
+      "sectionsIntroTitle": "Cookie preferences",
+      "sectionsIntroDescription": "Choose which categories of cookies you allow. You can change your decision at any time via the \"Cookie settings\" link in the footer."
+    },
+    "categories": {
+      "necessary": {
+        "title": "Strictly necessary",
+        "description": "These cookies are required for the site to function (cart state, login, security). Without them the shop would not work. They cannot be disabled."
+      },
+      "functional": {
+        "title": "Functional",
+        "description": "Enable enhanced functionality and personalization such as remembering your language or region."
+      },
+      "analytics": {
+        "title": "Analytics",
+        "description": "Help us understand how visitors use the site so we can improve it. Data is anonymized."
+      },
+      "marketing": {
+        "title": "Marketing",
+        "description": "Used to track visitors across sites and to show relevant advertising."
+      }
+    },
+    "manageButton": "Cookie settings"
+  },
+  "cookies": {
+    "pageTitle": "Cookie policy",
+    "intro": "This site, kurnik-sopa.cz, operated by [Name/Company, Address, Reg. No.] (the \"Operator\" or \"we\"), uses cookies. This policy explains what cookies are, which categories we use, and how you can manage or disable them.",
+    "section1Title": "1. What are cookies?",
+    "section1Body": "Cookies are small text files that a website stores in your browser (on your computer, tablet, or mobile) when you visit it. They allow the site to remember information about your visit (such as your language, cart contents, or login state) so your next visit can be smoother.",
+    "section2Title": "2. What categories of cookies do we use?",
+    "section2Intro": "On kurnik-sopa.cz we use cookies grouped by their purpose and lifetime.",
+    "section2DurationTitle": "By lifetime:",
+    "section2DurationSession": "Session cookies: Deleted from your device automatically when you close the browser.",
+    "section2DurationPersistent": "Persistent cookies: Remain on your device for a longer period (depending on the cookie's settings or your browser) until you delete them.",
+    "section2PurposeTitle": "By purpose (function):",
+    "section2NecessaryName": "Necessary (technical)",
+    "section2NecessaryDesc": "Essential for the site to function (cart, login, security). Without them the shop would not work.",
+    "section2NecessaryConsent": "NO consent required (work automatically)",
+    "section2AnalyticsName": "Analytics / statistics",
+    "section2AnalyticsDesc": "Help us understand how visitors use the site (e.g. which pages are most visited). Data is anonymized.",
+    "section2AnalyticsConsent": "YES (via the cookie banner)",
+    "section2MarketingName": "Marketing / profiling",
+    "section2MarketingDesc": "Used to track users across sites and to show relevant advertising (e.g. on social networks or search engines).",
+    "section2MarketingConsent": "YES (via the cookie banner)",
+    "section3Title": "3. Third-party tools",
+    "section3Intro": "Our site may integrate third-party tools that also store cookies (third-party cookies):",
+    "section3Tool1": "Google Analytics: For traffic and behavior analysis (analytics cookies).",
+    "section3Tool2": "Google Ads / Sklik: For ad campaign measurement and ad targeting (marketing cookies).",
+    "section3Tool3": "Facebook Pixel: For conversion tracking and ad personalization on Facebook (marketing cookies).",
+    "section3ToolMore": "[Add others you use, or remove this line.]",
+    "section4Title": "4. How can you change your cookie settings?",
+    "section4ASubtitle": "A) Via the cookie banner on our site",
+    "section4ABody": "On your first visit the cookie banner appears. There you can choose which categories of cookies (analytics, marketing) you allow. You can change or withdraw this consent at any time via the \"Cookie settings\" link in the footer.",
+    "section4BSubtitle": "B) Via your browser settings",
+    "section4BBody": "Most browsers accept cookies automatically but let you disable, limit, or delete them in their settings. See the documentation for Google Chrome, Mozilla Firefox, Safari (Mac/iOS), or Microsoft Edge.",
+    "section4Warning": "Note: If you disable cookies entirely in your browser, parts of this site (especially cart and login) may not function correctly.",
+    "section5Title": "5. Personal data processing",
+    "section5Body": "Storing cookies may involve processing of personal data (e.g. IP address). For more on your rights and how we handle personal data, see our Privacy Policy.",
+    "validFrom": "This Cookie policy is effective from [Add date]."
+  },
+  "obchodniPodminky": {
+    "pageTitle": "Terms and Conditions",
+    "czechAuthoritativeNotice": "The legally binding version of these Terms and Conditions is in Czech. Please refer to the Czech-language page at /cs/obchodni-podminky for the authoritative text. The translation below is provided for convenience only.",
+    "czechLinkLabel": "Read the Czech version"
   }
 }
