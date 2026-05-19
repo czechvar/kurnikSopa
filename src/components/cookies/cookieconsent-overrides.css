@@ -1,0 +1,10 @@
+#cc-main {
+  --cc-font-family: var(--font-parkinsans), system-ui, sans-serif;
+  --cc-btn-primary-bg: #5a7d3a;
+  --cc-btn-primary-hover-bg: #486630;
+  --cc-btn-primary-border: #5a7d3a;
+  --cc-btn-primary-hover-border: #486630;
+  --cc-btn-secondary-bg: #f0ece1;
+  --cc-btn-secondary-hover-bg: #e2dccb;
+  --cc-toggle-on-bg: #5a7d3a;
+}

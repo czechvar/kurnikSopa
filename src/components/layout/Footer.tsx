@@ -1,11 +1,20 @@
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
 import type { ReactNode } from 'react'
+import { FooterCookiesLink } from './FooterCookiesLink'
 
 export function FooterComponent({ authActions }: { authActions?: ReactNode }) {
   const t = useTranslations('footer')
   const tCommon = useTranslations('common')
+  const locale = useLocale()
 
   const currentYear = new Date().getFullYear()
+  const cookiesHref = locale === 'cs' ? '/cs/cookies' : '/en/cookies'
+  const termsHref =
+    locale === 'cs' ? '/cs/obchodni-podminky' : '/en/obchodni-podminky'
+  const privacyHref =
+    locale === 'cs'
+      ? '/cs/ochrana-osobnich-udaju'
+      : '/en/ochrana-osobnich-udaju'
 
   return (
     <footer className="bg-brand-green-dark text-brand-cream/80 mt-16">
@@ -40,7 +49,19 @@ export function FooterComponent({ authActions }: { authActions?: ReactNode }) {
 
         <div className="border-t border-brand-cream/20 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm">
           <p>{t('copyright', { year: currentYear })}</p>
-          {authActions}
+          <nav className="flex flex-wrap items-center gap-x-6 gap-y-2">
+            <a href={termsHref} className="underline hover:text-brand-cream transition-colors">
+              {t('terms')}
+            </a>
+            <a href={privacyHref} className="underline hover:text-brand-cream transition-colors">
+              {t('privacy')}
+            </a>
+            <a href={cookiesHref} className="underline hover:text-brand-cream transition-colors">
+              Cookies
+            </a>
+            <FooterCookiesLink />
+            {authActions}
+          </nav>
         </div>
       </div>
     </footer>
