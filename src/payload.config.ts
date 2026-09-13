@@ -5,6 +5,7 @@ import { postgresAdapter } from '@payloadcms/db-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { resendAdapter } from '@payloadcms/email-resend'
 import { s3Storage } from '@payloadcms/storage-s3'
+import { clientUploadsEnabled } from '@/lib/uploads'
 import sharp from 'sharp'
 
 import { Users } from '@/collections/Users'
@@ -99,7 +100,7 @@ export default buildConfig({
         media: { prefix: 'media' },
       },
       bucket: process.env.S3_BUCKET || '',
-      clientUploads: true,
+      clientUploads: clientUploadsEnabled(),
       config: {
         endpoint: process.env.S3_ENDPOINT,
         region: process.env.S3_REGION || 'auto',
