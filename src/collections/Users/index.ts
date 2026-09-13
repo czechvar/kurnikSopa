@@ -12,6 +12,23 @@ const isAdminOrSelf: Access = ({ req }) => {
 
 const adminFieldOnly: FieldAccess = ({ req }) => req.user?.role === 'admin'
 
+/**
+ * Who may set `role` while a user is being created.
+ *
+ * Signup is deliberately public, so without this an anonymous POST to
+ * /api/users could simply ask for `role: 'admin'` — and the auto-verify hook
+ * below would hand back a usable admin account with no email round-trip.
+ *
+ * The one exception is bootstrapping: Payload's create-first-user screen runs
+ * with nobody logged in, so an empty users table has to be allowed to mint the
+ * first admin. After that the table is never empty again.
+ */
+const canSetRoleOnCreate: FieldAccess = async ({ req }) => {
+  if (req.user?.role === 'admin') return true
+  const { totalDocs } = await req.payload.count({ collection: 'users' })
+  return totalDocs === 0
+}
+
 export const Users: CollectionConfig = {
   slug: 'users',
   auth: {
@@ -94,6 +111,7 @@ export const Users: CollectionConfig = {
       ],
       required: true,
       access: {
+        create: canSetRoleOnCreate,
         update: adminFieldOnly,
       },
     },
