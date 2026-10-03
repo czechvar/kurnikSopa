@@ -1,7 +1,12 @@
 import type { GlobalConfig } from 'payload'
+import { isAdmin } from '../collections/access'
 
 export const SiteSettings: GlobalConfig = {
   slug: 'site-settings',
+  access: {
+    read: isAdmin,
+    update: isAdmin,
+  },
   label: 'Nastavení webu',
   admin: {
     hidden: ({ user }) => user?.role !== 'admin',

@@ -1,7 +1,12 @@
 import type { GlobalConfig } from 'payload'
+import { isAdmin, publicRead } from '../collections/access'
 
 export const Navigation: GlobalConfig = {
   slug: 'navigation',
+  access: {
+    read: publicRead,
+    update: isAdmin,
+  },
   label: 'Navigace',
   admin: {
     hidden: ({ user }) => user?.role !== 'admin',

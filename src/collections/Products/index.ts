@@ -1,8 +1,15 @@
 import type { CollectionConfig } from 'payload'
 import { slugField } from '@/fields/slug'
+import { isAdmin, publicRead } from '../access'
 
 export const Products: CollectionConfig = {
   slug: 'products',
+  access: {
+    read: publicRead,
+    create: isAdmin,
+    update: isAdmin,
+    delete: isAdmin,
+  },
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'category', 'price', 'inStock', 'status'],

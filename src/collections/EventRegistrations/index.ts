@@ -1,7 +1,17 @@
 import type { CollectionConfig } from 'payload'
+import { isAdmin } from '../access'
 
 export const EventRegistrations: CollectionConfig = {
   slug: 'event-registrations',
+  // Registrations carry guests' names, e-mails and phone numbers. They are
+  // entered by an admin today; a public sign-up form would need its own
+  // create rule.
+  access: {
+    read: isAdmin,
+    create: isAdmin,
+    update: isAdmin,
+    delete: isAdmin,
+  },
   admin: {
     useAsTitle: 'guestName',
     defaultColumns: ['event', 'guestName', 'numberOfPeople', 'paymentStatus'],
