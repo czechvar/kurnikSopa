@@ -7,6 +7,31 @@ Tickets marked **[manual]** happen in a dashboard, not in git, and are Jan's to 
 
 Sizes: S ≈ under an hour, M ≈ half a day, L ≈ a day or more.
 
+**Filed on the Workstreams board (`kurnikSopa`, channel `QKLCFY`) on 2026-10-03.**
+The board is the live state; this file is the original write-up. Task ids:
+
+| Ticket | Workstreams task id |
+|---|---|
+| PR1 umbrella | `563e2e27-a3bd-4b57-8daf-99ca0d39d4dc` |
+| T1-1 | `25055f8c-b1c8-45c0-a557-672f49831c10` |
+| T1-2 | `518cd21e-20a1-4170-b949-456290732995` |
+| T1-3 | `3b5b9dc5-60db-43f5-8a84-db63e777aed0` |
+| T1-4 | `8f456c86-3e86-454d-8dde-89cd416f3cd6` |
+| T1-5 | `a8183eab-9fc1-4b50-8b9c-42367e40668a` |
+| T1-6 | `41811f11-43e6-486e-bc20-ee97e6f6f928` |
+| T1-7 | `c69ebe1d-d5e4-40fb-a062-6c9fdb4d6882` |
+| PR2 umbrella | `90f11cb1-716b-4682-951b-f783d7a2865b` |
+| T2-1 | `294479ea-e92d-4834-b5dc-1e6c38c22559` |
+| T2-2 | `732b87dc-479b-4176-b87c-0fe84a45c930` |
+| T2-3 | `a928e74d-1119-4c50-a2f2-d077fd30b2e3` |
+| T2-4 | `7e3f1f47-f9b1-4f56-b187-ad96b44889ca` |
+| T2-5 | `b72d2d66-bbac-4f0b-98d7-d70710a4d48f` |
+| T2-6 | `10998fd5-bd36-4ff0-aff7-0bc3a4fe9ca0` |
+| T2-7 | `75d6e1eb-e448-4ee6-acd3-c45ecfff96ac` |
+| T2-8 | `740b6a5c-7b4f-4b63-8af0-b36290a42b08` |
+| T2-9 | `4075d2aa-ff60-4402-84e8-372ad27710a8` |
+| T2-10 | `4b463c51-9f66-4f7b-aec4-86bf77c1c59e` |
+
 ---
 
 ## PR1 — Environment split
