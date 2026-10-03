@@ -1,9 +1,13 @@
 import type { CollectionConfig } from 'payload'
+import { isAdminOrEditor, publicRead } from '../access'
 
 export const Media: CollectionConfig = {
   slug: 'media',
   access: {
-    read: () => true,
+    read: publicRead,
+    create: isAdminOrEditor,
+    update: isAdminOrEditor,
+    delete: isAdminOrEditor,
   },
   upload: {
     mimeTypes: ['image/*'],
@@ -37,7 +41,7 @@ export const Media: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'alt',
-    hidden: ({ user }) => user?.role !== 'admin',
+    hidden: ({ user }) => user?.role !== 'admin' && user?.role !== 'editor',
   },
   fields: [
     {

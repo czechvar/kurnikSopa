@@ -1,15 +1,19 @@
 import type { CollectionConfig } from 'payload'
 import { slugField } from '@/fields/slug'
+import { isAdminOrEditor, publicRead } from '../access'
 
 export const Posts: CollectionConfig = {
   slug: 'posts',
   access: {
-    read: () => true,
+    read: publicRead,
+    create: isAdminOrEditor,
+    update: isAdminOrEditor,
+    delete: isAdminOrEditor,
   },
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'author', 'publishedAt', 'status'],
-    hidden: ({ user }) => user?.role !== 'admin',
+    hidden: ({ user }) => user?.role !== 'admin' && user?.role !== 'editor',
   },
   fields: [
     {
