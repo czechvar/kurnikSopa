@@ -42,3 +42,6 @@ public/media/
 # TypeScript
 *.tsbuildinfo
 next-env.d.ts
+
+# Visual brainstorming sessions
+.superpowers/

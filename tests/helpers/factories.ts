@@ -9,7 +9,7 @@ export async function createTestUser(
   overrides: Partial<{
     email: string
     password: string
-    role: 'admin' | 'staff' | 'customer'
+    role: 'admin' | 'staff' | 'editor' | 'customer'
     firstName: string
     lastName: string
     phone: string
