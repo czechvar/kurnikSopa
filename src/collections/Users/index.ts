@@ -62,10 +62,10 @@ export const Users: CollectionConfig = {
   hooks: {
     beforeChange: [
       ({ data }) => {
-        // Admin and staff users don't go through the customer email-verification
-        // flow; without this, the first admin on a fresh deploy gets locked out
-        // with _verified=false and no way to bootstrap.
-        if (data.role === 'admin' || data.role === 'staff') {
+        // Admin, staff and editor users don't go through the customer
+        // email-verification flow; without this, the first admin on a fresh
+        // deploy gets locked out with _verified=false and no way to bootstrap.
+        if (data.role === 'admin' || data.role === 'staff' || data.role === 'editor') {
           return { ...data, _verified: true }
         }
         return data
@@ -107,6 +107,7 @@ export const Users: CollectionConfig = {
       options: [
         { label: 'Admin', value: 'admin' },
         { label: 'Staff', value: 'staff' },
+        { label: 'Editor', value: 'editor' },
         { label: 'Customer', value: 'customer' },
       ],
       required: true,
