@@ -7,9 +7,10 @@ import { resetEmails } from '../../setup/email-spy'
 
 const postData = (slug: string) => ({ title: `Post ${slug}`, slug }) as any
 
-// Payload throws Forbidden with this message when collection access returns
-// false. Matching it keeps a validation error from passing as a refusal.
-const FORBIDDEN = /not allowed to perform this action/i
+// Payload throws Forbidden (HTTP 403) when collection access returns false.
+// Matching the status keeps a validation error (400) from passing as a refusal,
+// and does not depend on the admin language the message is translated into.
+const FORBIDDEN = { status: 403 }
 
 const EDITORIAL: CollectionSlug[] = ['posts', 'authors', 'post-categories', 'media']
 const CATALOGUE: CollectionSlug[] = ['products', 'product-categories', 'events', 'pages']
@@ -33,7 +34,7 @@ describe('content collection access control', () => {
         user: customer,
         overrideAccess: false,
       }),
-    ).rejects.toThrow(FORBIDDEN)
+    ).rejects.toMatchObject(FORBIDDEN)
   })
 
   it.each(CATALOGUE)('an editor cannot create in %s', async (collection) => {
@@ -47,7 +48,7 @@ describe('content collection access control', () => {
         user: editor,
         overrideAccess: false,
       }),
-    ).rejects.toThrow(FORBIDDEN)
+    ).rejects.toMatchObject(FORBIDDEN)
   })
 
   it('a customer cannot update or delete a post', async () => {
@@ -67,7 +68,7 @@ describe('content collection access control', () => {
         user: customer,
         overrideAccess: false,
       }),
-    ).rejects.toThrow(FORBIDDEN)
+    ).rejects.toMatchObject(FORBIDDEN)
     await expect(
       payload.delete({
         collection: 'posts',
@@ -75,7 +76,7 @@ describe('content collection access control', () => {
         user: customer,
         overrideAccess: false,
       }),
-    ).rejects.toThrow(FORBIDDEN)
+    ).rejects.toMatchObject(FORBIDDEN)
   })
 
   it('a customer cannot update or delete a product', async () => {
@@ -91,7 +92,7 @@ describe('content collection access control', () => {
         user: customer,
         overrideAccess: false,
       }),
-    ).rejects.toThrow(FORBIDDEN)
+    ).rejects.toMatchObject(FORBIDDEN)
     await expect(
       payload.delete({
         collection: 'products',
@@ -99,7 +100,7 @@ describe('content collection access control', () => {
         user: customer,
         overrideAccess: false,
       }),
-    ).rejects.toThrow(FORBIDDEN)
+    ).rejects.toMatchObject(FORBIDDEN)
   })
 
   it('an editor can create and delete a post', async () => {
@@ -154,7 +155,7 @@ describe('content collection access control', () => {
         user: editor,
         overrideAccess: false,
       }),
-    ).rejects.toThrow(FORBIDDEN)
+    ).rejects.toMatchObject(FORBIDDEN)
     const users = await payload.find({
       collection: 'users',
       user: editor,
@@ -180,7 +181,7 @@ describe('content collection access control', () => {
             user,
             overrideAccess: false,
           }),
-        ).rejects.toThrow(FORBIDDEN)
+        ).rejects.toMatchObject(FORBIDDEN)
       }
     },
   )
@@ -190,7 +191,7 @@ describe('content collection access control', () => {
     const customer = await createTestUser(payload, { role: 'customer' })
     await expect(
       payload.findGlobal({ slug: 'site-settings', user: customer, overrideAccess: false }),
-    ).rejects.toThrow(FORBIDDEN)
+    ).rejects.toMatchObject(FORBIDDEN)
   })
 
   it('an admin can still change site settings', async () => {
@@ -213,7 +214,7 @@ describe('content collection access control', () => {
     const customer = await createTestUser(payload, { role: 'customer' })
     await expect(
       payload.find({ collection: 'event-registrations', user: customer, overrideAccess: false }),
-    ).rejects.toThrow(FORBIDDEN)
+    ).rejects.toMatchObject(FORBIDDEN)
     await expect(
       payload.create({
         collection: 'event-registrations',
@@ -221,7 +222,7 @@ describe('content collection access control', () => {
         user: customer,
         overrideAccess: false,
       }),
-    ).rejects.toThrow(FORBIDDEN)
+    ).rejects.toMatchObject(FORBIDDEN)
   })
 
   it('staff gains no write access to posts', async () => {
@@ -235,7 +236,7 @@ describe('content collection access control', () => {
         user: staff,
         overrideAccess: false,
       }),
-    ).rejects.toThrow(FORBIDDEN)
+    ).rejects.toMatchObject(FORBIDDEN)
   })
 
   it('an anonymous caller can read posts and products', async () => {
@@ -243,7 +244,7 @@ describe('content collection access control', () => {
     await payload.create({
       collection: 'posts',
       locale: 'cs',
-      data: postData('public-post'),
+      data: { ...postData('public-post'), _status: 'published' },
     })
     await createTestProduct(payload)
     const posts = await payload.find({ collection: 'posts', overrideAccess: false })

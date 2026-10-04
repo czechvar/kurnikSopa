@@ -1,18 +1,33 @@
-import type { CollectionConfig } from 'payload'
+import type { Access, CollectionConfig } from 'payload'
 import { slugField } from '@/fields/slug'
-import { isAdminOrEditor, publicRead } from '../access'
+import { isAdminOrEditor } from '../access'
+
+/**
+ * Admins and editors read everything. Everyone else — signed in or not — gets
+ * published posts only, so a draft cannot be fetched through `/api/posts`.
+ */
+const readPublishedOrEditorial: Access = (args) => {
+  if (isAdminOrEditor(args)) return true
+  return { _status: { equals: 'published' } }
+}
 
 export const Posts: CollectionConfig = {
   slug: 'posts',
+  versions: {
+    drafts: true,
+  },
   access: {
-    read: publicRead,
+    read: readPublishedOrEditorial,
+    // Unpublished edits live only in the versions table. Without this, Payload
+    // lets any signed-in user read them.
+    readVersions: isAdminOrEditor,
     create: isAdminOrEditor,
     update: isAdminOrEditor,
     delete: isAdminOrEditor,
   },
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title', 'author', 'publishedAt', 'status'],
+    defaultColumns: ['title', 'author', 'publishedAt', '_status'],
     hidden: ({ user }) => user?.role !== 'admin' && user?.role !== 'editor',
   },
   fields: [
@@ -70,19 +85,6 @@ export const Posts: CollectionConfig = {
         { name: 'metaDescription', type: 'textarea', localized: true },
         { name: 'metaImage', type: 'upload', relationTo: 'media' },
       ],
-    },
-    {
-      name: 'status',
-      type: 'select',
-      defaultValue: 'draft',
-      options: [
-        { label: 'Koncept', value: 'draft' },
-        { label: 'Publikováno', value: 'published' },
-      ],
-      required: true,
-      admin: {
-        position: 'sidebar',
-      },
     },
   ],
 }

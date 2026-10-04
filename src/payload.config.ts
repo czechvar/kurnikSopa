@@ -5,6 +5,8 @@ import { postgresAdapter } from '@payloadcms/db-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { resendAdapter } from '@payloadcms/email-resend'
 import { s3Storage } from '@payloadcms/storage-s3'
+import { cs } from '@payloadcms/translations/languages/cs'
+import { en } from '@payloadcms/translations/languages/en'
 import { clientUploadsEnabled } from '@/lib/uploads'
 import sharp from 'sharp'
 
@@ -78,6 +80,13 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URI || '',
     },
   }),
+
+  // Admin UI language. Czech first because the farm's editor works in the
+  // admin directly; each user can switch under Account → Language.
+  i18n: {
+    supportedLanguages: { cs, en },
+    fallbackLanguage: 'cs',
+  },
 
   localization: {
     locales: [

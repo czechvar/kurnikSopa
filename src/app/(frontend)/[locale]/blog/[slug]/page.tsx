@@ -17,7 +17,7 @@ async function fetchPost(slug: string, locale: 'cs' | 'en') {
     collection: 'posts',
     where: {
       slug: { equals: slug },
-      status: { equals: 'published' },
+      _status: { equals: 'published' },
     },
     depth: 2,
     limit: 1,
