@@ -46,7 +46,15 @@ export async function Header({ userMenu }: Props) {
             items={items}
             openLabel={t('menu.open')}
             closeLabel={t('menu.close')}
-            footer={<LocaleSwitcher />}
+            footer={
+              <>
+                <LocaleSwitcher />
+                {/* Signed-out visitors are redirected from /ucet to the login page. */}
+                <Link href="/ucet" className="font-semibold text-ink underline decoration-accent decoration-2 underline-offset-4">
+                  {t('auth.account')}
+                </Link>
+              </>
+            }
             phone={
               phone
                 ? { href: `tel:+420${phone.replace(/^\+?420/, '')}`, label: `${t('callUs')} ${formatPhone(phone)}` }
