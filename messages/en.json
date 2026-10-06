@@ -25,7 +25,7 @@
     },
     "auth": {
       "login": "Log in",
-      "register": "Sign up",
+      "register": "Request an account",
       "account": "My account",
       "orders": "My orders",
       "logout": "Log out"
@@ -226,7 +226,8 @@
       "pickupPointInvalid": "This pickup point is no longer available, please choose another",
       "emailInvalid": "Enter a valid email",
       "guestEmailRequired": "Enter your email so we can send the confirmation",
-      "cartEmpty": "Your cart is empty"
+      "cartEmpty": "Your cart is empty",
+      "accountNotActive": "Your account is not active, so you cannot order."
     },
     "thankYou": {
       "title": "Thank you for your order",
@@ -291,55 +292,22 @@
     "whatsapp": "WhatsApp"
   },
   "auth": {
-    "signup": {
-      "title": "Sign up",
-      "fields": {
-        "firstName": "First name",
-        "lastName": "Last name",
-        "email": "Email",
-        "phone": "Phone",
-        "password": "Password",
-        "passwordConfirm": "Repeat password",
-        "street": "Street and number",
-        "city": "City",
-        "zip": "ZIP"
-      },
-      "submit": "Create account",
-      "agreement": "I agree to the privacy policy and the terms of service.",
-      "haveAccount": "Already have an account?",
-      "loginLink": "Log in",
-      "errors": {
-        "emailTaken": "This email is already registered.",
-        "emailInvalid": "Invalid email.",
-        "passwordTooShort": "Password must be at least 8 characters.",
-        "passwordMismatch": "Passwords do not match.",
-        "zipInvalid": "ZIP must be 5 digits (e.g. 110 00).",
-        "required": "This field is required.",
-        "agreementRequired": "Consent is required to sign up.",
-        "generic": "Signup failed. Please try again."
-      },
-      "success": {
-        "checkEmailTitle": "Check your inbox",
-        "checkEmailBody": "We sent you an email with a link to verify your account."
-      }
-    },
     "login": {
       "title": "Log in",
       "email": "Email",
       "password": "Password",
       "submit": "Log in",
       "forgotLink": "Forgot your password?",
-      "noAccount": "Don't have an account?",
-      "registerLink": "Sign up",
-      "banners": {
-        "verified": "Email verified. You can now log in.",
-        "resetOk": "Password changed. Log in with your new password."
-      },
+      "noAccount": "No account?",
+      "registerLink": "Request one",
       "errors": {
         "invalidCredentials": "Wrong email or password.",
-        "notVerified": "Email not yet verified. Check your inbox.",
+        "accountBlocked": "This account is blocked. Please get in touch.",
+        "accountNotActive": "The account is not active yet. Please wait for the invitation.",
         "generic": "Login failed. Please try again."
-      }
+      },
+      "invitationNote": "Accounts are by invitation. You can order without one.",
+      "callUs": "or call {phone}"
     },
     "forgot": {
       "title": "Forgot password",
@@ -360,22 +328,53 @@
         "generic": "Reset failed. Please try again."
       }
     },
-    "verify": {
-      "verifying": "Verifying your email…",
-      "success": "Email verified.",
-      "tokenExpired": "The link expired or is invalid.",
-      "resendLink": "Send a new link",
-      "resendSent": "If an account exists for this email, we've sent a new link."
+    "request": {
+      "title": "Request an account",
+      "intro": "Accounts are by invitation. Tell us who you are and we will email you an invitation.",
+      "fields": {
+        "firstName": "First name",
+        "lastName": "Last name",
+        "email": "Email",
+        "phone": "Phone",
+        "message": "Message (optional)"
+      },
+      "agreement": "I agree to the <a href=\"/en/privacy\" class=\"underline\">privacy policy</a>.",
+      "submit": "Request an account",
+      "orderWithout": "You can order without an account, straight from the cart.",
+      "haveAccount": "Already have an account?",
+      "loginLink": "Log in",
+      "errors": {
+        "required": "This field is required.",
+        "emailInvalid": "Invalid email.",
+        "agreementRequired": "Consent is required to send the request.",
+        "rateLimited": "Too many requests. Please try again in a while.",
+        "generic": "Sending failed. Please try again."
+      },
+      "success": {
+        "title": "Request received",
+        "body": "Thank you. We hand accounts out personally, so give us a day or two. The invitation arrives by email. In the meantime you can order without an account.",
+        "cta": "Back to products"
+      }
+    },
+    "invite": {
+      "title": "Set your password",
+      "intro": "Welcome to Kurník Šopa. Choose a password and the account is yours.",
+      "password": "Password",
+      "passwordConfirm": "Password again",
+      "submit": "Set password and log in",
+      "callUs": "Call us on {phone} and we will send a new one.",
+      "errors": {
+        "tokenExpired": "The invitation has expired or is invalid.",
+        "passwordTooShort": "The password must be at least 8 characters.",
+        "passwordMismatch": "The passwords do not match.",
+        "generic": "Setting the password failed. Please try again."
+      }
     }
   },
   "toasts": {
     "loginRequiredCart": {
       "title": "The henhouse is for members only.",
       "body": "Sign up to order products."
-    },
-    "emailVerified": {
-      "title": "Egg laid, email verified.",
-      "body": "You can now log in."
     },
     "passwordReset": {
       "title": "The geese give you the green light.",

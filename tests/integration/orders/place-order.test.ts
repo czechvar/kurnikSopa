@@ -154,6 +154,22 @@ describe('placeOrder — rejections', () => {
     await expectNoOrderAndNoEmail()
   })
 
+  it('rejects a blocked account with reason accountNotActive', async () => {
+    const payload = await getTestPayload()
+    const user = await createTestUser(payload)
+    const point = await createTestPickupPoint(payload)
+    const product = await createTestProduct(payload)
+    const cart = await createTestCart(payload, user, [{ product, quantity: 1 }])
+    await payload.update({ collection: 'users', id: user.id, data: { status: 'blocked' } })
+    const blockedUser = await payload.findByID({ collection: 'users', id: user.id, depth: 0 })
+    resetEmails()
+    const result = await placeOrder(payload, inputFor(blockedUser, cart, point))
+    expect(result.ok).toBe(false)
+    if (result.ok) return
+    expect(result.reason).toBe('accountNotActive')
+    await expectNoOrderAndNoEmail()
+  })
+
   it('rejects a guest without an email', async () => {
     const payload = await getTestPayload()
     const point = await createTestPickupPoint(payload)

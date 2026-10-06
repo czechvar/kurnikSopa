@@ -34,7 +34,7 @@ export type ValidationError = {
   min?: number
 }
 
-export type PlaceOrderFailure = 'cartEmpty' | 'pickupPointInvalid' | 'guestEmailRequired'
+export type PlaceOrderFailure = 'cartEmpty' | 'pickupPointInvalid' | 'guestEmailRequired' | 'accountNotActive'
 
 export type PlaceOrderResult =
   | { ok: true; orderNumber: string; accessToken: string }
@@ -56,6 +56,9 @@ export async function placeOrder(payload: Payload, input: PlaceOrderInput): Prom
   }
   if (!input.user && !input.guest?.email) {
     return { ok: false, errors: [], reason: 'guestEmailRequired' }
+  }
+  if (input.user && input.user.status && input.user.status !== 'active') {
+    return { ok: false, errors: [], reason: 'accountNotActive' }
   }
 
   const productIds = input.cart.items.map(it =>

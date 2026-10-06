@@ -78,4 +78,46 @@ describe('Users access control', () => {
     })
     expect(result.role).toBe('staff')
   })
+
+  it('staff can read every user and set their status, but not their role', async () => {
+    const payload = await getTestPayload()
+    const staff = await createTestUser(payload, { role: 'staff' })
+    const target = await createTestUser(payload)
+    const all = await payload.find({ collection: 'users', user: staff, overrideAccess: false })
+    expect(all.docs).toHaveLength(2)
+
+    const blocked = await payload.update({
+      collection: 'users',
+      id: target.id,
+      data: { status: 'blocked', role: 'admin' } as any,
+      user: staff,
+      overrideAccess: false,
+    })
+    expect(blocked.status).toBe('blocked')
+    expect(blocked.role).toBe('customer')
+  })
+
+  it('a customer cannot change their own status', async () => {
+    const payload = await getTestPayload()
+    const user = await createTestUser(payload)
+    await payload.update({ collection: 'users', id: user.id, data: { status: 'blocked' } })
+    const result = await payload.update({
+      collection: 'users',
+      id: user.id,
+      data: { status: 'active', firstName: 'Still' } as any,
+      user,
+      overrideAccess: false,
+    })
+    expect(result.status).toBe('blocked')
+    expect(result.firstName).toBe('Still')
+  })
+
+  it('an editor sees no other users', async () => {
+    const payload = await getTestPayload()
+    const editor = await createTestUser(payload, { role: 'editor' })
+    await createTestUser(payload)
+    const result = await payload.find({ collection: 'users', user: editor, overrideAccess: false })
+    expect(result.docs).toHaveLength(1)
+    expect(result.docs[0].id).toBe(editor.id)
+  })
 })

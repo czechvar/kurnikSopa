@@ -3,26 +3,6 @@ import { buildAuthUrl } from './links'
 type Locale = 'cs' | 'en'
 
 const t = {
-  verify: {
-    cs: {
-      subject: 'Ověřte svůj e-mail',
-      greeting: (name?: string) => (name ? `Dobrý den ${name},` : 'Dobrý den,'),
-      intro:
-        'Děkujeme za registraci na Kurník Šopa. Pro dokončení prosím ověřte svou e-mailovou adresu kliknutím na tlačítko níže.',
-      button: 'Ověřit e-mail',
-      fallback: 'Pokud tlačítko nefunguje, otevřete tento odkaz v prohlížeči:',
-      footer: 'Pokud jste se neregistrovali, můžete tento e-mail ignorovat.',
-    },
-    en: {
-      subject: 'Verify your email',
-      greeting: (name?: string) => (name ? `Hello ${name},` : 'Hello,'),
-      intro:
-        'Thanks for signing up to Kurník Šopa. Please verify your email address by clicking the button below.',
-      button: 'Verify email',
-      fallback: 'If the button does not work, open this link in your browser:',
-      footer: 'If you did not sign up, you can ignore this email.',
-    },
-  },
   forgot: {
     cs: {
       subject: 'Obnovení hesla',
@@ -67,27 +47,6 @@ function button(href: string, label: string): string {
   return `<p style="margin:0 0 24px;">
       <a href="${href}" style="display:inline-block;background:${BRAND};color:#ffffff;text-decoration:none;padding:12px 24px;border-radius:8px;font-weight:600;">${label}</a>
     </p>`
-}
-
-export function verifyEmailTemplate(input: {
-  locale: Locale
-  token: string
-  email: string
-  firstName?: string
-}): string {
-  const c = t.verify[input.locale]
-  const link = buildAuthUrl(input.locale, 'verify', input.token, input.email)
-  return wrap(
-    input.locale,
-    `
-    <p style="margin:0 0 16px;font-size:16px;">${c.greeting(input.firstName)}</p>
-    <p style="margin:0 0 24px;font-size:15px;line-height:1.55;">${c.intro}</p>
-    ${button(link, c.button)}
-    <p style="margin:0 0 8px;font-size:13px;color:#6b7280;">${c.fallback}</p>
-    <p style="margin:0 0 24px;font-size:13px;word-break:break-all;"><a href="${link}" style="color:${BRAND};">${link}</a></p>
-    <p style="margin:0;font-size:13px;color:#6b7280;">${c.footer}</p>
-    `,
-  )
 }
 
 export function forgotPasswordTemplate(input: {
@@ -352,4 +311,83 @@ export function orderReadyTemplate(i: OrderReadyInput): string {
     <p style="margin:12px 0 16px;">${cash}</p>`
   if (i.orderUrl) body += button(i.orderUrl, en ? 'View order' : 'Zobrazit objednávku')
   return wrap(i.locale, body)
+}
+
+// ─── Invitation ─────────────────────────────────────────────────────────
+
+export type InvitationInput = {
+  locale: Locale
+  token: string
+  firstName?: string | null
+  invitedByName?: string | null
+  farmPhone?: string | null
+}
+
+export function invitationSubject(locale: Locale): string {
+  return locale === 'en' ? 'Your invitation to Kurník Šopa' : 'Pozvánka do Kurníku Šopa'
+}
+
+export function invitationTemplate(i: InvitationInput): string {
+  const en = i.locale === 'en'
+  const link = buildAuthUrl(i.locale, 'invite', i.token)
+  const greet = en
+    ? (i.firstName ? `Hello ${escapeHtml(i.firstName)},` : 'Hello,')
+    : (i.firstName ? `Dobrý den ${escapeHtml(i.firstName)},` : 'Dobrý den,')
+  const who = i.invitedByName ? escapeHtml(i.invitedByName) : 'Kurník Šopa'
+  const intro = en
+    ? `${who} has invited you to have an account at Kurník Šopa. With it you see your orders in one place and your details are prefilled at checkout.`
+    : `${who} vás zve k založení účtu na Kurník Šopa. Uvidíte v něm své objednávky pohromadě a v pokladně budete mít předvyplněné údaje.`
+  const cta = en ? 'Set your password' : 'Nastavit heslo'
+  const valid = en ? 'The link is valid for 7 days. If it expires, just call us and we will send a new one.' : 'Odkaz platí 7 dní. Pokud vyprší, zavolejte nám a pošleme nový.'
+  const fallback = en ? 'If the button does not work, open this link in your browser:' : 'Pokud tlačítko nefunguje, otevřete tento odkaz v prohlížeči:'
+  const phone = i.farmPhone ? `<p style="margin:0 0 8px;font-size:13px;color:#6b7280;">${en ? 'Phone' : 'Tel.'}: ${escapeHtml(i.farmPhone)}</p>` : ''
+  return wrap(i.locale, `
+    <p style="margin:0 0 16px;font-size:16px;">${greet}</p>
+    <p style="margin:0 0 24px;font-size:15px;line-height:1.55;">${intro}</p>
+    ${button(link, cta)}
+    <p style="margin:0 0 8px;font-size:13px;color:#6b7280;">${fallback}</p>
+    <p style="margin:0 0 16px;font-size:13px;word-break:break-all;"><a href="${link}" style="color:${BRAND};">${link}</a></p>
+    <p style="margin:0 0 8px;font-size:13px;color:#6b7280;">${valid}</p>
+    ${phone}
+  `)
+}
+
+// ─── Access request ─────────────────────────────────────────────────────
+
+export function accessRequestReceivedSubject(locale: Locale): string {
+  return locale === 'en' ? 'We received your request for an account' : 'Vaši žádost o účet jsme přijali'
+}
+
+export function accessRequestReceivedTemplate(i: { locale: Locale; firstName?: string | null; farmPhone?: string | null }): string {
+  const en = i.locale === 'en'
+  const greet = en
+    ? (i.firstName ? `Hello ${escapeHtml(i.firstName)},` : 'Hello,')
+    : (i.firstName ? `Dobrý den ${escapeHtml(i.firstName)},` : 'Dobrý den,')
+  const body = en
+    ? 'Thanks for asking for an account at Kurník Šopa. We hand accounts out personally, so give us a day or two; the invitation arrives by email. In the meantime you can order without an account.'
+    : 'Děkujeme za zájem o účet na Kurník Šopa. Účty vydáváme osobně, dejte nám prosím den dva; pozvánka přijde e-mailem. Mezitím můžete objednávat i bez účtu.'
+  const phone = i.farmPhone ? `<p style="margin:16px 0 0;font-size:13px;color:#6b7280;">${en ? 'Phone' : 'Tel.'}: ${escapeHtml(i.farmPhone)}</p>` : ''
+  return wrap(i.locale, `
+    <p style="margin:0 0 16px;font-size:16px;">${greet}</p>
+    <p style="margin:0;font-size:15px;line-height:1.55;">${body}</p>
+    ${phone}
+  `)
+}
+
+export function accessRequestStaffSubject(name: string): string {
+  return `Nová žádost o účet — ${name}`
+}
+
+export function accessRequestStaffTemplate(i: { name: string; email: string; phone?: string | null; message?: string | null; adminUrl: string }): string {
+  return wrap('cs', `
+    <p style="margin:0 0 16px;font-size:16px;"><strong>Někdo žádá o účet.</strong></p>
+    <p style="margin:0 0 8px;font-size:14px;">Jméno: ${escapeHtml(i.name)}</p>
+    <p style="margin:0 0 8px;font-size:14px;">E-mail: ${escapeHtml(i.email)}</p>
+    ${i.phone ? `<p style="margin:0 0 8px;font-size:14px;">Telefon: ${escapeHtml(i.phone)}</p>` : ''}
+    ${i.message ? `<p style="margin:0 0 8px;font-size:14px;">Vzkaz: ${escapeHtml(i.message)}</p>` : ''}
+    <p style="margin:16px 0 8px;font-size:14px;">V administraci zaškrtněte „Poslat pozvánku“ a uložte.</p>
+    <p style="margin:16px 0 0;">
+      <a href="${i.adminUrl}" style="display:inline-block;background:${BRAND};color:#ffffff;text-decoration:none;padding:10px 20px;border-radius:8px;font-weight:600;">Otevřít v administraci</a>
+    </p>
+  `)
 }

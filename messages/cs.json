@@ -25,7 +25,7 @@
     },
     "auth": {
       "login": "Přihlásit se",
-      "register": "Registrovat",
+      "register": "Požádat o účet",
       "account": "Můj účet",
       "orders": "Moje objednávky",
       "logout": "Odhlásit se"
@@ -226,7 +226,8 @@
       "pickupPointInvalid": "Toto odběrné místo už není dostupné, vyberte prosím jiné",
       "emailInvalid": "Zadejte platný e-mail",
       "guestEmailRequired": "Zadejte e-mail, pošleme vám na něj potvrzení",
-      "cartEmpty": "Košík je prázdný"
+      "cartEmpty": "Košík je prázdný",
+      "accountNotActive": "Váš účet není aktivní, objednat nejde."
     },
     "thankYou": {
       "title": "Děkujeme za objednávku",
@@ -291,38 +292,6 @@
     "whatsapp": "WhatsApp"
   },
   "auth": {
-    "signup": {
-      "title": "Registrace",
-      "fields": {
-        "firstName": "Jméno",
-        "lastName": "Příjmení",
-        "email": "E-mail",
-        "phone": "Telefon",
-        "password": "Heslo",
-        "passwordConfirm": "Heslo znovu",
-        "street": "Ulice a č.p.",
-        "city": "Město",
-        "zip": "PSČ"
-      },
-      "submit": "Vytvořit účet",
-      "agreement": "Souhlasím se zpracováním osobních údajů a obchodními podmínkami.",
-      "haveAccount": "Už máte účet?",
-      "loginLink": "Přihlásit se",
-      "errors": {
-        "emailTaken": "Tento e-mail je již registrován.",
-        "emailInvalid": "Neplatný e-mail.",
-        "passwordTooShort": "Heslo musí mít alespoň 8 znaků.",
-        "passwordMismatch": "Hesla se neshodují.",
-        "zipInvalid": "PSČ musí mít 5 číslic (např. 110 00).",
-        "required": "Toto pole je povinné.",
-        "agreementRequired": "Pro registraci je potřeba souhlas.",
-        "generic": "Registrace selhala. Zkuste to prosím znovu."
-      },
-      "success": {
-        "checkEmailTitle": "Zkontrolujte svou schránku",
-        "checkEmailBody": "Poslali jsme vám e-mail s odkazem pro ověření účtu."
-      }
-    },
     "login": {
       "title": "Přihlášení",
       "email": "E-mail",
@@ -330,16 +299,15 @@
       "submit": "Přihlásit se",
       "forgotLink": "Zapomněli jste heslo?",
       "noAccount": "Nemáte účet?",
-      "registerLink": "Registrovat",
-      "banners": {
-        "verified": "E-mail ověřen, můžete se přihlásit.",
-        "resetOk": "Heslo bylo změněno. Přihlaste se novým heslem."
-      },
+      "registerLink": "Požádat o účet",
       "errors": {
         "invalidCredentials": "Špatný e-mail nebo heslo.",
-        "notVerified": "E-mail dosud nebyl ověřen. Zkontrolujte svou schránku.",
+        "accountBlocked": "Tento účet je zablokovaný. Ozvěte se nám prosím.",
+        "accountNotActive": "Účet zatím není aktivní. Počkejte prosím na pozvánku.",
         "generic": "Přihlášení selhalo. Zkuste to prosím znovu."
-      }
+      },
+      "invitationNote": "Účty vydáváme na pozvání. Objednávat můžete i bez účtu.",
+      "callUs": "nebo zavolejte {phone}"
     },
     "forgot": {
       "title": "Zapomenuté heslo",
@@ -360,22 +328,53 @@
         "generic": "Obnovení hesla selhalo. Zkuste to prosím znovu."
       }
     },
-    "verify": {
-      "verifying": "Ověřujeme váš e-mail…",
-      "success": "E-mail ověřen.",
-      "tokenExpired": "Odkaz vypršel nebo je neplatný.",
-      "resendLink": "Poslat nový odkaz",
-      "resendSent": "Pokud k tomuto e-mailu existuje účet, poslali jsme nový odkaz."
+    "request": {
+      "title": "Žádost o účet",
+      "intro": "Účty vydáváme na pozvání. Napište nám, kdo jste, a ozveme se e-mailem s pozvánkou.",
+      "fields": {
+        "firstName": "Jméno",
+        "lastName": "Příjmení",
+        "email": "E-mail",
+        "phone": "Telefon",
+        "message": "Vzkaz (nepovinné)"
+      },
+      "agreement": "Souhlasím se <a href=\"/cs/ochrana-osobnich-udaju\" class=\"underline\">zpracováním osobních údajů</a>.",
+      "submit": "Požádat o účet",
+      "orderWithout": "Objednávat můžete i bez účtu, rovnou z košíku.",
+      "haveAccount": "Už máte účet?",
+      "loginLink": "Přihlásit se",
+      "errors": {
+        "required": "Toto pole je povinné.",
+        "emailInvalid": "Neplatný e-mail.",
+        "agreementRequired": "Pro odeslání žádosti je potřeba souhlas.",
+        "rateLimited": "Příliš mnoho žádostí. Zkuste to prosím za chvíli.",
+        "generic": "Odeslání selhalo. Zkuste to prosím znovu."
+      },
+      "success": {
+        "title": "Žádost přijata",
+        "body": "Děkujeme. Účty vydáváme osobně, dejte nám den dva. Pozvánka přijde e-mailem. Mezitím můžete objednávat i bez účtu.",
+        "cta": "Zpět na produkty"
+      }
+    },
+    "invite": {
+      "title": "Nastavte si heslo",
+      "intro": "Vítejte v Kurníku Šopa. Zvolte si heslo a účet je váš.",
+      "password": "Heslo",
+      "passwordConfirm": "Heslo znovu",
+      "submit": "Nastavit heslo a přihlásit se",
+      "callUs": "Zavolejte nám na {phone} a pošleme novou.",
+      "errors": {
+        "tokenExpired": "Pozvánka vypršela nebo je neplatná.",
+        "passwordTooShort": "Heslo musí mít alespoň 8 znaků.",
+        "passwordMismatch": "Hesla se neshodují.",
+        "generic": "Nastavení hesla selhalo. Zkuste to prosím znovu."
+      }
     }
   },
   "toasts": {
     "loginRequiredCart": {
       "title": "Tady na farmě se nepouští každý do kurníku.",
       "body": "Zaregistruj se a objednej si produkty."
-    },
-    "emailVerified": {
-      "title": "Vajíčko snesené, e-mail ověřený.",
-      "body": "Můžeš se přihlásit."
     },
     "passwordReset": {
       "title": "Husy ti dávají zelenou.",
