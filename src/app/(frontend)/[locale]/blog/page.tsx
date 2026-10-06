@@ -2,6 +2,11 @@ import { getTranslations } from 'next-intl/server'
 import { getPayload } from '@/lib/payload'
 import { getMediaUrl } from '@/lib/media'
 import { Link } from '@/lib/i18n/routing'
+import { publishedPostsWhere } from '@/lib/posts/queries'
+
+// Scheduled posts become visible when their date passes, so this page cannot be
+// frozen at build time.
+export const revalidate = 300
 
 type Props = {
   params: Promise<{ locale: 'cs' | 'en' }>
@@ -14,7 +19,7 @@ export default async function BlogPage({ params }: Props) {
 
   const posts = await payload.find({
     collection: 'posts',
-    where: { _status: { equals: 'published' } },
+    where: publishedPostsWhere(),
     sort: '-publishedAt',
     limit: 50,
     depth: 1,

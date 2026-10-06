@@ -6,6 +6,10 @@ import { getPayload } from '@/lib/payload'
 import { getMediaUrl } from '@/lib/media'
 import { Link } from '@/lib/i18n/routing'
 import { SITE_URL, absoluteUrl } from '@/lib/site'
+import { publishedPostBySlugWhere } from '@/lib/posts/queries'
+
+// Scheduled posts become visible when their date passes.
+export const revalidate = 300
 
 type Props = {
   params: Promise<{ locale: 'cs' | 'en'; slug: string }>
@@ -15,10 +19,7 @@ async function fetchPost(slug: string, locale: 'cs' | 'en') {
   const payload = await getPayload()
   const result = await payload.find({
     collection: 'posts',
-    where: {
-      slug: { equals: slug },
-      _status: { equals: 'published' },
-    },
+    where: publishedPostBySlugWhere(slug),
     depth: 2,
     limit: 1,
     locale,
