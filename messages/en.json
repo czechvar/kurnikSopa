@@ -124,12 +124,13 @@
     "lead": "What is available straight from the farm right now.",
     "filterLabel": "Category",
     "backToList": "Back to products",
-    "weight": "Weight: {weight}",
     "seasonalNotice": "Seasonal product",
     "availability": "available {from} to {to}",
     "orderByPhone": "Order by phone: {phone}",
     "description": "Description",
-    "empty": "Nothing in this category right now."
+    "empty": "Nothing in this category right now.",
+    "outOfSeason": "Out of season",
+    "unavailable": "Currently unavailable"
   },
   "events": {
     "title": "Farm events",
@@ -174,8 +175,8 @@
     },
     "summary": {
       "subtotal": "Subtotal",
-      "shipping": "Shipping",
-      "shippingFree": "Free within region",
+      "shipping": "Pickup",
+      "shippingFree": "In person at a pickup point",
       "total": "Total"
     },
     "cta": {
@@ -186,13 +187,18 @@
       "toast": "Added to cart",
       "action": "Open cart"
     },
-    "comingSoon": "We're still building the cart. Coming soon."
+    "comingSoon": "We're still building the cart. Coming soon.",
+    "errors": {
+      "belowMinimumOrder": "The minimum quantity is {min}",
+      "unavailable": "This product is currently unavailable",
+      "generic": "Could not update the cart, please try again"
+    }
   },
   "checkout": {
     "title": "Checkout",
     "sections": {
       "customer": "Your details",
-      "delivery": "Delivery",
+      "pickup": "Pickup",
       "payment": "Payment",
       "note": "Order note"
     },
@@ -201,28 +207,14 @@
       "lastName": "Last name",
       "email": "Email",
       "phone": "Phone",
-      "street": "Street and number",
-      "city": "City",
-      "zip": "ZIP",
-      "preferredDate": "Preferred date",
+      "preferredDate": "Preferred pickup day",
       "customerNote": "Note (time, dietary preferences, etc.)",
-      "useOtherAddress": "Use a different delivery address",
-      "agreement": "I agree to the <a href=\"/en/terms\" class=\"underline\">terms</a> and <a href=\"/en/privacy\" class=\"underline\">privacy policy</a>."
-    },
-    "deliveryMethod": {
-      "pickup": "Pickup at farm",
-      "delivery": "Delivery",
-      "pickupInfo": "Pick up your order at the farm in Křepice.",
-      "deliveryFreeRegion": "Free delivery within region"
-    },
-    "paymentMethod": {
-      "bankTransfer": "Bank transfer (QR payment)",
-      "cashOnDelivery": "Cash on pickup / delivery"
+      "agreement": "I agree to the <a href=\"/en/terms\" class=\"underline\">terms</a> and <a href=\"/en/privacy\" class=\"underline\">privacy policy</a>.",
+      "pickupPoint": "Pickup point"
     },
     "submit": "Place order",
     "errors": {
       "required": "This field is required",
-      "zipInvalid": "ZIP must be in 123 45 format",
       "generic": "Something went wrong, please try again",
       "agreementRequired": "You must agree to the terms to continue",
       "outOfStock": "Item {name} is out of stock",
@@ -230,66 +222,29 @@
       "belowMinimumOrder": "Minimum order for {name} is {min}",
       "outOfSeason": "Item {name} is not currently available",
       "productNotFound": "Item is no longer available",
-      "paymentMethodMissingBankDetails": "Bank transfer is not configured. Please choose cash payment or contact us."
+      "pickupPointRequired": "Choose a pickup point",
+      "pickupPointInvalid": "This pickup point is no longer available, please choose another",
+      "emailInvalid": "Enter a valid email",
+      "guestEmailRequired": "Enter your email so we can send the confirmation",
+      "cartEmpty": "Your cart is empty"
     },
     "thankYou": {
       "title": "Thank you for your order",
       "body": "Your order #{orderNumber} has been received. We've sent the confirmation to your email.",
-      "paymentTitle": "Payment",
-      "paymentBankTransfer": "Scan the QR code in your banking app, or enter the details manually:",
-      "paymentCashOnDelivery": "You'll pay in cash on pickup / delivery.",
-      "qrAlt": "Payment QR code",
-      "accountLabel": "Account number",
-      "vsLabel": "Variable symbol",
-      "amountLabel": "Amount",
-      "bankLabel": "Bank",
-      "manualFallback": "If the QR doesn't work, use these details:"
+      "guestKeepEmail": "We've emailed you a link to this page. Keep it, it's your access to the order."
     },
-    "delivery": "Delivery method",
-    "pickup": "Farm pickup",
-    "deliveryOption": "Delivery",
-    "balikovna": "Balíkovna",
-    "payment": "Payment",
-    "stripe": "Card payment",
-    "bankTransfer": "Bank transfer",
-    "cashOnDelivery": "Cash on delivery",
-    "success": "Order received!",
-    "orderNumber": "Order number: {number}"
-  },
-  "email": {
-    "orderConfirmation": {
-      "subject": "Order #{orderNumber} received",
-      "greeting": "Hello {name},",
-      "intro": "Thanks for your order at Kurník Šopa. Below is the summary and payment instructions.",
-      "summaryTitle": "Your order",
-      "deliveryTitle": "Delivery",
-      "pickupInfo": "Pickup at: {address}. Opening hours: {hours}. Phone: {phone}.",
-      "deliveryInfo": "We'll deliver to: {address}. Free delivery within region.",
-      "preferredDate": "Preferred date: {date}",
-      "customerNote": "Note: {note}",
-      "paymentTitle": "Payment",
-      "paymentBankTransferPrompt": "Please pay {amount} by bank transfer to our account.",
-      "paymentBankTransferScan": "Scan the QR code in your banking app:",
-      "paymentBankTransferManual": "If your banking app doesn't support QR, enter the details manually:",
-      "paymentCash": "You'll pay {amount} in cash on pickup / delivery.",
-      "closing": "We'll be in touch soon. Regards, {owner}"
+    "pickup": {
+      "intro": "You'll collect the order in person. Choose where.",
+      "farm": "Farm"
     },
-    "staffNotification": {
-      "subject": "New order {orderNumber} — {customerName}",
-      "intro": "A new order has arrived.",
-      "viewInAdmin": "Open in admin"
+    "payment": {
+      "cash": "You'll pay in cash when you collect. Nothing is charged up front."
     },
-    "paymentReceived": {
-      "subject": "Payment received for order #{orderNumber}",
-      "body": "Thanks, we've received your payment. We're preparing your order now.",
-      "pickupNote": "We'll send another email when your order is ready for pickup.",
-      "deliveryNote": "We'll be in touch shortly to arrange delivery time."
-    },
-    "orderShipped": {
-      "subjectPickup": "Your order #{orderNumber} is ready for pickup",
-      "subjectDelivery": "Your order #{orderNumber} is on its way",
-      "bodyPickup": "You can pick up your order at: {address}. Opening hours: {hours}. Phone: {phone}.",
-      "bodyDelivery": "Your order is on its way. We'll contact you shortly with the delivery time."
+    "guest": {
+      "title": "Ordering without an account",
+      "hint": "We'll email you the confirmation and a link to your order.",
+      "haveAccount": "Have an account?",
+      "login": "Log in"
     }
   },
   "about": {
@@ -433,10 +388,6 @@
     "orderPlaced": {
       "title": "Order placed",
       "body": ""
-    },
-    "paymentMethodMissingBankDetails": {
-      "title": "Bank transfer is not configured",
-      "body": "Please choose cash payment or contact us."
     }
   },
   "notFound": {
@@ -517,45 +468,35 @@
       },
       "detail": {
         "breadcrumb": "Orders",
-        "backToList": "← Back to orders",
-        "unpaidNotice": "This order is awaiting payment. Scan the QR code below or enter the details manually."
+        "backToList": "← Back to orders"
       },
       "paymentStatus": {
-        "pending": "Awaiting payment",
-        "paid": "Paid",
-        "failed": "Failed",
-        "refunded": "Refunded"
+        "unpaid": "Pay at pickup",
+        "paid": "Paid"
       },
       "orderStatus": {
         "received": "Received",
         "preparing": "Preparing",
-        "shipped": "Shipped",
-        "delivered": "Delivered",
+        "shipped": "Ready for pickup",
+        "delivered": "Picked up",
         "cancelled": "Cancelled"
       }
     }
   },
   "orderDetail": {
     "itemsTitle": "Items",
-    "deliveryTitle": "Delivery",
+    "pickupTitle": "Pickup",
     "paymentTitle": "Payment",
     "qty": "Quantity",
     "unitPrice": "Unit price",
     "lineTotal": "Total",
     "total": "Total",
-    "pickup": "Pickup at farm",
-    "delivery": "Delivery",
-    "preferredDate": "Preferred date",
+    "pickupPoint": "Pickup point",
+    "deliveryHistoric": "Delivery",
+    "preferredDate": "Preferred day",
     "customerNote": "Note",
-    "paymentBankTransfer": "Scan the QR code in your banking app, or enter the details manually:",
-    "paymentCashOnDelivery": "You'll pay in cash on pickup / delivery.",
-    "paymentPaid": "Payment received.",
-    "qrAlt": "QR code for payment",
-    "accountLabel": "Account number",
-    "vsLabel": "Variable symbol",
-    "amountLabel": "Amount",
-    "bankLabel": "Bank",
-    "manualFallback": "If the QR code doesn't work for you, use these details:"
+    "paymentCash": "You'll pay {amount} in cash when you collect.",
+    "paymentPaid": "Paid."
   },
   "cookieConsent": {
     "consentModal": {

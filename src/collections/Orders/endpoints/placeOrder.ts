@@ -1,16 +1,17 @@
 import type { Endpoint, PayloadRequest } from 'payload'
-import { getOrCreateCart } from '@/lib/cart/getOrCreateCart'
+import { guestTokenFromCookieHeader } from '@/lib/cart/guestToken'
+import { findGuestCart, getOrCreateCart } from '@/lib/cart/getOrCreateCart'
 import { placeOrder } from '@/lib/orders/placeOrder'
 
 type Body = {
-  customer: { firstName: string; lastName: string; phone: string }
-  deliveryMethod: 'pickup' | 'delivery'
-  deliveryAddress?: { street: string; city: string; zip: string }
+  customer: { firstName: string; lastName: string; phone: string; email?: string }
+  pickupPointId: number
   preferredDate: string
   customerNote?: string
-  paymentMethod: 'bank_transfer' | 'cash_on_delivery'
   locale: 'cs' | 'en'
 }
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 function isBody(v: unknown): v is Body {
   if (!v || typeof v !== 'object') return false
@@ -18,21 +19,23 @@ function isBody(v: unknown): v is Body {
   const c = b.customer as Record<string, unknown> | undefined
   return (
     !!c && typeof c.firstName === 'string' && typeof c.lastName === 'string' && typeof c.phone === 'string' &&
-    (b.deliveryMethod === 'pickup' || b.deliveryMethod === 'delivery') &&
+    (c.email === undefined || typeof c.email === 'string') &&
+    Number.isInteger(b.pickupPointId) &&
     typeof b.preferredDate === 'string' &&
-    (b.paymentMethod === 'bank_transfer' || b.paymentMethod === 'cash_on_delivery') &&
+    (b.customerNote === undefined || typeof b.customerNote === 'string') &&
     (b.locale === 'cs' || b.locale === 'en')
   )
 }
 
+/**
+ * POST /api/orders/place — turn the viewer's cart into an Order.
+ * Signed-in customers and guests alike; a guest must give an email so the
+ * confirmation (with the link to their order) has somewhere to go.
+ */
 export const placeOrderEndpoint: Endpoint = {
   path: '/place',
   method: 'post',
   handler: async (req: PayloadRequest) => {
-    if (!req.user) {
-      return Response.json({ ok: false, reason: 'unauthorized' }, { status: 401 })
-    }
-
     let body: unknown
     try {
       body = await req.json?.()
@@ -43,24 +46,34 @@ export const placeOrderEndpoint: Endpoint = {
       return Response.json({ ok: false, reason: 'invalidBody' }, { status: 400 })
     }
 
-    if (body.deliveryMethod === 'delivery') {
-      const a = body.deliveryAddress
-      if (!a || !a.street || !a.city || !a.zip) {
-        return Response.json({ ok: false, reason: 'invalidAddress' }, { status: 400 })
+    const guestToken = req.user ? null : guestTokenFromCookieHeader(req.headers.get('cookie'))
+    if (!req.user && !guestToken) {
+      return Response.json({ ok: false, reason: 'cartEmpty', errors: [] }, { status: 400 })
+    }
+
+    const guestEmail = body.customer.email?.trim().toLowerCase()
+    if (!req.user) {
+      if (!guestEmail || !EMAIL_RE.test(guestEmail)) {
+        return Response.json({ ok: false, reason: 'guestEmailRequired', errors: [] }, { status: 400 })
       }
     }
 
-    const cart = await getOrCreateCart(req.payload, req.user.id)
+    const cart = req.user
+      ? await getOrCreateCart(req.payload, req.user.id)
+      : await findGuestCart(req.payload, guestToken!)
+    if (!cart) {
+      return Response.json({ ok: false, reason: 'cartEmpty', errors: [] }, { status: 400 })
+    }
+
     const result = await placeOrder(req.payload, {
-      user: req.user,
+      user: req.user ?? null,
+      guest: req.user ? null : { email: guestEmail! },
       cart,
       locale: body.locale,
-      customer: body.customer,
-      deliveryMethod: body.deliveryMethod,
-      deliveryAddress: body.deliveryMethod === 'delivery' ? body.deliveryAddress! : null,
+      customer: { firstName: body.customer.firstName, lastName: body.customer.lastName, phone: body.customer.phone },
+      pickupPointId: body.pickupPointId,
       preferredDate: body.preferredDate,
       customerNote: body.customerNote,
-      paymentMethod: body.paymentMethod,
     })
 
     if (!result.ok) {

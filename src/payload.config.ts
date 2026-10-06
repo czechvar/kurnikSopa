@@ -18,6 +18,7 @@ import { ProductCategories } from '@/collections/ProductCategories'
 import { Events } from '@/collections/Events'
 import { EventRegistrations } from '@/collections/EventRegistrations'
 import { Orders } from '@/collections/Orders'
+import { PickupPoints } from '@/collections/PickupPoints'
 import { Pages } from '@/collections/Pages'
 import { Posts } from '@/collections/Posts'
 import { PostCategories } from '@/collections/PostCategories'
@@ -47,6 +48,7 @@ export default buildConfig({
     Events,
     EventRegistrations,
     Orders,
+    PickupPoints,
     Pages,
     Posts,
     PostCategories,

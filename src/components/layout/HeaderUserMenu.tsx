@@ -5,7 +5,8 @@ import { getTranslations } from 'next-intl/server'
 import { Link } from '@/lib/i18n/routing'
 import { LogoutButton } from './LogoutButton'
 import { CartBadge } from '@/components/cart/CartBadge'
-import { getOrCreateCart } from '@/lib/cart/getOrCreateCart'
+import { resolveCart } from '@/lib/cart/getOrCreateCart'
+import { readGuestToken } from '@/lib/cart/guestToken.server'
 
 type Props = {
   locale: 'cs' | 'en'
@@ -14,20 +15,25 @@ type Props = {
 export async function HeaderUserMenu({ locale }: Props) {
   const payload = await getPayload({ config })
   const { user } = await payload.auth({ headers: await headers() })
+  const guestToken = await readGuestToken()
   const t = await getTranslations('nav.auth')
+
+  // Guests have carts too, so the badge is always there.
+  const cart = await resolveCart(payload, { user: user ?? null, guestToken })
 
   if (!user) {
     return (
-      <Link
-        href="/prihlaseni"
-        className="hidden text-sm font-semibold text-ink underline-offset-4 hover:underline sm:inline"
-      >
-        {t('login')}
-      </Link>
+      <>
+        <CartBadge cart={cart} locale={locale} />
+        <Link
+          href="/prihlaseni"
+          className="hidden text-sm font-semibold text-ink underline-offset-4 hover:underline sm:inline"
+        >
+          {t('login')}
+        </Link>
+      </>
     )
   }
-
-  const cart = await getOrCreateCart(payload, user.id)
 
   return (
     <>

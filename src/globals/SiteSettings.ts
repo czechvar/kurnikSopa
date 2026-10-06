@@ -50,32 +50,22 @@ export const SiteSettings: GlobalConfig = {
       },
     },
     {
+      // Unused since the farm went cash-only (docs/adr/0001-cash-only-at-pickup.md).
+      // Kept so a QR code at pickup can be switched on later without a migration.
       name: 'payment',
       type: 'group',
+      label: { cs: 'Bankovní účet (nepoužívá se)', en: 'Bank account (unused)' },
+      admin: {
+        description: {
+          cs: 'Web platby nepřijímá — zákazníci platí hotově při převzetí. Tato pole se zatím nikde nezobrazují.',
+          en: 'The site takes no payments — customers pay cash at pickup. These fields are not shown anywhere yet.',
+        },
+      },
       fields: [
-        {
-          name: 'bankName',
-          type: 'text',
-          defaultValue: 'FIO banka',
-          required: true,
-        },
-        {
-          name: 'accountPrefix',
-          type: 'text',
-          admin: { description: 'Předčíslí účtu (volitelné, 0–6 číslic)' },
-        },
-        {
-          name: 'accountNumber',
-          type: 'text',
-          required: true,
-          admin: { description: 'Číslo účtu, 2–10 číslic' },
-        },
-        {
-          name: 'bankCode',
-          type: 'text',
-          required: true,
-          admin: { description: 'Kód banky, 4 číslice (FIO = 2010)' },
-        },
+        { name: 'bankName', type: 'text' },
+        { name: 'accountPrefix', type: 'text' },
+        { name: 'accountNumber', type: 'text' },
+        { name: 'bankCode', type: 'text' },
       ],
     },
     {

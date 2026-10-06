@@ -1,10 +1,10 @@
+import { randomBytes } from 'node:crypto'
 import type { Payload } from 'payload'
-import type { Cart, Product, User, SiteSetting } from '@/payload-types'
+import type { Cart, PickupPoint, Product, User, SiteSetting } from '@/payload-types'
 
 import { generateOrderNumber } from './orderNumber'
-import { deriveCzIban } from '@/lib/payment/iban'
-import { buildSpayd } from '@/lib/payment/spayd'
-import { renderQrPng } from '@/lib/payment/qr'
+import { availabilityOf } from '@/lib/products/availability'
+import { buildOrderUrl } from '@/lib/email/links'
 import {
   orderConfirmationSubject,
   orderConfirmationTemplate,
@@ -15,15 +15,16 @@ import {
 } from '@/lib/email/templates'
 
 export type PlaceOrderInput = {
-  user: User
+  /** The signed-in customer, or null for a guest. */
+  user: User | null
+  /** Required when `user` is null. */
+  guest?: { email: string } | null
   cart: Cart
   locale: 'cs' | 'en'
   customer: { firstName: string; lastName: string; phone: string }
-  deliveryMethod: 'pickup' | 'delivery'
-  deliveryAddress?: { street: string; city: string; zip: string } | null
+  pickupPointId: number
   preferredDate: string   // ISO yyyy-mm-dd
   customerNote?: string | null
-  paymentMethod: 'bank_transfer' | 'cash_on_delivery'
 }
 
 export type ValidationError = {
@@ -33,13 +34,28 @@ export type ValidationError = {
   min?: number
 }
 
-export type PlaceOrderResult =
-  | { ok: true; orderNumber: string }
-  | { ok: false; errors: ValidationError[]; reason?: 'paymentMethodMissingBankDetails' | 'cartEmpty' }
+export type PlaceOrderFailure = 'cartEmpty' | 'pickupPointInvalid' | 'guestEmailRequired'
 
+export type PlaceOrderResult =
+  | { ok: true; orderNumber: string; accessToken: string }
+  | { ok: false; errors: ValidationError[]; reason?: PlaceOrderFailure }
+
+function localizedName(p: Product, locale: 'cs' | 'en'): string {
+  return (typeof p.name === 'string' ? p.name : (p.name as unknown as Record<string, string>)?.[locale]) ?? '?'
+}
+
+/**
+ * Turn a cart into an Order: validate every line, snapshot prices, record the
+ * pickup point, email the customer (with a tokenised link to the order) and
+ * the farm, and clear the cart. Payment is cash at pickup, so nothing here
+ * touches money beyond the total.
+ */
 export async function placeOrder(payload: Payload, input: PlaceOrderInput): Promise<PlaceOrderResult> {
   if (!input.cart.items || input.cart.items.length === 0) {
     return { ok: false, errors: [], reason: 'cartEmpty' }
+  }
+  if (!input.user && !input.guest?.email) {
+    return { ok: false, errors: [], reason: 'guestEmailRequired' }
   }
 
   const productIds = input.cart.items.map(it =>
@@ -53,87 +69,76 @@ export async function placeOrder(payload: Payload, input: PlaceOrderInput): Prom
   })
   const byId = new Map<number, Product>(products.docs.map(p => [p.id as number, p]))
 
-  // ── Validate stock ─────────────────────────────────────────────────────
+  // ── Validate every line ────────────────────────────────────────────────
   const errors: ValidationError[] = []
-  const today = new Date()
   for (const item of input.cart.items) {
     const pid = (typeof item.product === 'object' ? item.product.id : item.product) as number
     const p = byId.get(pid)
-    if (!p) { errors.push({ productId: pid, productName: '?', code: 'productNotFound' }); continue }
-    const pname = (typeof p.name === 'string' ? p.name : (p.name as Record<string, string>)?.[input.locale]) ?? '?'
-    if (!p.inStock) { errors.push({ productId: pid, productName: pname, code: 'outOfStock' }); continue }
+    if (!p || p.status !== 'published') { errors.push({ productId: pid, productName: '?', code: 'productNotFound' }); continue }
+    const pname = localizedName(p, input.locale)
+    const availability = availabilityOf(p)
+    if (!availability.available) { errors.push({ productId: pid, productName: pname, code: availability.reason }); continue }
     if (typeof p.stockQuantity === 'number' && p.stockQuantity < item.quantity) {
       errors.push({ productId: pid, productName: pname, code: 'insufficientStock' }); continue
     }
     if (typeof p.minimumOrder === 'number' && item.quantity < p.minimumOrder) {
       errors.push({ productId: pid, productName: pname, code: 'belowMinimumOrder', min: p.minimumOrder }); continue
     }
-    if (p.seasonal) {
-      const from = p.availableFrom ? new Date(p.availableFrom) : null
-      const to   = p.availableTo   ? new Date(p.availableTo)   : null
-      if ((from && today < from) || (to && today > to)) {
-        errors.push({ productId: pid, productName: pname, code: 'outOfSeason' }); continue
-      }
-    }
   }
   if (errors.length > 0) return { ok: false, errors }
 
-  // ── Load SiteSettings (for FIO + farm address + notification email) ────
-  const settings = (await payload.findGlobal({ slug: 'site-settings', depth: 0 })) as SiteSetting
-
-  if (input.paymentMethod === 'bank_transfer') {
-    const pay = settings.payment
-    if (!pay?.accountNumber || !pay?.bankCode) {
-      return { ok: false, errors: [], reason: 'paymentMethodMissingBankDetails' }
-    }
+  // ── Pickup point must exist and be active ──────────────────────────────
+  let pickupPoint: PickupPoint | null = null
+  try {
+    pickupPoint = (await payload.findByID({
+      collection: 'pickup-points',
+      id: input.pickupPointId,
+      depth: 0,
+      locale: input.locale,
+    })) as PickupPoint
+  } catch {
+    pickupPoint = null
   }
+  if (!pickupPoint || pickupPoint.active === false) {
+    return { ok: false, errors: [], reason: 'pickupPointInvalid' }
+  }
+
+  const settings = (await payload.findGlobal({ slug: 'site-settings', depth: 0 })) as SiteSetting
 
   // ── Snapshot prices + total ────────────────────────────────────────────
   const items = input.cart.items.map(it => {
     const pid = (typeof it.product === 'object' ? it.product.id : it.product) as number
     const p = byId.get(pid)!
-    return {
-      product: pid,
-      quantity: it.quantity,
-      priceAtPurchase: p.price,
-    }
+    return { product: pid, quantity: it.quantity, priceAtPurchase: p.price }
   })
   const totalAmount = items.reduce((sum, it) => sum + it.priceAtPurchase * it.quantity, 0)
 
   const orderNumber = await generateOrderNumber(payload)
+  const accessToken = randomBytes(24).toString('base64url')
 
-  // ── Compose SPAYD if bank_transfer ─────────────────────────────────────
-  let qrSpayd: string | null = null
-  let qrPng: Buffer | null = null
-  if (input.paymentMethod === 'bank_transfer') {
-    const pay = settings.payment!
-    const iban = deriveCzIban(pay.accountPrefix ?? '', pay.accountNumber!, pay.bankCode!)
-    qrSpayd = buildSpayd({
-      iban,
-      amount: totalAmount,
-      variableSymbol: orderNumber,
-      message: `Kurnik Sopa ${orderNumber}`,
-    })
-    qrPng = await renderQrPng(qrSpayd)
-  }
+  const customerName = `${input.customer.firstName} ${input.customer.lastName}`.trim()
+  const email = input.user ? input.user.email : input.guest!.email
 
   // ── Create the order ───────────────────────────────────────────────────
   const order = await payload.create({
     collection: 'orders',
     data: {
       orderNumber,
-      customer: input.user.id as number,
+      accessToken,
+      customer: input.user ? (input.user.id as number) : undefined,
+      guestEmail: input.user ? undefined : email,
+      guestName: input.user ? undefined : customerName,
+      guestPhone: input.user ? undefined : input.customer.phone,
       items,
       totalAmount,
-      deliveryMethod: input.deliveryMethod,
-      deliveryAddress: input.deliveryMethod === 'delivery' ? input.deliveryAddress ?? undefined : undefined,
-      paymentMethod: input.paymentMethod,
-      paymentStatus: 'pending',
+      pickupPoint: pickupPoint.id,
+      deliveryMethod: 'pickup',
+      paymentMethod: 'cash',
+      paymentStatus: 'unpaid',
       orderStatus: 'received',
       preferredDate: input.preferredDate,
       customerNote: input.customerNote ?? undefined,
       locale: input.locale,
-      qrSpayd: qrSpayd ?? undefined,
     },
     depth: 0,
   })
@@ -145,105 +150,75 @@ export async function placeOrder(payload: Payload, input: PlaceOrderInput): Prom
     payload.logger.warn(`Failed to clear cart after order ${orderNumber}: ${String(e)}`)
   }
 
-  // ── Send customer confirmation ─────────────────────────────────────────
-  try {
-    const itemsForEmail = items.map(it => {
-      const p = byId.get(it.product as number)!
-      const pname = (typeof p.name === 'string' ? p.name : (p.name as Record<string, string>)?.[input.locale]) ?? '?'
-      return {
-        name: pname,
-        quantity: it.quantity,
-        unitPrice: it.priceAtPurchase,
-        lineTotal: it.priceAtPurchase * it.quantity,
-        unit: p.unit ?? null,
-      }
-    })
+  const pickup = {
+    name: pickupPoint.name,
+    street: pickupPoint.street,
+    city: pickupPoint.city,
+    zip: pickupPoint.zip,
+    note: pickupPoint.note ?? null,
+  }
+  const orderUrl = buildOrderUrl(input.locale, orderNumber, accessToken)
 
-    const ocInput: OrderConfirmationInput = {
+  // ── Customer confirmation ──────────────────────────────────────────────
+  try {
+    const oc: OrderConfirmationInput = {
       locale: input.locale,
       orderNumber,
-      customerFirstName: input.user.firstName ?? null,
-      items: itemsForEmail,
+      customerFirstName: input.customer.firstName || input.user?.firstName || null,
+      items: items.map(it => {
+        const p = byId.get(it.product)!
+        return {
+          name: localizedName(p, input.locale),
+          quantity: it.quantity,
+          unitPrice: it.priceAtPurchase,
+          lineTotal: it.priceAtPurchase * it.quantity,
+          unit: p.unit ?? null,
+        }
+      }),
       totalAmount,
-      deliveryMethod: input.deliveryMethod,
-      deliveryAddress: input.deliveryMethod === 'delivery' ? input.deliveryAddress ?? null : null,
-      farmAddress: {
-        street: settings.address?.street ?? '',
-        city:   settings.address?.city   ?? '',
-        zip:    settings.address?.zip    ?? '',
-      },
+      pickupPoint: pickup,
       farmPhone: settings.contact?.phone ?? null,
-      farmOpeningHours: settings.openingHours ?? null,
       preferredDate: formatDateLocale(input.preferredDate, input.locale),
       customerNote: input.customerNote ?? null,
-      paymentMethod: input.paymentMethod,
-      bank: input.paymentMethod === 'bank_transfer' && qrSpayd
-        ? {
-            account: {
-              prefix: settings.payment?.accountPrefix ?? null,
-              account: settings.payment!.accountNumber!,
-              bankCode: settings.payment!.bankCode!,
-              bankName: settings.payment?.bankName ?? null,
-            },
-            iban: deriveCzIban(settings.payment?.accountPrefix ?? '', settings.payment!.accountNumber!, settings.payment!.bankCode!),
-            amountFormatted: `${Math.round(totalAmount).toLocaleString('cs-CZ').replace(/\s/g, ' ')} Kč`,
-            vs: orderNumber,
-            messageForRecipient: `Kurnik Sopa ${orderNumber}`,
-          }
-        : null,
       ownerName: settings.owner ?? 'Kurník Šopa',
-      hasQrCid: Boolean(qrPng),
+      orderUrl,
+      isGuest: !input.user,
     }
-
-    const html = orderConfirmationTemplate(ocInput)
-    const subject = orderConfirmationSubject(ocInput)
-    const to = input.user.email
-
-    const attachments = qrPng
-      ? [{ filename: 'order-qr.png', content: qrPng, cid: 'order-qr', contentType: 'image/png' }]
-      : undefined
-
     await payload.sendEmail({
-      to,
-      subject,
-      html,
+      to: email,
+      subject: orderConfirmationSubject(oc),
+      html: orderConfirmationTemplate(oc),
       replyTo: settings.contact?.email ?? undefined,
-      attachments,
     } as Parameters<typeof payload.sendEmail>[0])
   } catch (e) {
     payload.logger.warn(`Failed to send order confirmation for ${orderNumber}: ${String(e)}`)
   }
 
-  // ── Send staff notification ────────────────────────────────────────────
+  // ── Staff notification ─────────────────────────────────────────────────
   try {
     if (settings.notificationEmail) {
       const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
-      const adminUrl = `${baseUrl}/admin/collections/orders/${order.id}`
-
       const sn: StaffNotificationInput = {
         orderNumber,
-        customerName: `${input.customer.firstName} ${input.customer.lastName}`.trim(),
-        customerEmail: input.user.email,
+        customerName,
+        customerEmail: email,
         customerPhone: input.customer.phone ?? null,
+        hasAccount: Boolean(input.user),
         totalAmount,
-        deliveryMethod: input.deliveryMethod,
-        paymentMethod: input.paymentMethod,
-        deliveryAddress: input.deliveryMethod === 'delivery' ? input.deliveryAddress ?? null : null,
+        pickupPointName: typeof pickup.name === 'string' ? pickup.name : String(pickup.name),
         preferredDate: formatDateLocale(input.preferredDate, 'cs'),
         customerNote: input.customerNote ?? null,
         items: items.map(it => {
-          const p = byId.get(it.product as number)!
-          const pname = (typeof p.name === 'string' ? p.name : (p.name as Record<string, string>)?.cs) ?? '?'
-          return { name: pname, quantity: it.quantity, lineTotal: it.priceAtPurchase * it.quantity }
+          const p = byId.get(it.product)!
+          return { name: localizedName(p, 'cs'), quantity: it.quantity, lineTotal: it.priceAtPurchase * it.quantity }
         }),
-        adminUrl,
+        adminUrl: `${baseUrl}/admin/collections/orders/${order.id}`,
       }
-
       await payload.sendEmail({
         to: settings.notificationEmail,
         subject: staffNotificationSubject(sn),
         html: staffNotificationTemplate(sn),
-        replyTo: input.user.email,
+        replyTo: email,
       } as Parameters<typeof payload.sendEmail>[0])
     } else {
       payload.logger.warn(`No SiteSettings.notificationEmail set — skipping staff notification for ${orderNumber}`)
@@ -252,7 +227,7 @@ export async function placeOrder(payload: Payload, input: PlaceOrderInput): Prom
     payload.logger.warn(`Failed to send staff notification for ${orderNumber}: ${String(e)}`)
   }
 
-  return { ok: true, orderNumber }
+  return { ok: true, orderNumber, accessToken }
 }
 
 function formatDateLocale(iso: string, locale: 'cs' | 'en'): string {

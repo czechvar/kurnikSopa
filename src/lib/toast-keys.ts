@@ -4,7 +4,6 @@ export type ToastKey =
   | 'passwordReset'
   | 'addedToCart'
   | 'orderPlaced'
-  | 'paymentMethodMissingBankDetails'
 export type ToastType = 'success' | 'info' | 'error'
 
 const TOAST_TYPES: readonly ToastType[] = ['success', 'info', 'error'] as const
@@ -14,7 +13,6 @@ const TOAST_KEYS: readonly ToastKey[] = [
   'passwordReset',
   'addedToCart',
   'orderPlaced',
-  'paymentMethodMissingBankDetails',
 ] as const
 
 export function isToastKey(v: unknown): v is ToastKey {

@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { slugField } from '@/fields/slug'
-import { isAdmin, publicRead } from '../access'
+import { isAdmin, publishedOrStaffRead } from '../access'
 
 export const Products: CollectionConfig = {
   slug: 'products',
@@ -9,7 +9,7 @@ export const Products: CollectionConfig = {
     plural: { cs: 'Produkty', en: 'Products' },
   },
   access: {
-    read: publicRead,
+    read: publishedOrStaffRead,
     create: isAdmin,
     update: isAdmin,
     delete: isAdmin,
@@ -55,13 +55,6 @@ export const Products: CollectionConfig = {
         { label: 'l (litr)', value: 'l' },
         { label: 'balení', value: 'baleni' },
       ],
-    },
-    {
-      name: 'weight',
-      type: 'number',
-      admin: {
-        description: 'Váha v gramech (pro výpočet dopravy)',
-      },
     },
     {
       name: 'category',
@@ -153,14 +146,6 @@ export const Products: CollectionConfig = {
       ],
       required: true,
       admin: {
-        position: 'sidebar',
-      },
-    },
-    {
-      name: 'stripeProductID',
-      type: 'text',
-      admin: {
-        readOnly: true,
         position: 'sidebar',
       },
     },

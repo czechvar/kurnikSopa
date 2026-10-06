@@ -3,6 +3,7 @@ import { getTranslations } from 'next-intl/server'
 import { Link } from '@/lib/i18n/routing'
 import { getMediaUrl } from '@/lib/media'
 import { formatPrice } from '@/lib/utils'
+import { availabilityOf } from '@/lib/products/availability'
 import { Illustration } from '@/components/illustrations/Illustration'
 import { illustrationForCategory } from '@/components/illustrations/category-map'
 import { Badge } from '@/components/ui/Badge'
@@ -22,6 +23,7 @@ export async function ProductCard({ product, index = 0 }: Props) {
       ? product.images[0].image
       : null
   const imageUrl = getMediaUrl(firstImage)
+  const availability = availabilityOf(product)
 
   return (
     <Link
@@ -60,7 +62,11 @@ export async function ProductCard({ product, index = 0 }: Props) {
               <span className="text-sm font-normal text-ink-muted"> / {t(`units.${product.unit}`)}</span>
             )}
           </p>
-          {product.seasonal && <Badge>{t('seasonal')}</Badge>}
+          {!availability.available ? (
+            <Badge className="bg-ground-sunken text-ink-muted">{t(availability.reason)}</Badge>
+          ) : product.seasonal ? (
+            <Badge>{t('seasonal')}</Badge>
+          ) : null}
         </div>
       </div>
     </Link>
