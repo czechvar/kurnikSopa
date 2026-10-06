@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
 import { RichText } from '@payloadcms/richtext-lexical/react'
@@ -125,16 +126,16 @@ export default async function BlogPostPage({ params }: Props) {
   }
 
   return (
-    <article className="py-12 px-6">
+    <article className="px-5 py-10 md:py-14">
       <script
         type="application/ld+json"
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className="max-w-3xl mx-auto">
+      <div className="mx-auto max-w-[65ch]">
         <Link
           href="/blog"
-          className="text-ink-muted hover:text-ink hover:underline mb-6 inline-block"
+          className="mb-6 inline-block text-sm font-semibold text-ink-muted hover:text-ink hover:underline"
         >
           &larr; {t('backToList')}
         </Link>
@@ -144,7 +145,7 @@ export default async function BlogPostPage({ params }: Props) {
             {categories.map((cat) => (
               <span
                 key={cat.id}
-                className="text-xs font-semibold text-ink-muted uppercase tracking-wide"
+                className="text-xs font-semibold uppercase tracking-[0.18em] text-ink-muted"
               >
                 {cat.name}
               </span>
@@ -152,16 +153,18 @@ export default async function BlogPostPage({ params }: Props) {
           </div>
         )}
 
-        <h1 className="font-heading text-4xl mb-4">{post.title}</h1>
+        <h1 className="mb-4 text-4xl leading-tight text-ink md:text-5xl">{post.title}</h1>
 
         <div className="flex items-center gap-3 text-sm text-ink-muted mb-8">
           {author && (
             <div className="flex items-center gap-2">
               {avatarUrl && (
-                <img
+                <Image
                   src={avatarUrl}
                   alt={avatar?.alt || author.name}
-                  className="w-8 h-8 rounded-full object-cover"
+                  width={32}
+                  height={32}
+                  className="h-8 w-8 rounded-full object-cover"
                 />
               )}
               <span>{author.name}</span>
@@ -177,11 +180,14 @@ export default async function BlogPostPage({ params }: Props) {
         </div>
 
         {coverUrl && (
-          <div className="aspect-[16/9] bg-brand-green-light rounded-xl relative overflow-hidden mb-10">
-            <img
+          <div className="relative mb-10 aspect-[16/9] overflow-hidden rounded-md bg-panel-sage">
+            <Image
               src={coverUrl}
               alt={cover?.alt || post.title}
-              className="absolute inset-0 w-full h-full object-cover"
+              fill
+              priority
+              sizes="(min-width: 768px) 65ch, 100vw"
+              className="object-cover"
             />
           </div>
         )}
@@ -207,5 +213,6 @@ function formatDate(iso: string, locale: 'cs' | 'en'): string {
     day: 'numeric',
     month: 'long',
     year: 'numeric',
+    timeZone: 'Europe/Prague',
   }).format(new Date(iso))
 }

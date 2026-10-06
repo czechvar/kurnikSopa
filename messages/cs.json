@@ -119,7 +119,17 @@
       "l": "l",
       "baleni": "balení"
     },
-    "noPhoto": "Bez fotografie"
+    "noPhoto": "Bez fotografie",
+    "eyebrow": "Obchod",
+    "lead": "Co je právě k mání přímo z farmy.",
+    "filterLabel": "Kategorie",
+    "backToList": "Zpět na produkty",
+    "weight": "Hmotnost: {weight}",
+    "seasonalNotice": "Sezónní produkt",
+    "availability": "dostupné {from} až {to}",
+    "orderByPhone": "Objednat telefonicky: {phone}",
+    "description": "Popis",
+    "empty": "V této kategorii teď nic nemáme."
   },
   "events": {
     "title": "Akce na farmě",
@@ -146,7 +156,10 @@
       "conference": "Konference",
       "seasonal": "Sezónní akce",
       "other": "Jiné"
-    }
+    },
+    "eyebrow": "Na farmě",
+    "lead": "Workshopy, dny otevřených dveří a sezónní slavnosti.",
+    "details": "Podrobnosti akce"
   },
   "cart": {
     "title": "Košík",
@@ -281,22 +294,36 @@
   },
   "about": {
     "title": "O nás",
-    "farmStory": "Náš příběh"
+    "farmStory": "Náš příběh",
+    "eyebrow": "Kdo jsme",
+    "lead": "Malá regenerativní farma v Křepicích u Hustopečí.",
+    "fallback": "Jsme malá regenerativní farma v Křepicích u Hustopečí.",
+    "stats": {
+      "since": "Hospodaříme od roku",
+      "area": "Plocha farmy",
+      "batches": "Turnusů kuřat ročně",
+      "gmo": "Bez GMO krmiv"
+    }
   },
   "blog": {
     "title": "Blog",
     "subtitle": "Články o regenerativním zemědělství, kvalitě potravin a receptech",
     "empty": "Zatím tu žádné články nejsou. Brzy přibudou.",
     "backToList": "Zpět na blog",
-    "readMore": "Číst dál"
+    "readMore": "Číst dál",
+    "eyebrow": "Blog"
   },
   "contact": {
     "title": "Kontakt",
-    "formName": "Jméno",
-    "formEmail": "E-mail",
-    "formMessage": "Zpráva",
-    "formSubmit": "Odeslat",
-    "orderInfo": "Objednávky"
+    "orderInfo": "Objednávky",
+    "eyebrow": "Ozvěte se",
+    "lead": "Nejrychleji nás zastihnete telefonem nebo přes WhatsApp.",
+    "call": "Zavolat",
+    "write": "Napsat e-mail",
+    "postcode": "PSČ",
+    "owner": "Hospodář",
+    "hours": "Otevírací doba",
+    "social": "Sledujte nás"
   },
   "footer": {
     "copyright": "© {year} Kurník & Šopa. Všechna práva vyhrazena.",

@@ -1,115 +1,111 @@
+import Image from 'next/image'
 import { headers } from 'next/headers'
 import { notFound } from 'next/navigation'
+import { getTranslations } from 'next-intl/server'
+import { RichText } from '@payloadcms/richtext-lexical/react'
 import { getPayload } from '@/lib/payload'
 import { getMediaUrl } from '@/lib/media'
+import { getSiteSettings } from '@/lib/site-settings'
+import { formatPhone, formatPrice } from '@/lib/utils'
+import { telHref, whatsappHref } from '@/lib/contact'
 import { Link } from '@/lib/i18n/routing'
-import { RichText } from '@payloadcms/richtext-lexical/react'
 import { AddToCartButton } from '@/components/cart/AddToCartButton'
+import { buttonClass } from '@/components/ui/button'
+import { Illustration } from '@/components/illustrations/Illustration'
+import { illustrationForCategory } from '@/components/illustrations/category-map'
 
 type Props = {
-  params: Promise<{ locale: string; slug: string }>
+  params: Promise<{ locale: 'cs' | 'en'; slug: string }>
 }
 
 export default async function ProductDetailPage({ params }: Props) {
   const { locale, slug } = await params
+  const t = await getTranslations('products')
+  const tEvents = await getTranslations('events')
   const payload = await getPayload()
   const { user } = await payload.auth({ headers: await headers() })
 
   const result = await payload.find({
     collection: 'products',
-    where: {
-      slug: { equals: slug },
-      status: { equals: 'published' },
-    },
+    where: { slug: { equals: slug }, status: { equals: 'published' } },
     depth: 1,
     limit: 1,
-    locale: locale as 'cs' | 'en',
+    locale,
   })
-
   const product = result.docs[0]
   if (!product) notFound()
 
-  const category =
-    product.category && typeof product.category === 'object'
-      ? product.category
-      : null
+  const settings = await getSiteSettings()
+  const phone = settings.contact?.phone
+  const whatsapp = settings.contact?.whatsapp
+
+  const category = product.category && typeof product.category === 'object' ? product.category : null
+  const firstImage =
+    product.images?.[0]?.image && typeof product.images[0].image === 'object' ? product.images[0].image : null
+  const imageUrl = getMediaUrl(firstImage)
+  const month = (iso: string) =>
+    new Intl.DateTimeFormat(locale === 'cs' ? 'cs-CZ' : 'en-GB', { month: 'long', timeZone: 'Europe/Prague' }).format(
+      new Date(iso),
+    )
+  const unit = product.unit ? t(`units.${product.unit}`) : null
 
   return (
-    <div className="py-12 px-6">
-      <div className="max-w-4xl mx-auto">
-        <Link
-          href="/produkty"
-          className="text-brand-green hover:underline mb-6 inline-block"
-        >
-          &larr; Zpět na produkty
+    <div className="px-5 py-10 md:py-14">
+      <div className="mx-auto max-w-5xl">
+        <Link href="/produkty" className="mb-6 inline-block text-sm font-semibold text-ink-muted hover:text-ink hover:underline">
+          &larr; {t('backToList')}
         </Link>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-          {/* Product image */}
-          <div className="aspect-square bg-brand-green-light rounded-xl relative overflow-hidden">
-            {(() => {
-              const firstImage =
-                product.images?.[0]?.image && typeof product.images[0].image === 'object'
-                  ? product.images[0].image
-                  : null
-              const imageUrl = getMediaUrl(firstImage)
-              return imageUrl ? (
-                <img
-                  src={imageUrl}
-                  alt={firstImage?.alt || product.name}
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
-              ) : (
-                <div className="flex items-center justify-center h-full">
-                  <span className="text-ink-muted">Foto produktu</span>
-                </div>
-              )
-            })()}
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-12">
+          <div className="relative aspect-square overflow-hidden rounded-md bg-panel-blush">
+            {imageUrl ? (
+              <Image
+                src={imageUrl}
+                alt={firstImage?.alt || product.name}
+                fill
+                priority
+                sizes="(min-width: 768px) 50vw, 100vw"
+                className="object-cover"
+              />
+            ) : (
+              <div className="flex h-full items-center justify-center">
+                <Illustration name={illustrationForCategory(category?.slug)} className="h-40 w-40 text-ink" />
+              </div>
+            )}
           </div>
 
-          {/* Product info */}
           <div>
             {category && (
-              <span className="text-sm font-medium text-brand-green uppercase tracking-wide">
-                {category.name}
-              </span>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-ink-muted">{category.name}</p>
             )}
-            <h1 className="font-heading text-3xl mt-2 mb-4">{product.name}</h1>
+            <h1 className="mt-1 text-4xl leading-tight text-ink">{product.name}</h1>
 
-            <div className="text-3xl font-bold mb-2">
-              {product.price} Kč
-              {product.unit && (
-                <span className="text-lg font-normal text-text-secondary">
-                  /{product.unit}
-                </span>
-              )}
-            </div>
-
+            <p className="mt-4 text-3xl font-bold text-ink-deep">
+              {formatPrice(product.price)}
+              {unit && <span className="text-lg font-normal text-ink-muted"> / {unit}</span>}
+            </p>
             {product.weight && (
-              <p className="text-text-secondary text-sm mb-4">
-                Váha: {product.weight >= 1000 ? `${product.weight / 1000} kg` : `${product.weight} g`}
+              <p className="mt-1 text-sm text-ink-muted">
+                {t('weight', {
+                  weight: product.weight >= 1000 ? `${product.weight / 1000} kg` : `${product.weight} g`,
+                })}
               </p>
             )}
 
             {product.seasonal && (
-              <div className="bg-accent/25 border border-accent text-ink-deep rounded-lg p-3 mb-4 text-sm">
-                <span className="font-medium">Sezónní produkt</span>
+              <div className="mt-5 rounded border border-accent bg-accent/25 p-3 text-sm text-ink-deep">
+                <span className="font-semibold">{t('seasonalNotice')}</span>
                 {product.availableFrom && product.availableTo && (
-                  <span className="text-ink-muted">
-                    {' '}— dostupné {new Date(product.availableFrom).toLocaleDateString('cs-CZ', { month: 'long' })}
-                    {' '}až {new Date(product.availableTo).toLocaleDateString('cs-CZ', { month: 'long' })}
-                  </span>
+                  <> — {t('availability', { from: month(product.availableFrom), to: month(product.availableTo) })}</>
                 )}
               </div>
             )}
 
             {product.minimumOrder && product.minimumOrder > 1 && (
-              <p className="text-sm text-text-secondary mb-4">
-                Minimální objednávka: {product.minimumOrder} {product.unit || 'ks'}
-              </p>
+              <p className="mt-4 text-sm text-ink-muted">{t('minimumOrder', { count: product.minimumOrder })}</p>
             )}
 
-            <div className="mb-6">
+            <div className="mt-6">
               <AddToCartButton
                 productId={product.id}
                 productName={product.name}
@@ -119,35 +115,32 @@ export default async function ProductDetailPage({ params }: Props) {
               />
             </div>
 
-            <div className="flex gap-3 mb-6">
-              <a
-                href="tel:+420774801667"
-                className="inline-block bg-brand-cream text-brand-green-deep font-semibold px-6 py-3 rounded-lg hover:bg-brand-cream-dark transition-colors"
-              >
-                Objednat: 774 801 667
-              </a>
-              <a
-                href="https://wa.me/420774801667"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block border-2 border-ink text-ink font-semibold px-6 py-3 rounded-lg hover:bg-ground-sunken transition-colors"
-              >
-                WhatsApp
-              </a>
-            </div>
-
-            {product.shortDescription && (
-              <p className="text-text-secondary mb-6">{product.shortDescription}</p>
+            {(phone || whatsapp) && (
+              <div className="mt-4 flex flex-wrap gap-3">
+                {phone && (
+                  <a href={telHref(phone)} className={buttonClass('outline')}>
+                    {t('orderByPhone', { phone: formatPhone(phone) })}
+                  </a>
+                )}
+                {whatsapp && (
+                  <a href={whatsappHref(whatsapp)} target="_blank" rel="noopener noreferrer" className={buttonClass('outline')}>
+                    {tEvents('whatsapp')}
+                  </a>
+                )}
+              </div>
             )}
+
+            {product.shortDescription && <p className="mt-6 leading-relaxed text-ink">{product.shortDescription}</p>}
           </div>
         </div>
 
-        {/* Full description */}
         {product.description && (
-          <div className="mt-12 prose prose-lg max-w-none">
-            <h2 className="font-heading text-2xl mb-4">Popis</h2>
-            <RichText data={product.description} />
-          </div>
+          <section className="mt-14 border-t border-line pt-10">
+            <h2 className="mb-4 text-2xl text-ink">{t('description')}</h2>
+            <div className="prose prose-lg max-w-[65ch]">
+              <RichText data={product.description} />
+            </div>
+          </section>
         )}
       </div>
     </div>

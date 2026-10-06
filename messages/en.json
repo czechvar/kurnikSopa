@@ -119,7 +119,17 @@
       "l": "l",
       "baleni": "pack"
     },
-    "noPhoto": "No photo"
+    "noPhoto": "No photo",
+    "eyebrow": "Shop",
+    "lead": "What is available straight from the farm right now.",
+    "filterLabel": "Category",
+    "backToList": "Back to products",
+    "weight": "Weight: {weight}",
+    "seasonalNotice": "Seasonal product",
+    "availability": "available {from} to {to}",
+    "orderByPhone": "Order by phone: {phone}",
+    "description": "Description",
+    "empty": "Nothing in this category right now."
   },
   "events": {
     "title": "Farm events",
@@ -146,7 +156,10 @@
       "conference": "Conference",
       "seasonal": "Seasonal event",
       "other": "Other"
-    }
+    },
+    "eyebrow": "At the farm",
+    "lead": "Workshops, open days and seasonal celebrations.",
+    "details": "Event details"
   },
   "cart": {
     "title": "Cart",
@@ -281,22 +294,36 @@
   },
   "about": {
     "title": "About us — Our story",
-    "farmStory": "Our story"
+    "farmStory": "Our story",
+    "eyebrow": "Who we are",
+    "lead": "A small regenerative farm in Křepice near Hustopeče.",
+    "fallback": "We are a small regenerative farm in Křepice near Hustopeče.",
+    "stats": {
+      "since": "Farming since",
+      "area": "Farm area",
+      "batches": "Chicken batches a year",
+      "gmo": "GMO-free feed"
+    }
   },
   "blog": {
     "title": "Blog",
     "subtitle": "Articles on regenerative farming, food quality, and recipes",
     "empty": "No posts yet. Check back soon.",
     "backToList": "Back to blog",
-    "readMore": "Read more"
+    "readMore": "Read more",
+    "eyebrow": "Blog"
   },
   "contact": {
     "title": "Contact",
-    "formName": "Name",
-    "formEmail": "Email",
-    "formMessage": "Message",
-    "formSubmit": "Send",
-    "orderInfo": "Orders"
+    "orderInfo": "Orders",
+    "eyebrow": "Get in touch",
+    "lead": "The quickest way to reach us is by phone or WhatsApp.",
+    "call": "Call",
+    "write": "Send an e-mail",
+    "postcode": "Postcode",
+    "owner": "Farmer",
+    "hours": "Opening hours",
+    "social": "Follow us"
   },
   "footer": {
     "copyright": "© {year} Kurník & Šopa. All rights reserved.",
