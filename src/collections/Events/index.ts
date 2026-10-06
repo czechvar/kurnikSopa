@@ -4,6 +4,10 @@ import { isAdmin, publicRead } from '../access'
 
 export const Events: CollectionConfig = {
   slug: 'events',
+  labels: {
+    singular: { cs: 'Akce', en: 'Event' },
+    plural: { cs: 'Akce', en: 'Events' },
+  },
   access: {
     read: publicRead,
     create: isAdmin,

@@ -7,7 +7,7 @@ export const Footer: GlobalConfig = {
     read: publicRead,
     update: isAdmin,
   },
-  label: 'Patička',
+  label: { cs: 'Patička', en: 'Footer' },
   admin: {
     hidden: ({ user }) => user?.role !== 'admin',
   },

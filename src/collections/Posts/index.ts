@@ -13,6 +13,10 @@ const readPublishedOrEditorial: Access = (args) => {
 
 export const Posts: CollectionConfig = {
   slug: 'posts',
+  labels: {
+    singular: { cs: 'Článek', en: 'Post' },
+    plural: { cs: 'Články', en: 'Posts' },
+  },
   versions: {
     drafts: true,
   },

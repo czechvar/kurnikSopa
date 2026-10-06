@@ -7,7 +7,7 @@ export const Navigation: GlobalConfig = {
     read: publicRead,
     update: isAdmin,
   },
-  label: 'Navigace',
+  label: { cs: 'Navigace', en: 'Navigation' },
   admin: {
     hidden: ({ user }) => user?.role !== 'admin',
   },

@@ -4,6 +4,10 @@ import { isAdmin, publicRead } from '../access'
 
 export const Products: CollectionConfig = {
   slug: 'products',
+  labels: {
+    singular: { cs: 'Produkt', en: 'Product' },
+    plural: { cs: 'Produkty', en: 'Products' },
+  },
   access: {
     read: publicRead,
     create: isAdmin,
