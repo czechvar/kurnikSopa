@@ -1,37 +1,58 @@
-'use client'
-
-import Image from 'next/image'
-import { useTranslations } from 'next-intl'
-import { Link } from '@/lib/i18n/routing'
 import type { ReactNode } from 'react'
+import { getTranslations } from 'next-intl/server'
+import { Link } from '@/lib/i18n/routing'
+import { getSiteSettings } from '@/lib/site-settings'
+import { formatPhone } from '@/lib/utils'
+import { LocaleSwitcher } from '@/components/common/LocaleSwitcher'
+import { Logo } from './Logo'
+import { NavLinks, type NavItem } from './NavLinks'
+import { MobileNav } from './MobileNav'
 
-export function Header({ userMenu }: { userMenu?: ReactNode }) {
-  const t = useTranslations('nav')
+type Props = {
+  /** Cart + account menu, or a login link — rendered per request. */
+  userMenu?: ReactNode
+}
+
+export async function Header({ userMenu }: Props) {
+  const t = await getTranslations('nav')
+  const settings = await getSiteSettings()
+  const phone = settings.contact?.phone?.replace(/\s+/g, '')
+
+  const items: NavItem[] = [
+    { href: '/produkty', label: t('products') },
+    { href: '/akce', label: t('events') },
+    { href: '/o-nas', label: t('about') },
+    { href: '/blog', label: t('blog') },
+    { href: '/kontakt', label: t('contact') },
+  ]
 
   return (
-    <header className="sticky top-0 z-50 bg-brand-green/95 backdrop-blur text-brand-cream">
-      <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between gap-6">
-        <Link href="/" className="flex items-center shrink-0" aria-label="Kurník & Šopa">
-          <Image
-            src="/logo-kurnik-sopa.svg"
-            alt="Kurník & Šopa"
-            width={140}
-            height={64}
-            priority
-            className="h-12 w-auto"
-          />
+    <header className="sticky top-0 z-40 border-b border-line bg-ground/95 backdrop-blur">
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-5 py-3 md:px-6">
+        <Link href="/" className="shrink-0 text-ink" aria-label={t('home')}>
+          <Logo className="h-10 w-auto md:h-11" title="" />
         </Link>
 
-        <nav className="hidden md:flex items-center gap-6">
-          <Link href="/produkty" className="hover:text-brand-cream/70 transition-colors">{t('products')}</Link>
-          <Link href="/akce" className="hover:text-brand-cream/70 transition-colors">{t('events')}</Link>
-          <Link href="/o-nas" className="hover:text-brand-cream/70 transition-colors">{t('about')}</Link>
-          <Link href="/kontakt" className="hover:text-brand-cream/70 transition-colors">{t('contact')}</Link>
-          <Link href="/blog" className="hover:text-brand-cream/70 transition-colors">{t('blog')}</Link>
+        <nav aria-label={t('mainLabel')} className="hidden md:block">
+          <NavLinks items={items} variant="bar" />
         </nav>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3 md:gap-4">
+          <span className="hidden md:inline-flex">
+            <LocaleSwitcher />
+          </span>
           {userMenu}
+          <MobileNav
+            items={items}
+            openLabel={t('menu.open')}
+            closeLabel={t('menu.close')}
+            footer={<LocaleSwitcher />}
+            phone={
+              phone
+                ? { href: `tel:+420${phone.replace(/^\+?420/, '')}`, label: `${t('callUs')} ${formatPhone(phone)}` }
+                : undefined
+            }
+          />
         </div>
       </div>
     </header>

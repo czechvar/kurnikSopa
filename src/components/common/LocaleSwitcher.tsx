@@ -3,7 +3,7 @@
 import { useLocale } from 'next-intl'
 import { useRouter, usePathname } from '@/lib/i18n/routing'
 
-export function LocaleSwitcher() {
+export function LocaleSwitcher({ className = '' }: { className?: string }) {
   const locale = useLocale()
   const router = useRouter()
   const pathname = usePathname()
@@ -16,11 +16,16 @@ export function LocaleSwitcher() {
 
   return (
     <button
+      type="button"
       onClick={switchLocale}
-      className="text-sm font-medium hover:text-brand-cream/80 transition-colors uppercase"
+      className={`text-sm font-semibold uppercase tracking-wide underline-offset-4 hover:underline ${className}`}
       aria-label={locale === 'cs' ? 'Switch to English' : 'Přepnout do češtiny'}
     >
-      {locale === 'cs' ? 'EN' : 'CZ'}
+      <span aria-hidden="true">
+        <span className={locale === 'cs' ? 'font-extrabold' : 'opacity-70'}>CS</span>
+        {' / '}
+        <span className={locale === 'en' ? 'font-extrabold' : 'opacity-70'}>EN</span>
+      </span>
     </button>
   )
 }

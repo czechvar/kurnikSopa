@@ -17,7 +17,14 @@ export async function HeaderUserMenu({ locale }: Props) {
   const t = await getTranslations('nav.auth')
 
   if (!user) {
-    return null
+    return (
+      <Link
+        href="/prihlaseni"
+        className="hidden text-sm font-semibold text-ink underline-offset-4 hover:underline sm:inline"
+      >
+        {t('login')}
+      </Link>
+    )
   }
 
   const cart = await getOrCreateCart(payload, user.id)
@@ -25,15 +32,15 @@ export async function HeaderUserMenu({ locale }: Props) {
   return (
     <>
       <CartBadge cart={cart} locale={locale} />
-      <details className="relative">
-        <summary className="cursor-pointer list-none text-sm hover:text-brand-cream/70">
-          {user.firstName ?? user.email}
+      <details className="relative hidden sm:block">
+        <summary className="cursor-pointer list-none text-sm font-semibold text-ink">
+          {user.firstName ?? user.email} <span aria-hidden="true">▾</span>
         </summary>
-        <div className="absolute right-0 mt-2 bg-white text-gray-900 rounded-lg shadow-lg p-2 min-w-44 z-50">
-          <Link href="/ucet" className="block px-3 py-2 rounded hover:bg-gray-100 text-sm">
+        <div className="absolute right-0 z-50 mt-2 min-w-44 rounded border border-line bg-ground p-2 shadow-lg">
+          <Link href="/ucet" className="block rounded px-3 py-2 text-sm hover:bg-ground-sunken">
             {t('account')}
           </Link>
-          <Link href="/ucet/objednavky" className="block px-3 py-2 rounded hover:bg-gray-100 text-sm">
+          <Link href="/ucet/objednavky" className="block rounded px-3 py-2 text-sm hover:bg-ground-sunken">
             {t('orders')}
           </Link>
           <LogoutButton label={t('logout')} />

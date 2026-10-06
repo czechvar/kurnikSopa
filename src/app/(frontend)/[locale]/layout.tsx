@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
 import { NextIntlClientProvider } from 'next-intl'
-import { getMessages } from 'next-intl/server'
+import { getMessages, getTranslations } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 import { Bricolage_Grotesque, Parkinsans } from 'next/font/google'
 import { routing } from '@/lib/i18n/routing'
@@ -42,17 +42,24 @@ export default async function LocaleLayout({ children, params }: Props) {
   }
 
   const messages = await getMessages()
+  const skipLabel = (await getTranslations({ locale, namespace: 'nav' }))('skipToContent')
 
   return (
     <html lang={locale} className={`${bricolage.variable} ${parkinsans.variable}`}>
       <head>
         <CookieConsentHeadScripts />
       </head>
-      <body className="farm-frontend min-h-screen flex flex-col bg-surface text-text-primary font-sans antialiased">
+      <body className="farm-frontend min-h-screen flex flex-col bg-ground text-ink font-sans antialiased">
         <CookieConsentBodyNoscript />
         <NextIntlClientProvider messages={messages}>
+          <a
+            href="#main"
+            className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-ink focus:px-4 focus:py-2 focus:text-ground"
+          >
+            {skipLabel}
+          </a>
           <Header userMenu={<HeaderUserMenu locale={locale as 'cs' | 'en'} />} />
-          <main className="flex-1">{children}</main>
+          <main id="main" tabIndex={-1} className="flex-1 focus:outline-none">{children}</main>
           <FooterComponent authActions={<FooterAuthActions />} />
           <Toaster />
           <Suspense fallback={null}>

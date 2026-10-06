@@ -29,25 +29,40 @@
       "account": "My account",
       "orders": "My orders",
       "logout": "Log out"
-    }
+    },
+    "skipToContent": "Skip to content",
+    "mainLabel": "Main navigation",
+    "menu": {
+      "open": "Open menu",
+      "close": "Close menu"
+    },
+    "callUs": "Call us"
   },
   "home": {
     "hero": {
       "title": "A regenerative farm in tune with nature",
       "subtitle": "Pastured chicken, eggs, geese, rabbits, and vegetables straight from the farmer",
-      "cta": "Browse products"
+      "cta": "Browse products",
+      "eyebrow": "Křepice near Hustopeče · since 2018",
+      "eventsCta": "Upcoming events"
     },
     "featured": {
       "title": "Our products",
-      "subtitle": "Quality you can taste"
+      "subtitle": "Quality you can taste",
+      "all": "All products"
     },
     "about": {
       "title": "Get to know our farm",
-      "description": "We are a small regenerative farm in Křepice near Hustopeče. We focus on animal welfare and gentle treatment of the soil we farm on."
+      "description": "We are a small regenerative farm in Křepice near Hustopeče. We focus on animal welfare and gentle treatment of the soil we farm on.",
+      "eyebrow": "About us"
     },
     "events": {
       "title": "Upcoming events",
-      "subtitle": "Come visit the farm"
+      "subtitle": "Come visit the farm",
+      "eyebrow": "Upcoming events",
+      "all": "All events",
+      "spotsLeft": "{count} spots left",
+      "full": "full"
     },
     "farm": {
       "chickens": {
@@ -74,6 +89,20 @@
         "title": "microgreens",
         "body": "Young shoots of pea, radish, and sunflower. Packed with vitamins and the intense flavour of mature plants. Great in salads, on bread, or as a plate garnish."
       }
+    },
+    "panel": {
+      "title": "Straight from the farmer",
+      "body": "Order online, pick up at the farm, or we deliver around the region.",
+      "cta": "Go to the shop"
+    },
+    "farmSection": {
+      "eyebrow": "In the meadow and the orchard",
+      "title": "What we raise and grow"
+    },
+    "news": {
+      "eyebrow": "Blog",
+      "title": "News from the farm",
+      "all": "All posts"
     }
   },
   "products": {
@@ -83,7 +112,14 @@
     "outOfStock": "Sold out",
     "seasonal": "Seasonal",
     "perUnit": "per {unit}",
-    "minimumOrder": "Minimum order: {count} pcs"
+    "minimumOrder": "Minimum order: {count} pcs",
+    "units": {
+      "kg": "kg",
+      "ks": "pc",
+      "l": "l",
+      "baleni": "pack"
+    },
+    "noPhoto": "No photo"
   },
   "events": {
     "title": "Farm events",
@@ -265,7 +301,12 @@
   "footer": {
     "copyright": "© {year} Kurník & Šopa. All rights reserved.",
     "privacy": "Privacy policy",
-    "terms": "Terms & conditions"
+    "terms": "Terms & conditions",
+    "contactHeading": "Contact",
+    "shopHeading": "Shop",
+    "accountHeading": "Account",
+    "cookies": "Cookies",
+    "whatsapp": "WhatsApp"
   },
   "auth": {
     "signup": {
