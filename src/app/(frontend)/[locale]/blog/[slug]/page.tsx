@@ -134,7 +134,7 @@ export default async function BlogPostPage({ params }: Props) {
       <div className="max-w-3xl mx-auto">
         <Link
           href="/blog"
-          className="text-brand-cream/80 hover:text-brand-cream hover:underline mb-6 inline-block"
+          className="text-ink-muted hover:text-ink hover:underline mb-6 inline-block"
         >
           &larr; {t('backToList')}
         </Link>
@@ -144,7 +144,7 @@ export default async function BlogPostPage({ params }: Props) {
             {categories.map((cat) => (
               <span
                 key={cat.id}
-                className="text-xs font-semibold text-brand-cream/80 uppercase tracking-wide"
+                className="text-xs font-semibold text-ink-muted uppercase tracking-wide"
               >
                 {cat.name}
               </span>
@@ -154,7 +154,7 @@ export default async function BlogPostPage({ params }: Props) {
 
         <h1 className="font-heading text-4xl mb-4">{post.title}</h1>
 
-        <div className="flex items-center gap-3 text-sm text-brand-cream/80 mb-8">
+        <div className="flex items-center gap-3 text-sm text-ink-muted mb-8">
           {author && (
             <div className="flex items-center gap-2">
               {avatarUrl && (
@@ -165,7 +165,7 @@ export default async function BlogPostPage({ params }: Props) {
                 />
               )}
               <span>{author.name}</span>
-              {author.role && <span className="text-brand-cream/60">· {author.role}</span>}
+              {author.role && <span className="text-ink-muted">· {author.role}</span>}
             </div>
           )}
           {author && post.publishedAt && <span>·</span>}
@@ -187,13 +187,13 @@ export default async function BlogPostPage({ params }: Props) {
         )}
 
         {post.excerpt && (
-          <p className="text-lg text-brand-cream/90 mb-8 leading-relaxed">
+          <p className="text-lg text-ink-muted mb-8 leading-relaxed">
             {post.excerpt}
           </p>
         )}
 
         {post.content && (
-          <div className="prose prose-lg prose-invert max-w-none">
+          <div className="prose prose-lg max-w-none">
             <RichText data={post.content} />
           </div>
         )}

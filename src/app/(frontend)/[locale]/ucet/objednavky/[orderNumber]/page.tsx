@@ -56,7 +56,7 @@ export default async function OrderHistoryDetailPage({ params }: Props) {
   return (
     <div className="max-w-3xl mx-auto px-6 py-12 space-y-6">
       <nav className="text-sm">
-        <Link href="/ucet/objednavky" className="text-brand-gold hover:underline">
+        <Link href="/ucet/objednavky" className="text-ink font-medium underline underline-offset-4 hover:text-ink-deep">
           {t('detail.backToList')}
         </Link>
       </nav>

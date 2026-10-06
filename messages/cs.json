@@ -29,25 +29,40 @@
       "account": "Můj účet",
       "orders": "Moje objednávky",
       "logout": "Odhlásit se"
-    }
+    },
+    "skipToContent": "Přeskočit na obsah",
+    "mainLabel": "Hlavní navigace",
+    "menu": {
+      "open": "Otevřít menu",
+      "close": "Zavřít menu"
+    },
+    "callUs": "Zavolat"
   },
   "home": {
     "hero": {
       "title": "Regenerativní farma v souladu s přírodou",
       "subtitle": "Pasená kuřata, vejce, husy, králíci a zelenina přímo od farmáře",
-      "cta": "Prohlédnout produkty"
+      "cta": "Prohlédnout produkty",
+      "eyebrow": "Křepice u Hustopečí · od roku 2018",
+      "eventsCta": "Nadcházející akce"
     },
     "featured": {
       "title": "Naše produkty",
-      "subtitle": "Kvalita, kterou ochutnáte"
+      "subtitle": "Kvalita, kterou ochutnáte",
+      "all": "Všechny produkty"
     },
     "about": {
       "title": "Poznejte naši farmu",
-      "description": "Jsme malá regenerativní farma v Křepicích u Hustopečí. Klademe velký důraz na welfare zvířat a šetrné zacházení s půdou."
+      "description": "Jsme malá regenerativní farma v Křepicích u Hustopečí. Klademe velký důraz na welfare zvířat a šetrné zacházení s půdou.",
+      "eyebrow": "O nás"
     },
     "events": {
       "title": "Nadcházející akce",
-      "subtitle": "Přijďte se podívat na farmu"
+      "subtitle": "Přijďte se podívat na farmu",
+      "eyebrow": "Nadcházející akce",
+      "all": "Všechny akce",
+      "spotsLeft": "zbývá {count} míst",
+      "full": "obsazeno"
     },
     "farm": {
       "chickens": {
@@ -74,6 +89,20 @@
         "title": "microgreens",
         "body": "Mladé výhonky hrášku, ředkvičky a slunečnice. Plné vitamínů a intenzivní chuti dospělých rostlin. Skvělé do salátů, na chleba nebo jako dekorace na talíř."
       }
+    },
+    "panel": {
+      "title": "Přímo od farmáře",
+      "body": "Objednáte online, vyzvednete na farmě nebo vám to dovezeme po okolí.",
+      "cta": "Do obchodu"
+    },
+    "farmSection": {
+      "eyebrow": "Na louce a v sadu",
+      "title": "Co chováme a pěstujeme"
+    },
+    "news": {
+      "eyebrow": "Blog",
+      "title": "Novinky z farmy",
+      "all": "Všechny články"
     }
   },
   "products": {
@@ -83,7 +112,14 @@
     "outOfStock": "Vyprodáno",
     "seasonal": "Sezónní",
     "perUnit": "za {unit}",
-    "minimumOrder": "Minimální objednávka: {count} ks"
+    "minimumOrder": "Minimální objednávka: {count} ks",
+    "units": {
+      "kg": "kg",
+      "ks": "ks",
+      "l": "l",
+      "baleni": "balení"
+    },
+    "noPhoto": "Bez fotografie"
   },
   "events": {
     "title": "Akce na farmě",
@@ -265,7 +301,12 @@
   "footer": {
     "copyright": "© {year} Kurník & Šopa. Všechna práva vyhrazena.",
     "privacy": "Ochrana soukromí",
-    "terms": "Obchodní podmínky"
+    "terms": "Obchodní podmínky",
+    "contactHeading": "Kontakt",
+    "shopHeading": "Obchod",
+    "accountHeading": "Účet",
+    "cookies": "Cookies",
+    "whatsapp": "WhatsApp"
   },
   "auth": {
     "signup": {

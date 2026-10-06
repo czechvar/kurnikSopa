@@ -2,7 +2,10 @@
  * Format price in Czech koruna format: "1 250 Kč"
  */
 export function formatPrice(amount: number): string {
-  return `${amount.toLocaleString('cs-CZ')} Kč`
+  // ICU groups cs-CZ thousands with a narrow no-break space on some runtimes
+  // and a plain one on others; normalise to U+00A0 and keep "Kč" attached.
+  const grouped = amount.toLocaleString('cs-CZ').replace(/[\s\u202f]/g, '\u00a0')
+  return `${grouped}\u00a0Kč`
 }
 
 /**

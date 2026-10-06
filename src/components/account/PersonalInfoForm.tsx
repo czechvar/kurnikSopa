@@ -56,7 +56,7 @@ export function PersonalInfoForm({ userId, email, defaultValues }: Props) {
         )}
         <div>
           <span className="block text-sm font-medium mb-1">{t('email')}</span>
-          <p className="rounded-lg border border-brand-green-dark bg-brand-green-dark/50 px-3 py-2 text-brand-cream/80">{email}</p>
+          <p className="rounded-lg border border-line bg-ground-sunken px-3 py-2 text-ink-muted">{email}</p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>

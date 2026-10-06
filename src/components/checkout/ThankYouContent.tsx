@@ -13,7 +13,7 @@ export async function ThankYouContent({ order, settings, locale }: Props) {
   return (
     <div className="space-y-8">
       <div className="text-center space-y-2">
-        <h1 className="text-3xl font-bold text-brand-gold">{t('title')}</h1>
+        <h1 className="text-3xl font-bold text-ink">{t('title')}</h1>
         <p className="text-text-secondary">{t('body', { orderNumber })}</p>
       </div>
 

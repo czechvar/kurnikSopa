@@ -1,66 +1,88 @@
-import { useTranslations, useLocale } from 'next-intl'
 import type { ReactNode } from 'react'
+import { getLocale, getTranslations } from 'next-intl/server'
+import { Link } from '@/lib/i18n/routing'
+import { getSiteSettings } from '@/lib/site-settings'
+import { formatPhone } from '@/lib/utils'
 import { FooterCookiesLink } from './FooterCookiesLink'
+import { Logo } from './Logo'
 
-export function FooterComponent({ authActions }: { authActions?: ReactNode }) {
-  const t = useTranslations('footer')
-  const tCommon = useTranslations('common')
-  const locale = useLocale()
+export async function FooterComponent({ authActions }: { authActions?: ReactNode }) {
+  const t = await getTranslations('footer')
+  const tCommon = await getTranslations('common')
+  const tNav = await getTranslations('nav')
+  const locale = await getLocale()
+  const settings = await getSiteSettings()
 
   const currentYear = new Date().getFullYear()
-  const cookiesHref = locale === 'cs' ? '/cs/cookies' : '/en/cookies'
-  const termsHref =
-    locale === 'cs' ? '/cs/obchodni-podminky' : '/en/obchodni-podminky'
-  const privacyHref =
-    locale === 'cs'
-      ? '/cs/ochrana-osobnich-udaju'
-      : '/en/ochrana-osobnich-udaju'
+  // These two pages live outside the next-intl pathname map.
+  const cookiesHref = `/${locale}/cookies`
+  const termsHref = `/${locale}/obchodni-podminky`
+  const privacyHref = `/${locale}/ochrana-osobnich-udaju`
+
+  const phone = settings.contact?.phone?.replace(/\s+/g, '')
+  const phoneDigits = phone?.replace(/^\+?420/, '')
+  const whatsapp = settings.contact?.whatsapp?.replace(/\s+/g, '').replace(/^\+?420/, '')
+  const email = settings.contact?.email
+  const address = settings.address
+  const link = 'hover:text-ground hover:underline underline-offset-4'
 
   return (
-    <footer className="bg-brand-green-dark text-brand-cream/80 mt-16">
-      <div className="max-w-6xl mx-auto px-6 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <footer className="on-dark mt-auto bg-ink-deep text-panel-sage">
+      <div className="mx-auto max-w-6xl px-5 py-12 md:px-6">
+        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div>
-            <h3 className="text-xl text-brand-cream mb-4">
-              {tCommon('farmName')}
-            </h3>
-            <p className="text-sm leading-relaxed">
-              {tCommon('tagline')}
-            </p>
-            <p className="text-sm mt-4">
-              Křepice u Hustopečí, 691 65
-            </p>
+            <Logo className="h-14 w-auto text-ground" />
+            <p className="mt-4 text-sm leading-relaxed">{tCommon('tagline')}</p>
+            {address && (
+              <p className="mt-2 text-sm leading-relaxed">
+                {address.street && <>{address.street}<br /></>}
+                {address.zip} {address.city}
+              </p>
+            )}
           </div>
 
           <div>
-            <h3 className="text-xl text-brand-cream mb-4">
-              {tCommon('phone')}
-            </h3>
-            <p className="text-sm">+420 774 801 667</p>
+            <h2 className="mb-3 font-heading text-base text-ground">{t('contactHeading')}</h2>
+            <ul className="space-y-1.5 text-sm">
+              {phone && (
+                <li><a href={`tel:+420${phoneDigits}`} className={link}>{formatPhone(phone)}</a></li>
+              )}
+              {email && (
+                <li><a href={`mailto:${email}`} className={link}>{email}</a></li>
+              )}
+              {whatsapp && (
+                <li>
+                  <a href={`https://wa.me/420${whatsapp}`} target="_blank" rel="noopener noreferrer" className={link}>
+                    {t('whatsapp')}
+                  </a>
+                </li>
+              )}
+            </ul>
           </div>
 
           <div>
-            <h3 className="text-xl text-brand-cream mb-4">
-              {tCommon('email')}
-            </h3>
-            <p className="text-sm">info@kurnik-sopa.cz</p>
+            <h2 className="mb-3 font-heading text-base text-ground">{t('shopHeading')}</h2>
+            <ul className="space-y-1.5 text-sm">
+              <li><Link href="/produkty" className={link}>{tNav('products')}</Link></li>
+              <li><Link href="/akce" className={link}>{tNav('events')}</Link></li>
+              <li><Link href="/blog" className={link}>{tNav('blog')}</Link></li>
+              <li><Link href="/kontakt" className={link}>{tNav('contact')}</Link></li>
+            </ul>
+          </div>
+
+          <div className="text-sm">
+            <h2 className="mb-3 font-heading text-base text-ground">{t('accountHeading')}</h2>
+            {authActions}
           </div>
         </div>
 
-        <div className="border-t border-brand-cream/20 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm">
+        <div className="mt-10 flex flex-col gap-4 border-t border-ground/20 pt-6 text-xs md:flex-row md:items-center md:justify-between">
           <p>{t('copyright', { year: currentYear })}</p>
-          <nav className="flex flex-wrap items-center gap-x-6 gap-y-2">
-            <a href={termsHref} className="underline hover:text-brand-cream transition-colors">
-              {t('terms')}
-            </a>
-            <a href={privacyHref} className="underline hover:text-brand-cream transition-colors">
-              {t('privacy')}
-            </a>
-            <a href={cookiesHref} className="underline hover:text-brand-cream transition-colors">
-              Cookies
-            </a>
+          <nav className="flex flex-wrap items-center gap-x-5 gap-y-2">
+            <a href={termsHref} className="underline underline-offset-4 hover:text-ground">{t('terms')}</a>
+            <a href={privacyHref} className="underline underline-offset-4 hover:text-ground">{t('privacy')}</a>
+            <a href={cookiesHref} className="underline underline-offset-4 hover:text-ground">{t('cookies')}</a>
             <FooterCookiesLink />
-            {authActions}
           </nav>
         </div>
       </div>

@@ -229,7 +229,7 @@ export function SignupForm() {
       </button>
 
       <p className="text-sm text-center pt-2">
-        {t('haveAccount')} <Link href="/prihlaseni" className="text-brand-gold hover:underline">{t('loginLink')}</Link>
+        {t('haveAccount')} <Link href="/prihlaseni" className="text-ink font-medium underline underline-offset-4 hover:text-ink-deep">{t('loginLink')}</Link>
       </p>
     </form>
   )

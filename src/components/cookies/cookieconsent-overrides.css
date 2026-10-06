@@ -1,10 +1,15 @@
 #cc-main {
   --cc-font-family: var(--font-parkinsans), system-ui, sans-serif;
-  --cc-btn-primary-bg: #5a7d3a;
-  --cc-btn-primary-hover-bg: #486630;
-  --cc-btn-primary-border: #5a7d3a;
-  --cc-btn-primary-hover-border: #486630;
-  --cc-btn-secondary-bg: #f0ece1;
-  --cc-btn-secondary-hover-bg: #e2dccb;
-  --cc-toggle-on-bg: #5a7d3a;
+  --cc-bg: var(--color-ground);
+  --cc-primary-color: var(--color-ink-deep);
+  --cc-secondary-color: var(--color-ink-muted);
+  --cc-btn-primary-bg: var(--color-ink);
+  --cc-btn-primary-color: var(--color-ground);
+  --cc-btn-primary-hover-bg: var(--color-ink-deep);
+  --cc-btn-primary-border: var(--color-ink);
+  --cc-btn-primary-hover-border: var(--color-ink-deep);
+  --cc-btn-secondary-bg: var(--color-ground-sunken);
+  --cc-btn-secondary-color: var(--color-ink);
+  --cc-btn-secondary-hover-bg: var(--color-line);
+  --cc-toggle-on-bg: var(--color-ink);
 }

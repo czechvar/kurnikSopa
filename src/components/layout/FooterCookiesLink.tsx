@@ -15,7 +15,7 @@ export function FooterCookiesLink() {
     <button
       type="button"
       onClick={handleClick}
-      className="underline hover:text-brand-cream transition-colors"
+      className="underline underline-offset-4 hover:text-ground"
     >
       {t('manageButton')}
     </button>

@@ -78,9 +78,9 @@ export function LoginForm() {
         {t('submit')}
       </button>
       <div className="flex justify-between text-sm pt-2">
-        <Link href="/zapomenute-heslo" className="text-brand-gold hover:underline">{t('forgotLink')}</Link>
+        <Link href="/zapomenute-heslo" className="text-ink font-medium underline underline-offset-4 hover:text-ink-deep">{t('forgotLink')}</Link>
         <span>
-          {t('noAccount')} <Link href="/registrace" className="text-brand-gold hover:underline">{t('registerLink')}</Link>
+          {t('noAccount')} <Link href="/registrace" className="text-ink font-medium underline underline-offset-4 hover:text-ink-deep">{t('registerLink')}</Link>
         </span>
       </div>
     </form>

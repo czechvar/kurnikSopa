@@ -26,7 +26,7 @@ export default async function AboutPage({ params }: Props) {
         <h1 className="font-heading text-4xl mb-8">{t('title')}</h1>
 
         {page?.content ? (
-          <div className="prose prose-lg prose-invert max-w-none">
+          <div className="prose prose-lg max-w-none">
             <RichText data={page.content} />
           </div>
         ) : (

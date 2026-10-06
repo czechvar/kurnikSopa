@@ -172,7 +172,7 @@ export default async function EventDetailPage({ params }: Props) {
                 href={`https://wa.me/${normalizeWhatsAppHref(whatsapp)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block border-2 border-brand-cream text-brand-cream font-semibold px-6 py-3 rounded-lg hover:bg-brand-cream hover:text-brand-green-deep transition-colors"
+                className="inline-block border-2 border-ink text-ink font-semibold px-6 py-3 rounded-lg hover:bg-ground-sunken transition-colors"
               >
                 {t('whatsapp')}
               </a>
@@ -181,7 +181,7 @@ export default async function EventDetailPage({ params }: Props) {
         )}
 
         {event.description && (
-          <div className="prose prose-lg prose-invert max-w-none">
+          <div className="prose prose-lg max-w-none">
             <RichText data={event.description} />
           </div>
         )}
