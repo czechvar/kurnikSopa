@@ -95,7 +95,7 @@ export default async function CookiesPage({ params }: Props) {
         <h2>{t('section5Title')}</h2>
         <p>{t('section5Body')}</p>
 
-        <p className="mt-12 text-sm text-text-secondary">
+        <p className="mt-12 text-sm text-ink-muted">
           <em>{t('validFrom')}</em>
         </p>
       </div>

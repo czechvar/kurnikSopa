@@ -75,8 +75,8 @@ export function CartView({ cart, locale }: Props) {
     return (
       <div className="text-center py-12 space-y-4">
         <h2 className="text-xl font-semibold">{t('empty.title')}</h2>
-        <p className="text-text-secondary">{t('empty.body')}</p>
-        <Link href="/produkty" className="inline-block bg-brand-cream text-brand-green hover:bg-brand-cream-dark px-6 py-3 rounded-lg font-medium">
+        <p className="text-ink-muted">{t('empty.body')}</p>
+        <Link href="/produkty" className="inline-block bg-ink text-ground hover:bg-ink-deep px-6 py-3 rounded-lg font-medium">
           {t('empty.cta')}
         </Link>
       </div>
@@ -99,7 +99,7 @@ export function CartView({ cart, locale }: Props) {
               </div>
               <div className="flex-1 min-w-0">
                 <div className="font-semibold truncate">{name}</div>
-                <div className="text-sm text-text-secondary">{formatCzk(unitPrice)}{typeof p === 'object' && p.unit ? ` / ${p.unit}` : ''}</div>
+                <div className="text-sm text-ink-muted">{formatCzk(unitPrice)}{typeof p === 'object' && p.unit ? ` / ${p.unit}` : ''}</div>
               </div>
               <div className="flex items-center gap-2">
                 <button
@@ -142,7 +142,7 @@ export function CartView({ cart, locale }: Props) {
         </div>
       </div>
 
-      <Link href="/pokladna" className="block w-full text-center bg-brand-cream text-brand-green hover:bg-brand-cream-dark py-3 rounded-lg font-semibold">
+      <Link href="/pokladna" className="block w-full text-center bg-ink text-ground hover:bg-ink-deep py-3 rounded-lg font-semibold">
         {t('cta.checkout')}
       </Link>
     </div>

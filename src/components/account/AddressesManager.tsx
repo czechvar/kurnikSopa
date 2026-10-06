@@ -75,7 +75,7 @@ export function AddressesManager({ userId, defaultAddresses }: Props) {
         {errorKey && (
           <div role="alert" className="rounded-lg bg-red-50 text-red-800 px-4 py-3">{t(errorKey as 'errors.generic')}</div>
         )}
-        {rows.length === 0 && <p className="text-text-secondary">{t('empty')}</p>}
+        {rows.length === 0 && <p className="text-ink-muted">{t('empty')}</p>}
         {rows.map((r, i) => (
           <fieldset key={i} className="border border-gray-200 rounded-lg p-4 space-y-3">
             <legend className="px-2 text-sm font-medium">{r.label || `#${i + 1}`}</legend>
@@ -104,7 +104,7 @@ export function AddressesManager({ userId, defaultAddresses }: Props) {
           <button type="button" onClick={add} className="border border-ink text-ink font-semibold rounded-lg px-5 py-2 hover:bg-ground-sunken">
             {t('addRow')}
           </button>
-          <button type="submit" disabled={submitting} className="bg-brand-cream text-brand-green font-semibold rounded-lg px-5 py-2 hover:bg-brand-cream-dark disabled:opacity-60">
+          <button type="submit" disabled={submitting} className="bg-ink text-ground font-semibold rounded-lg px-5 py-2 hover:bg-ink-deep disabled:opacity-60">
             {t('save')}
           </button>
         </div>

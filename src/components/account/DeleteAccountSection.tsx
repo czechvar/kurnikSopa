@@ -43,7 +43,7 @@ export function DeleteAccountSection({ userId, userEmail }: Props) {
   return (
     <section aria-labelledby="delete-h2">
       <h2 id="delete-h2" className="text-xl font-semibold text-red-700 mb-4">{t('title')}</h2>
-      <p className="text-text-secondary mb-4">{t('warning')}</p>
+      <p className="text-ink-muted mb-4">{t('warning')}</p>
       <button type="button" onClick={() => setOpen(true)} className="border border-red-700 text-red-700 font-semibold rounded-lg px-5 py-2 hover:bg-red-700 hover:text-white">
         {t('button')}
       </button>

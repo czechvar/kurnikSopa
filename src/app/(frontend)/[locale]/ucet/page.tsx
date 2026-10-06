@@ -25,11 +25,11 @@ export default async function AccountPage({ params }: Props) {
       <h1 className="text-3xl font-bold">{t('title')}</h1>
       <Link
         href="/ucet/objednavky"
-        className="block bg-white rounded-lg p-5 border border-gray-200 hover:border-brand-green transition-colors"
+        className="block bg-white rounded-lg p-5 border border-gray-200 hover:border-ink transition-colors"
       >
         <div className="flex items-center justify-between gap-3">
           <span className="font-semibold">{t('orders.title')}</span>
-          <span className="text-sm text-brand-green">{t('orders.linkCardCta')} →</span>
+          <span className="text-sm text-ink">{t('orders.linkCardCta')} →</span>
         </div>
       </Link>
       <PersonalInfoForm

@@ -72,7 +72,7 @@ export function PersonalInfoForm({ userId, email, defaultValues }: Props) {
           <label htmlFor="phone" className="block text-sm font-medium mb-1">{t('phone')}</label>
           <input id="phone" type="tel" required value={values.phone} onChange={(e) => setValues((v) => ({ ...v, phone: e.target.value }))} className="w-full rounded-lg border border-gray-300 px-3 py-2" />
         </div>
-        <button type="submit" disabled={submitting} className="bg-brand-green text-brand-cream font-semibold rounded-lg px-5 py-2 hover:bg-brand-green-deep disabled:opacity-60">
+        <button type="submit" disabled={submitting} className="bg-ink text-ground font-semibold rounded-lg px-5 py-2 hover:bg-ink-deep disabled:opacity-60">
           {t('save')}
         </button>
       </form>

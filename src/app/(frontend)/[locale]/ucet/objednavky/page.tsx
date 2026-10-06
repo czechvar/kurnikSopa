@@ -59,10 +59,10 @@ export default async function OrdersListPage({ params }: Props) {
       {orders.length === 0 ? (
         <div className="bg-white rounded-lg p-8 border border-gray-200 text-center space-y-4">
           <h2 className="text-xl font-semibold">{t('empty.title')}</h2>
-          <p className="text-text-secondary">{t('empty.body')}</p>
+          <p className="text-ink-muted">{t('empty.body')}</p>
           <Link
             href="/produkty"
-            className="inline-block bg-brand-cream text-brand-green hover:bg-brand-cream-dark px-6 py-3 rounded-lg font-medium"
+            className="inline-block bg-ink text-ground hover:bg-ink-deep px-6 py-3 rounded-lg font-medium"
           >
             {t('empty.cta')}
           </Link>
@@ -76,12 +76,12 @@ export default async function OrdersListPage({ params }: Props) {
               <li key={order.id}>
                 <Link
                   href={{ pathname: '/ucet/objednavky/[orderNumber]', params: { orderNumber: order.orderNumber } }}
-                  className="block bg-white rounded-lg p-4 border border-gray-200 hover:border-brand-green transition-colors"
+                  className="block bg-white rounded-lg p-4 border border-gray-200 hover:border-ink transition-colors"
                 >
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <div className="space-y-1">
                       <div className="font-semibold">{t('columns.orderNumber')}: {order.orderNumber}</div>
-                      <div className="text-sm text-text-secondary">{formatDate(order.createdAt, locale)}</div>
+                      <div className="text-sm text-ink-muted">{formatDate(order.createdAt, locale)}</div>
                     </div>
                     <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                       <span className="font-semibold whitespace-nowrap">{formatCzk(order.totalAmount)}</span>
