@@ -101,7 +101,7 @@ export function AddressesManager({ userId, defaultAddresses }: Props) {
           </fieldset>
         ))}
         <div className="flex gap-3">
-          <button type="button" onClick={add} className="border border-brand-cream text-brand-cream font-semibold rounded-lg px-5 py-2 hover:bg-brand-cream hover:text-brand-green">
+          <button type="button" onClick={add} className="border border-ink text-ink font-semibold rounded-lg px-5 py-2 hover:bg-ground-sunken">
             {t('addRow')}
           </button>
           <button type="submit" disabled={submitting} className="bg-brand-cream text-brand-green font-semibold rounded-lg px-5 py-2 hover:bg-brand-cream-dark disabled:opacity-60">

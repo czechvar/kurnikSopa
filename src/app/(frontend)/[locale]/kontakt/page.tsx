@@ -81,7 +81,7 @@ export default async function ContactPage({ params }: Props) {
                     href={settings.social.facebook}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-block border-2 border-brand-cream text-brand-cream font-semibold px-5 py-2 rounded-lg hover:bg-brand-cream hover:text-brand-green transition-colors text-sm"
+                    className="inline-block border-2 border-ink text-ink font-semibold px-5 py-2 rounded-lg hover:bg-ground-sunken transition-colors text-sm"
                   >
                     Facebook
                   </a>
@@ -91,7 +91,7 @@ export default async function ContactPage({ params }: Props) {
                     href={settings.social.instagram}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-block border-2 border-brand-cream text-brand-cream font-semibold px-5 py-2 rounded-lg hover:bg-brand-cream hover:text-brand-green transition-colors text-sm"
+                    className="inline-block border-2 border-ink text-ink font-semibold px-5 py-2 rounded-lg hover:bg-ground-sunken transition-colors text-sm"
                   >
                     Instagram
                   </a>

@@ -61,7 +61,7 @@ export default async function ProductDetailPage({ params }: Props) {
                 />
               ) : (
                 <div className="flex items-center justify-center h-full">
-                  <span className="text-brand-cream/80">Foto produktu</span>
+                  <span className="text-ink-muted">Foto produktu</span>
                 </div>
               )
             })()}
@@ -92,10 +92,10 @@ export default async function ProductDetailPage({ params }: Props) {
             )}
 
             {product.seasonal && (
-              <div className="bg-brand-gold/20 border border-brand-gold/50 text-brand-cream rounded-lg p-3 mb-4 text-sm">
+              <div className="bg-accent/25 border border-accent text-ink-deep rounded-lg p-3 mb-4 text-sm">
                 <span className="font-medium">Sezónní produkt</span>
                 {product.availableFrom && product.availableTo && (
-                  <span className="text-brand-cream/80">
+                  <span className="text-ink-muted">
                     {' '}— dostupné {new Date(product.availableFrom).toLocaleDateString('cs-CZ', { month: 'long' })}
                     {' '}až {new Date(product.availableTo).toLocaleDateString('cs-CZ', { month: 'long' })}
                   </span>
@@ -130,7 +130,7 @@ export default async function ProductDetailPage({ params }: Props) {
                 href="https://wa.me/420774801667"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block border-2 border-brand-cream text-brand-cream font-semibold px-6 py-3 rounded-lg hover:bg-brand-cream hover:text-brand-green-deep transition-colors"
+                className="inline-block border-2 border-ink text-ink font-semibold px-6 py-3 rounded-lg hover:bg-ground-sunken transition-colors"
               >
                 WhatsApp
               </a>
@@ -144,7 +144,7 @@ export default async function ProductDetailPage({ params }: Props) {
 
         {/* Full description */}
         {product.description && (
-          <div className="mt-12 prose prose-lg prose-invert max-w-none">
+          <div className="mt-12 prose prose-lg max-w-none">
             <h2 className="font-heading text-2xl mb-4">Popis</h2>
             <RichText data={product.description} />
           </div>

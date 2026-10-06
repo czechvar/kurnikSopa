@@ -2,22 +2,37 @@
 @plugin "@tailwindcss/typography";
 
 @theme {
-  /* Kurník & Šopa brand colors — sourced from live site (kurnik-sopa.cz) */
-  --color-brand-green: #004f3f;
-  --color-brand-green-dark: #00382c;
-  --color-brand-green-deep: #001803;
-  --color-brand-green-light: #2D7A50;
-  --color-brand-cream: #f2eadd;
-  --color-brand-cream-dark: #e3d8c2;
-  --color-brand-gold: #C8A951;
-  --color-brand-gold-dark: #A88B3D;
+  /* Kurník & Šopa — light palette (spec 2026-10-03 §1). Contrast pairs are
+     checked by tests/unit/design/contrast.test.ts. Marigold is a fill only:
+     on the light ground it is 1.7:1 and must never be used for text. */
+  --color-ground: #FFFDFB;
+  --color-ground-sunken: #F6F1EA;
+  --color-ink: #285A5B;
+  --color-ink-muted: #456766;
+  --color-ink-deep: #0D2120;
+  --color-accent: #FFB84D;
+  --color-accent-strong: #F2A63A;
+  --color-panel-blush: #F2E7E4;
+  --color-panel-sage: #DDE6E2;
+  --color-line: #E8E2DB;
 
-  /* Semantic */
-  --color-surface: #004f3f;
-  --color-surface-muted: #00382c;
-  --color-text-primary: #f2eadd;
-  --color-text-secondary: #d9cfbd;
-  --color-text-muted: #a89d88;
+  /* LEGACY ALIASES — transition only. Routes not yet redesigned still use the
+     old dark-ground names; these map them onto the new tokens so they stay
+     readable. Delete once `grep -rn "brand-\|text-text-\|bg-surface" src`
+     finds nothing (PR B of the redesign). */
+  --color-brand-green: var(--color-ink);
+  --color-brand-green-dark: var(--color-ink-deep);
+  --color-brand-green-deep: var(--color-ink-deep);
+  --color-brand-green-light: var(--color-panel-sage);
+  --color-brand-cream: var(--color-ground-sunken);
+  --color-brand-cream-dark: var(--color-line);
+  --color-brand-gold: var(--color-accent);
+  --color-brand-gold-dark: var(--color-accent-strong);
+  --color-surface: var(--color-ground);
+  --color-surface-muted: var(--color-ground-sunken);
+  --color-text-primary: var(--color-ink);
+  --color-text-secondary: var(--color-ink-muted);
+  --color-text-muted: var(--color-ink-muted);
 
   /* Fonts — variable Google fonts wired via next/font in the locale layout */
   --font-sans: var(--font-parkinsans), ui-sans-serif, system-ui, sans-serif;
@@ -27,45 +42,43 @@
 @layer base {
   /* Storefront body styling — applied via the .farm-frontend class on the
      (frontend) layout's body. Not applied app-wide so the Payload admin keeps
-     its own light theme. */
+     its own theme. */
   .farm-frontend {
-    background-color: var(--color-brand-green);
-    background-image: url('/body-bg.svg');
-    background-repeat: no-repeat;
-    background-size: 100% auto;
-    background-attachment: fixed;
-    color: var(--color-brand-cream);
+    background-color: var(--color-ground);
+    color: var(--color-ink);
   }
 
   .farm-frontend h1,
-  .farm-frontend h2 {
+  .farm-frontend h2,
+  .farm-frontend h3 {
     font-family: var(--font-heading);
     font-weight: 800;
     font-optical-sizing: auto;
   }
-
-  /* Make prose-invert match the cream header color throughout */
-  .prose-invert {
-    --tw-prose-invert-body: var(--color-brand-cream);
-    --tw-prose-invert-headings: var(--color-brand-cream);
-    --tw-prose-invert-lead: var(--color-brand-cream);
-    --tw-prose-invert-bold: var(--color-brand-cream);
-    --tw-prose-invert-counters: var(--color-brand-cream);
-    --tw-prose-invert-bullets: var(--color-brand-cream);
-    --tw-prose-invert-quotes: var(--color-brand-cream);
-    --tw-prose-invert-quote-borders: color-mix(in srgb, var(--color-brand-cream) 30%, transparent);
-    --tw-prose-invert-captions: color-mix(in srgb, var(--color-brand-cream) 75%, transparent);
-    --tw-prose-invert-hr: color-mix(in srgb, var(--color-brand-cream) 20%, transparent);
-    --tw-prose-invert-links: var(--color-brand-cream);
-  }
 }
 
-/* White cards sit on the dark green page background; their text must not
-   inherit the cream body color or it disappears. These rules are intentionally
-   unlayered so they win over Tailwind's @layer utilities (e.g. text-text-secondary). */
-.farm-frontend .bg-white {
-  color: var(--color-brand-green-deep);
+/* Long-form CMS text. Unlayered on purpose: the typography plugin sets these
+   variables inside Tailwind's utilities layer, and layer order beats
+   specificity, so a @layer base override would lose. */
+.farm-frontend .prose {
+  --tw-prose-body: var(--color-ink);
+  --tw-prose-headings: var(--color-ink);
+  --tw-prose-lead: var(--color-ink-muted);
+  --tw-prose-links: var(--color-ink);
+  --tw-prose-bold: var(--color-ink-deep);
+  --tw-prose-counters: var(--color-ink-muted);
+  --tw-prose-bullets: var(--color-ink-muted);
+  --tw-prose-hr: var(--color-line);
+  --tw-prose-quotes: var(--color-ink);
+  --tw-prose-quote-borders: var(--color-accent);
+  --tw-prose-captions: var(--color-ink-muted);
 }
-.farm-frontend .bg-white .text-text-secondary {
-  color: #6b7280; /* gray-500 — readable secondary on white */
+
+/* Visible keyboard focus everywhere on the storefront (WCAG 2.4.7). */
+.farm-frontend :focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 2px;
+}
+.farm-frontend .on-dark :focus-visible {
+  outline-color: var(--color-ground);
 }

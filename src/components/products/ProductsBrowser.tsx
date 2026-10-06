@@ -35,7 +35,7 @@ export function ProductsBrowser({ products, categories }: Props) {
             'px-4 py-2 rounded-full text-sm font-semibold transition-colors ' +
             (selectedId === null
               ? 'bg-brand-cream text-brand-green-deep'
-              : 'bg-brand-green-dark text-brand-cream hover:bg-brand-green-light')
+              : 'bg-brand-green-dark text-brand-cream hover:bg-ink')
           }
         >
           {t('filterAll')}
@@ -52,7 +52,7 @@ export function ProductsBrowser({ products, categories }: Props) {
                 'px-4 py-2 rounded-full text-sm font-semibold transition-colors ' +
                 (active
                   ? 'bg-brand-cream text-brand-green-deep'
-                  : 'bg-brand-green-dark text-brand-cream hover:bg-brand-green-light')
+                  : 'bg-brand-green-dark text-brand-cream hover:bg-ink')
               }
             >
               {cat.name}
@@ -90,7 +90,7 @@ export function ProductsBrowser({ products, categories }: Props) {
                   />
                 ) : (
                   <div className="flex items-center justify-center h-full">
-                    <span className="text-brand-cream/80 text-sm">Foto</span>
+                    <span className="text-ink-muted text-sm">Foto</span>
                   </div>
                 )}
               </div>
