@@ -9,7 +9,7 @@ export default async function NotFound() {
       <p className="text-xl mb-8">{t('body')}</p>
       <Link
         href="/"
-        className="inline-block bg-brand-cream text-brand-green-deep font-semibold px-6 py-3 rounded-lg hover:bg-brand-cream-dark transition-colors"
+        className="inline-block bg-ink text-ground font-semibold px-6 py-3 rounded-lg hover:bg-ink-deep transition-colors"
       >
         {t('home')}
       </Link>

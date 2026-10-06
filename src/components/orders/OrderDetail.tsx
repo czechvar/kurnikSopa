@@ -54,7 +54,7 @@ export async function OrderDetail({ order, settings, locale, showQr }: Props) {
         <h2 className="text-lg font-semibold mb-3">{t('itemsTitle')}</h2>
         <table className="w-full text-sm">
           <thead>
-            <tr className="text-left text-text-secondary">
+            <tr className="text-left text-ink-muted">
               <th className="pb-2 font-medium">{t('itemsTitle')}</th>
               <th className="pb-2 text-right font-medium">{t('qty')}</th>
               <th className="pb-2 text-right font-medium">{t('unitPrice')}</th>
@@ -72,7 +72,7 @@ export async function OrderDetail({ order, settings, locale, showQr }: Props) {
                 <tr key={idx} className="border-t border-gray-200">
                   <td className="py-2">
                     {name}
-                    {unit && <span className="text-text-secondary"> ({unit})</span>}
+                    {unit && <span className="text-ink-muted"> ({unit})</span>}
                   </td>
                   <td className="py-2 text-right">{it.quantity}×</td>
                   <td className="py-2 text-right">{formatCzk(unitPrice)}</td>
@@ -103,10 +103,10 @@ export async function OrderDetail({ order, settings, locale, showQr }: Props) {
           </p>
         )}
         {order.preferredDate && (
-          <p><span className="text-text-secondary">{t('preferredDate')}: </span>{formatDate(order.preferredDate, locale)}</p>
+          <p><span className="text-ink-muted">{t('preferredDate')}: </span>{formatDate(order.preferredDate, locale)}</p>
         )}
         {order.customerNote && (
-          <p><span className="text-text-secondary">{t('customerNote')}: </span>{order.customerNote}</p>
+          <p><span className="text-ink-muted">{t('customerNote')}: </span>{order.customerNote}</p>
         )}
       </section>
 
@@ -119,15 +119,15 @@ export async function OrderDetail({ order, settings, locale, showQr }: Props) {
               <div className="flex justify-center">
                 <QrInline spayd={order.qrSpayd} alt={t('qrAlt')} />
               </div>
-              <p className="text-sm text-text-secondary">{t('manualFallback')}</p>
+              <p className="text-sm text-ink-muted">{t('manualFallback')}</p>
               <dl className="grid grid-cols-2 gap-2 text-sm">
-                <dt className="text-text-secondary">{t('accountLabel')}</dt>
+                <dt className="text-ink-muted">{t('accountLabel')}</dt>
                 <dd className="font-semibold">{fmtCzAccount(settings)}</dd>
-                <dt className="text-text-secondary">{t('bankLabel')}</dt>
+                <dt className="text-ink-muted">{t('bankLabel')}</dt>
                 <dd className="font-semibold">{settings.payment?.bankName ?? ''}</dd>
-                <dt className="text-text-secondary">{t('amountLabel')}</dt>
+                <dt className="text-ink-muted">{t('amountLabel')}</dt>
                 <dd className="font-semibold">{formatCzk(order.totalAmount)}</dd>
-                <dt className="text-text-secondary">{t('vsLabel')}</dt>
+                <dt className="text-ink-muted">{t('vsLabel')}</dt>
                 <dd className="font-semibold">{orderNumber}</dd>
               </dl>
             </div>

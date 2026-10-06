@@ -99,7 +99,7 @@ export function AddToCartButton({ productId, productName, minimumOrder = 1, isLo
       <button
         onClick={add}
         disabled={submitting}
-        className="flex-1 bg-brand-cream text-brand-green hover:bg-brand-cream-dark py-3 px-6 rounded-lg font-semibold disabled:opacity-60"
+        className="flex-1 bg-ink text-ground hover:bg-ink-deep py-3 px-6 rounded-lg font-semibold disabled:opacity-60"
       >
         {t('added.toast').replace('Přidáno do', 'Přidat do').replace('Added to', 'Add to')}
       </button>

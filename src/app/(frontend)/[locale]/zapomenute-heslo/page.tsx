@@ -18,7 +18,7 @@ export default async function ForgotPasswordPage({ params }: Props) {
   return (
     <div className="max-w-md mx-auto px-6 py-12">
       <h1 className="text-3xl font-bold mb-2">{t('title')}</h1>
-      <p className="text-text-secondary mb-6">{t('intro')}</p>
+      <p className="text-ink-muted mb-6">{t('intro')}</p>
       <ForgotPasswordForm />
     </div>
   )

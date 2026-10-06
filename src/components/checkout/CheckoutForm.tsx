@@ -177,14 +177,14 @@ export function CheckoutForm({ cart, user, farm, bankConfigured, locale }: Props
             <input type="radio" name="dm" checked={deliveryMethod === 'pickup'} onChange={() => setDeliveryMethod('pickup')} className="mt-1" />
             <span>
               <span className="font-medium block">{t('deliveryMethod.pickup')}</span>
-              <span className="text-sm text-text-secondary">{t('deliveryMethod.pickupInfo')}</span>
+              <span className="text-sm text-ink-muted">{t('deliveryMethod.pickupInfo')}</span>
             </span>
           </label>
           <label className="flex items-start gap-3">
             <input type="radio" name="dm" checked={deliveryMethod === 'delivery'} onChange={() => setDeliveryMethod('delivery')} className="mt-1" />
             <span>
               <span className="font-medium block">{t('deliveryMethod.delivery')}</span>
-              <span className="text-sm text-text-secondary">{t('deliveryMethod.deliveryFreeRegion')}</span>
+              <span className="text-sm text-ink-muted">{t('deliveryMethod.deliveryFreeRegion')}</span>
             </span>
           </label>
         </fieldset>
@@ -252,11 +252,11 @@ export function CheckoutForm({ cart, user, farm, bankConfigured, locale }: Props
       </label>
       {err('agreement') && <div className="text-xs text-red-600 -mt-3">{err('agreement')}</div>}
 
-      <button type="submit" disabled={submitting} className="w-full bg-brand-cream text-brand-green hover:bg-brand-cream-dark py-4 rounded-lg font-bold text-lg disabled:opacity-60">
+      <button type="submit" disabled={submitting} className="w-full bg-ink text-ground hover:bg-ink-deep py-4 rounded-lg font-bold text-lg disabled:opacity-60">
         {submitting ? '…' : t('submit')}
       </button>
 
-      <Link href="/kosik" className="block text-center text-sm text-text-secondary underline">
+      <Link href="/kosik" className="block text-center text-sm text-ink-muted underline">
         {tCart('cta.continueShopping')}
       </Link>
     </form>

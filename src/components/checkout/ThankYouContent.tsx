@@ -14,12 +14,12 @@ export async function ThankYouContent({ order, settings, locale }: Props) {
     <div className="space-y-8">
       <div className="text-center space-y-2">
         <h1 className="text-3xl font-bold text-ink">{t('title')}</h1>
-        <p className="text-text-secondary">{t('body', { orderNumber })}</p>
+        <p className="text-ink-muted">{t('body', { orderNumber })}</p>
       </div>
 
       <OrderDetail order={order} settings={settings} locale={locale} showQr />
 
-      <Link href="/produkty" className="block text-center bg-brand-cream text-brand-green hover:bg-brand-cream-dark py-3 rounded-lg font-semibold">
+      <Link href="/produkty" className="block text-center bg-ink text-ground hover:bg-ink-deep py-3 rounded-lg font-semibold">
         {tCart('cta.continueShopping')}
       </Link>
     </div>

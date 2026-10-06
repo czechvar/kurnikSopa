@@ -16,24 +16,6 @@
   --color-panel-sage: #DDE6E2;
   --color-line: #E8E2DB;
 
-  /* LEGACY ALIASES — transition only. Routes not yet redesigned still use the
-     old dark-ground names; these map them onto the new tokens so they stay
-     readable. Delete once `grep -rn "brand-\|text-text-\|bg-surface" src`
-     finds nothing (PR B of the redesign). */
-  --color-brand-green: var(--color-ink);
-  --color-brand-green-dark: var(--color-ink-deep);
-  --color-brand-green-deep: var(--color-ink-deep);
-  --color-brand-green-light: var(--color-panel-sage);
-  --color-brand-cream: var(--color-ground-sunken);
-  --color-brand-cream-dark: var(--color-line);
-  --color-brand-gold: var(--color-accent);
-  --color-brand-gold-dark: var(--color-accent-strong);
-  --color-surface: var(--color-ground);
-  --color-surface-muted: var(--color-ground-sunken);
-  --color-text-primary: var(--color-ink);
-  --color-text-secondary: var(--color-ink-muted);
-  --color-text-muted: var(--color-ink-muted);
-
   /* Fonts — variable Google fonts wired via next/font in the locale layout */
   --font-sans: var(--font-parkinsans), ui-sans-serif, system-ui, sans-serif;
   --font-heading: var(--font-bricolage), var(--font-parkinsans), ui-sans-serif, system-ui, sans-serif;

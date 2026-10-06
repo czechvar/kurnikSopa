@@ -90,7 +90,7 @@ export function ChangePasswordForm({ userEmail, userId }: Props) {
             <input id="confirm" type="password" required minLength={8} value={confirm} onChange={(e) => setConfirm(e.target.value)} className="w-full rounded-lg border border-gray-300 px-3 py-2" autoComplete="new-password" />
           </div>
         </div>
-        <button type="submit" disabled={submitting} className="bg-brand-green text-brand-cream font-semibold rounded-lg px-5 py-2 hover:bg-brand-green-deep disabled:opacity-60">
+        <button type="submit" disabled={submitting} className="bg-ink text-ground font-semibold rounded-lg px-5 py-2 hover:bg-ink-deep disabled:opacity-60">
           {t('save')}
         </button>
       </form>

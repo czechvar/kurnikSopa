@@ -26,7 +26,7 @@ export default async function SignupPage({ params, searchParams }: Props) {
     return (
       <div className="max-w-md mx-auto px-6 py-12">
         <h1 className="text-3xl font-bold mb-4">{t('success.checkEmailTitle')}</h1>
-        <p className="text-text-secondary">{t('success.checkEmailBody')}</p>
+        <p className="text-ink-muted">{t('success.checkEmailBody')}</p>
       </div>
     )
   }
