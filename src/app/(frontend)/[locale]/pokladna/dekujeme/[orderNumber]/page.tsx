@@ -3,6 +3,7 @@ import { getPayload } from 'payload'
 import config from '@payload-config'
 import { notFound } from 'next/navigation'
 import { ThankYouContent } from '@/components/checkout/ThankYouContent'
+import { BookingPanel } from '@/components/orders/BookingPanel'
 import { findOrderForViewer } from '@/lib/orders/findOrderForViewer'
 import type { SiteSetting } from '@/payload-types'
 
@@ -32,7 +33,9 @@ export default async function ThankYouPage({ params, searchParams }: Props) {
 
   return (
     <div className="mx-auto max-w-2xl px-6 py-12">
-      <ThankYouContent order={order} settings={settings} locale={locale} isGuest={isGuest} />
+      <ThankYouContent order={order} settings={settings} locale={locale} isGuest={isGuest} isBooking={Boolean(order.batch)}>
+        <BookingPanel payload={payload} order={order} settings={settings} locale={locale} token={token} />
+      </ThankYouContent>
     </div>
   )
 }

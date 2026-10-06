@@ -22,7 +22,7 @@ async function seedOrder(
       deliveryMethod: 'pickup',
       paymentMethod: 'cash',
       paymentStatus: 'unpaid',
-      orderStatus: 'received',
+      orderStatus: 'confirmed',
       preferredDate: '2026-06-01',
       locale: 'cs',
     } as any,
@@ -90,14 +90,14 @@ describe('Orders access control', () => {
       id: order.id,
       data: {
         paymentStatus: 'paid',
-        orderStatus: 'shipped',
+        orderStatus: 'ready',
         notes: 'picked up',
       } as any,
       user: staff,
       overrideAccess: false,
     })
     expect(updated.paymentStatus).toBe('paid')
-    expect(updated.orderStatus).toBe('shipped')
+    expect(updated.orderStatus).toBe('ready')
 
     // Staff attempting to change totalAmount — field access is adminOnly,
     // so Payload silently strips it; the value must remain unchanged.

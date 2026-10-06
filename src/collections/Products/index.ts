@@ -57,6 +57,40 @@ export const Products: CollectionConfig = {
       ],
     },
     {
+      // How the product is sold. `unit` products go through the cart and are
+      // bought now; `batch` products are booked against a Batch ("turnus"),
+      // ordered by the piece and priced by weight at pickup.
+      name: 'soldBy',
+      type: 'select',
+      required: true,
+      defaultValue: 'unit',
+      label: { cs: 'Způsob prodeje', en: 'Sold by' },
+      options: [
+        { label: { cs: 'Běžný nákup (vejce, zelenina)', en: 'Buy now (eggs, vegetables)' }, value: 'unit' },
+        { label: { cs: 'Rezervace na turnus (kuřata, husy, králíci)', en: 'Booking against a batch (chickens, geese, rabbits)' }, value: 'batch' },
+      ],
+      admin: { position: 'sidebar' },
+    },
+    {
+      type: 'row',
+      admin: { condition: (data) => data?.soldBy === 'batch' },
+      fields: [
+        {
+          name: 'averageWeight',
+          type: 'number',
+          min: 0,
+          label: { cs: 'Průměrná váha kusu (kg)', en: 'Average weight per piece (kg)' },
+          admin: { description: { cs: 'Pro odhad ceny: cena/kg × průměrná váha.', en: 'For the price estimate: price/kg × average weight.' } },
+        },
+        {
+          name: 'weightRange',
+          type: 'text',
+          label: { cs: 'Rozpětí váhy', en: 'Weight range' },
+          admin: { description: { cs: 'Např. „1,6–3 kg“.', en: 'E.g. “1.6–3 kg”.' } },
+        },
+      ],
+    },
+    {
       name: 'category',
       type: 'relationship',
       relationTo: 'product-categories',

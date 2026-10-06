@@ -42,6 +42,9 @@ export const addItemEndpoint: Endpoint = {
     if (!product || product.status !== 'published') {
       return Response.json({ ok: false, reason: 'productNotFound' }, { status: 404 })
     }
+    if (product.soldBy === 'batch') {
+      return Response.json({ ok: false, reason: 'bookingOnly' }, { status: 409 })
+    }
     const availability = availabilityOf(product)
     if (!availability.available) {
       return Response.json({ ok: false, reason: availability.reason }, { status: 409 })

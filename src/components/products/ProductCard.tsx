@@ -62,7 +62,9 @@ export async function ProductCard({ product, index = 0 }: Props) {
               <span className="text-sm font-normal text-ink-muted"> / {t(`units.${product.unit}`)}</span>
             )}
           </p>
-          {!availability.available ? (
+          {product.soldBy === 'batch' ? (
+            <Badge>{t('bookable')}</Badge>
+          ) : !availability.available ? (
             <Badge className="bg-ground-sunken text-ink-muted">{t(availability.reason)}</Badge>
           ) : product.seasonal ? (
             <Badge>{t('seasonal')}</Badge>

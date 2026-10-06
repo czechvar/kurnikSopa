@@ -1,4 +1,4 @@
-import type { Payload } from 'payload'
+import type { Payload, PayloadRequest } from 'payload'
 
 const PREFIX_LEN = 4   // YYYY
 const SEQ_LEN = 6      // NNNNNN
@@ -7,9 +7,12 @@ const TOTAL_LEN = PREFIX_LEN + SEQ_LEN
 /**
  * Returns the next available orderNumber in the form YYYYNNNNNN (10 digits).
  * Sequence resets each calendar year.
- * Note: not concurrency-safe — acceptable at single-staff launch volume.
+ *
+ * Concurrency: callers inside a transaction take an advisory lock first (see
+ * `prepareOrder`), so two orders created at the same moment get consecutive
+ * numbers instead of colliding on the unique index.
  */
-export async function generateOrderNumber(payload: Payload, now: Date = new Date()): Promise<string> {
+export async function generateOrderNumber(payload: Payload, now: Date = new Date(), req?: PayloadRequest): Promise<string> {
   const year = String(now.getUTCFullYear())
   const yearPrefix = year.slice(0, PREFIX_LEN)
 
@@ -19,6 +22,7 @@ export async function generateOrderNumber(payload: Payload, now: Date = new Date
     sort: '-orderNumber',
     limit: 1,
     depth: 0,
+    req,
   })
 
   let nextSeq = 1

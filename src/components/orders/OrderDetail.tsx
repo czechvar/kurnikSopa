@@ -55,6 +55,9 @@ export async function OrderDetail({ order, settings, locale }: Props) {
   const items = order.items ?? []
   const isHistoricDelivery = order.deliveryMethod === 'delivery'
   const place = pickupPlace(order, settings)
+  const isBooking = Boolean(order.batch)
+  const hasActuals = items.some(it => typeof it.actualWeight === 'number' || typeof it.actualTotal === 'number')
+  const amountDue = typeof order.finalAmount === 'number' ? order.finalAmount : order.totalAmount
 
   return (
     <div className="space-y-6">
@@ -66,7 +69,8 @@ export async function OrderDetail({ order, settings, locale }: Props) {
               <th className="pb-2 font-medium">{t('itemsTitle')}</th>
               <th className="pb-2 text-right font-medium">{t('qty')}</th>
               <th className="pb-2 text-right font-medium">{t('unitPrice')}</th>
-              <th className="pb-2 text-right font-medium">{t('lineTotal')}</th>
+              {hasActuals && <th className="pb-2 text-right font-medium">{t('actualWeight')}</th>}
+              <th className="pb-2 text-right font-medium">{isBooking ? t('estimate') : t('lineTotal')}</th>
             </tr>
           </thead>
           <tbody>
@@ -74,8 +78,8 @@ export async function OrderDetail({ order, settings, locale }: Props) {
               const p = it.product
               const name = productName(p, locale)
               const unit = productUnit(p)
-              const unitPrice = it.priceAtPurchase
-              const lineTotal = unitPrice * it.quantity
+              const unitPrice = it.priceAtPurchase ?? 0
+              const lineTotal = typeof it.actualTotal === 'number' ? it.actualTotal : isBooking && typeof it.estimatedTotal === 'number' ? it.estimatedTotal : unitPrice * it.quantity
               return (
                 <tr key={idx} className="border-t border-line">
                   <td className="py-2">
@@ -83,7 +87,8 @@ export async function OrderDetail({ order, settings, locale }: Props) {
                     {unit && <span className="text-ink-muted"> ({unit})</span>}
                   </td>
                   <td className="py-2 text-right">{it.quantity}×</td>
-                  <td className="py-2 text-right">{formatCzk(unitPrice)}</td>
+                  <td className="py-2 text-right">{formatCzk(unitPrice)}{isBooking && unit ? <span className="text-ink-muted">/{unit}</span> : null}</td>
+                  {hasActuals && <td className="py-2 text-right">{typeof it.actualWeight === 'number' ? `${it.actualWeight.toLocaleString(locale === 'en' ? 'en-GB' : 'cs-CZ')} kg` : '—'}</td>}
                   <td className="py-2 text-right font-semibold">{formatCzk(lineTotal)}</td>
                 </tr>
               )
@@ -91,11 +96,12 @@ export async function OrderDetail({ order, settings, locale }: Props) {
           </tbody>
           <tfoot>
             <tr className="border-t border-line">
-              <td colSpan={3} className="pt-3 text-right font-bold">{t('total')}</td>
-              <td className="pt-3 text-right font-bold">{formatCzk(order.totalAmount)}</td>
+              <td colSpan={hasActuals ? 4 : 3} className="pt-3 text-right font-bold">{isBooking && typeof order.finalAmount !== 'number' ? t('estimate') : t('total')}</td>
+              <td className="pt-3 text-right font-bold">{formatCzk(amountDue)}</td>
             </tr>
           </tfoot>
         </table>
+        {isBooking && typeof order.finalAmount !== 'number' && <p className="mt-3 text-sm text-ink-muted">{t('estimateNote')}</p>}
       </section>
 
       <section className="space-y-2 rounded-md border border-line bg-ground p-6 text-sm">
@@ -107,14 +113,20 @@ export async function OrderDetail({ order, settings, locale }: Props) {
               <>: <strong>{order.deliveryAddress.street}, {order.deliveryAddress.zip} {order.deliveryAddress.city}</strong></>
             )}
           </p>
-        ) : (
+        ) : isBooking && !order.pickupPoint ? null : (
           <div className="space-y-1">
             <p><span className="text-ink-muted">{t('pickupPoint')}: </span><strong>{place.name}</strong></p>
             <p>{place.address}</p>
             {place.note && <p className="whitespace-pre-line text-ink-muted">{place.note}</p>}
           </div>
         )}
-        {order.preferredDate && (
+        {order.pickupDay && (
+          <p><span className="text-ink-muted">{t('pickupDay')}: </span><strong>{formatDate(order.pickupDay, locale)}</strong></p>
+        )}
+        {!order.pickupDay && isBooking && (
+          <p className="text-ink-muted">{t('pickupDayPending')}</p>
+        )}
+        {order.preferredDate && !isBooking && (
           <p><span className="text-ink-muted">{t('preferredDate')}: </span>{formatDate(order.preferredDate, locale)}</p>
         )}
         {order.customerNote && (
@@ -124,7 +136,7 @@ export async function OrderDetail({ order, settings, locale }: Props) {
 
       <section className="rounded-md border border-line bg-ground p-6">
         <h2 className="mb-3 text-lg font-semibold text-ink">{t('paymentTitle')}</h2>
-        <p className="text-sm">{order.paymentStatus === 'paid' ? t('paymentPaid') : t('paymentCash', { amount: formatCzk(order.totalAmount) })}</p>
+        <p className="text-sm">{order.paymentStatus === 'paid' ? t('paymentPaid') : isBooking && typeof order.finalAmount !== 'number' ? t('paymentCashByWeight', { amount: formatCzk(amountDue) }) : t('paymentCash', { amount: formatCzk(amountDue) })}</p>
       </section>
     </div>
   )

@@ -1,6 +1,9 @@
 import type { CollectionConfig, Access, FieldAccess, Where } from 'payload'
 import { placeOrderEndpoint } from './endpoints/placeOrder'
+import { bookEndpoint } from './endpoints/book'
+import { confirmEndpoint, cancelEndpoint } from './endpoints/confirm'
 import { sendStatusEmails } from './hooks/sendStatusEmails'
+import { applyBatchRules, prepareOrder, syncBookedCount } from './hooks/batchOrders'
 
 const adminOnly: FieldAccess = ({ req }) => req.user?.role === 'admin'
 const adminOrStaff: FieldAccess = ({ req }) =>
@@ -32,8 +35,9 @@ export const Orders: CollectionConfig = {
     plural: { cs: 'Objednávky', en: 'Orders' },
   },
   access: {
-    // Customers never create orders directly; they go through /api/orders/place,
-    // which snapshots prices server-side. Staff may enter phone orders.
+    // Customers never create orders directly; they go through /api/orders/place
+    // or /api/orders/book, which snapshot prices server-side. Staff enter
+    // phone orders here.
     create: isAdminOrStaff,
     read: isAdminOrStaffOrOrderOwner,
     update: isAdminOrStaff,
@@ -41,22 +45,27 @@ export const Orders: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'orderNumber',
-    defaultColumns: ['orderNumber', 'customer', 'guestName', 'pickupPoint', 'preferredDate', 'totalAmount', 'orderStatus', 'paymentStatus'],
+    defaultColumns: ['orderNumber', 'customer', 'guestName', 'batch', 'pickupDay', 'pickupPoint', 'totalAmount', 'orderStatus', 'paymentStatus'],
     hidden: ({ user }) => user?.role !== 'admin' && user?.role !== 'staff',
+    description: {
+      cs: 'Telefonickou objednávku zadejte zde: vyberte turnus nebo produkt, počet kusů a vyplňte jméno a telefon, pokud zákazník nemá účet. Číslo objednávky a ceny se doplní samy.',
+      en: 'Enter phone orders here: pick a batch or product, the quantity, and the name and phone if the customer has no account. Order number and prices fill in by themselves.',
+    },
   },
-  endpoints: [placeOrderEndpoint],
+  endpoints: [placeOrderEndpoint, bookEndpoint, confirmEndpoint, cancelEndpoint],
   hooks: {
-    afterChange: [sendStatusEmails],
+    beforeValidate: [prepareOrder],
+    beforeChange: [applyBatchRules],
+    afterChange: [syncBookedCount, sendStatusEmails],
   },
   fields: [
     {
       name: 'orderNumber',
       type: 'text',
       unique: true,
-      required: true,
       label: { cs: 'Číslo objednávky', en: 'Order number' },
       access: { update: adminOnly },
-      admin: { readOnly: true },
+      admin: { readOnly: true, position: 'sidebar' },
     },
     {
       name: 'customer',
@@ -70,9 +79,9 @@ export const Orders: CollectionConfig = {
       type: 'row',
       admin: { condition: (data) => !data?.customer },
       fields: [
-        { name: 'guestName', type: 'text', label: { cs: 'Jméno a příjmení', en: 'Full name' }, access: { update: adminOnly } },
-        { name: 'guestPhone', type: 'text', label: { cs: 'Telefon', en: 'Phone' }, access: { update: adminOnly } },
-        { name: 'guestEmail', type: 'email', label: { cs: 'E-mail', en: 'Email' }, access: { update: adminOnly } },
+        { name: 'guestName', type: 'text', label: { cs: 'Jméno a příjmení', en: 'Full name' }, access: { update: adminOrStaff } },
+        { name: 'guestPhone', type: 'text', label: { cs: 'Telefon', en: 'Phone' }, access: { update: adminOrStaff } },
+        { name: 'guestEmail', type: 'email', label: { cs: 'E-mail', en: 'Email' }, access: { update: adminOrStaff } },
       ],
     },
     {
@@ -80,37 +89,64 @@ export const Orders: CollectionConfig = {
       type: 'text',
       index: true,
       access: { read: adminOrStaff, update: adminOnly },
-      admin: {
-        hidden: true,
-        readOnly: true,
-      },
+      admin: { hidden: true, readOnly: true },
+    },
+    {
+      // Set for bookings (glossary: Booking). A buy-now order has no batch.
+      name: 'batch',
+      type: 'relationship',
+      relationTo: 'batches',
+      index: true,
+      label: { cs: 'Turnus', en: 'Batch' },
+      access: { update: adminOnly },
+      admin: { position: 'sidebar', description: { cs: 'Vyplňte u rezervací. Objednávka pak drží kusy z kapacity turnusu.', en: 'Set for bookings. The order then holds units of the batch capacity.' } },
     },
     {
       name: 'items',
       type: 'array',
       required: true,
       label: { cs: 'Položky', en: 'Items' },
-      access: { update: adminOnly },
+      access: { update: adminOrStaff },
       fields: [
         {
-          name: 'product',
-          type: 'relationship',
-          relationTo: 'products',
-          required: true,
+          type: 'row',
+          fields: [
+            { name: 'product', type: 'relationship', relationTo: 'products', required: true, access: { update: adminOnly } },
+            { name: 'quantity', type: 'number', required: true, min: 1, label: { cs: 'Počet (ks)', en: 'Quantity' }, access: { update: adminOnly } },
+          ],
         },
         {
-          name: 'quantity',
-          type: 'number',
-          required: true,
-          min: 1,
-        },
-        {
-          name: 'priceAtPurchase',
-          type: 'number',
-          required: true,
-          admin: {
-            description: { cs: 'Cena v době objednání (snapshot)', en: 'Price at the time of ordering (snapshot)' },
-          },
+          type: 'row',
+          fields: [
+            {
+              name: 'priceAtPurchase',
+              type: 'number',
+              label: { cs: 'Cena (snapshot)', en: 'Price (snapshot)' },
+              access: { update: adminOnly },
+              admin: { description: { cs: 'Doplní se z produktu, když zůstane prázdné.', en: 'Filled from the product when left empty.' } },
+            },
+            {
+              name: 'estimatedTotal',
+              type: 'number',
+              label: { cs: 'Odhad (Kč)', en: 'Estimate (CZK)' },
+              access: { update: adminOnly },
+              admin: { readOnly: true },
+            },
+            {
+              name: 'actualWeight',
+              type: 'number',
+              min: 0,
+              label: { cs: 'Skutečná váha (kg)', en: 'Actual weight (kg)' },
+              access: { update: adminOrStaff },
+            },
+            {
+              name: 'actualTotal',
+              type: 'number',
+              min: 0,
+              label: { cs: 'Konečná cena (Kč)', en: 'Final price (CZK)' },
+              access: { update: adminOrStaff },
+            },
+          ],
         },
       ],
     },
@@ -118,9 +154,29 @@ export const Orders: CollectionConfig = {
       name: 'totalAmount',
       type: 'number',
       required: true,
-      label: { cs: 'Celkem (Kč)', en: 'Total (CZK)' },
+      defaultValue: 0,
+      label: { cs: 'Celkem / odhad (Kč)', en: 'Total / estimate (CZK)' },
       access: { update: adminOnly },
-      admin: { position: 'sidebar' },
+      admin: { position: 'sidebar', description: { cs: 'U rezervací odhad podle průměrné váhy.', en: 'For bookings an estimate from the average weight.' } },
+    },
+    {
+      type: 'row',
+      fields: [
+        {
+          name: 'finalAmount',
+          type: 'number',
+          min: 0,
+          label: { cs: 'Konečná částka (Kč)', en: 'Final amount (CZK)' },
+          access: { update: adminOrStaff },
+        },
+        {
+          name: 'cashTaken',
+          type: 'number',
+          min: 0,
+          label: { cs: 'Hotovost přijata (Kč)', en: 'Cash taken (CZK)' },
+          access: { update: adminOrStaff },
+        },
+      ],
     },
     {
       name: 'pickupPoint',
@@ -130,10 +186,23 @@ export const Orders: CollectionConfig = {
       access: { update: adminOrStaff },
     },
     {
-      name: 'preferredDate',
-      type: 'date',
-      label: { cs: 'Preferovaný den vyzvednutí', en: 'Preferred pickup day' },
-      access: { update: adminOrStaff },
+      type: 'row',
+      fields: [
+        {
+          name: 'pickupDay',
+          type: 'date',
+          label: { cs: 'Den vyzvednutí (turnus)', en: 'Pickup day (batch)' },
+          access: { update: adminOrStaff },
+          admin: { date: { pickerAppearance: 'dayOnly', displayFormat: 'd. M. yyyy' } },
+        },
+        {
+          name: 'preferredDate',
+          type: 'date',
+          label: { cs: 'Preferovaný den (běžný nákup)', en: 'Preferred day (buy now)' },
+          access: { update: adminOrStaff },
+          admin: { date: { pickerAppearance: 'dayOnly', displayFormat: 'd. M. yyyy' } },
+        },
+      ],
     },
     {
       // Historic. Every new order is a pickup; `delivery` only remains for rows
@@ -154,9 +223,7 @@ export const Orders: CollectionConfig = {
       name: 'deliveryAddress',
       type: 'group',
       access: { update: adminOnly },
-      admin: {
-        condition: (data) => data?.deliveryMethod === 'delivery',
-      },
+      admin: { condition: (data) => data?.deliveryMethod === 'delivery' },
       fields: [
         { name: 'street', type: 'text' },
         { name: 'city', type: 'text' },
@@ -187,25 +254,46 @@ export const Orders: CollectionConfig = {
       admin: { position: 'sidebar' },
     },
     {
+      // booked → confirmed → ready → picked_up; released when a booking was
+      // never confirmed by the deadline; cancelled anywhere. Buy-now orders
+      // start at confirmed.
       name: 'orderStatus',
       type: 'select',
-      defaultValue: 'received',
+      defaultValue: 'confirmed',
+      index: true,
       label: { cs: 'Stav objednávky', en: 'Order status' },
       access: { update: adminOrStaff },
       options: [
-        { label: { cs: 'Přijato', en: 'Received' }, value: 'received' },
-        { label: { cs: 'Připravuje se', en: 'Preparing' }, value: 'preparing' },
-        { label: { cs: 'Připraveno k vyzvednutí', en: 'Ready for pickup' }, value: 'shipped' },
-        { label: { cs: 'Převzato', en: 'Picked up' }, value: 'delivered' },
+        { label: { cs: 'Rezervováno (čeká na termíny)', en: 'Booked (awaiting dates)' }, value: 'booked' },
+        { label: { cs: 'Potvrzeno', en: 'Confirmed' }, value: 'confirmed' },
+        { label: { cs: 'Připraveno k vyzvednutí', en: 'Ready for pickup' }, value: 'ready' },
+        { label: { cs: 'Převzato', en: 'Picked up' }, value: 'picked_up' },
+        { label: { cs: 'Uvolněno (nepotvrzeno)', en: 'Released (not confirmed)' }, value: 'released' },
         { label: { cs: 'Zrušeno', en: 'Cancelled' }, value: 'cancelled' },
       ],
       admin: { position: 'sidebar' },
     },
     {
+      type: 'row',
+      admin: { condition: (data) => Boolean(data?.batch) },
+      fields: [
+        { name: 'confirmedAt', type: 'date', label: { cs: 'Potvrzeno', en: 'Confirmed at' }, access: { update: adminOrStaff }, admin: { readOnly: true } },
+        { name: 'releasedAt', type: 'date', label: { cs: 'Uvolněno', en: 'Released at' }, access: { update: adminOrStaff }, admin: { readOnly: true } },
+        { name: 'reminderSentAt', type: 'date', label: { cs: 'Připomínka odeslána', en: 'Reminder sent' }, access: { update: adminOrStaff }, admin: { readOnly: true } },
+      ],
+    },
+    {
+      name: 'pickedUpAt',
+      type: 'date',
+      label: { cs: 'Převzato dne', en: 'Picked up at' },
+      access: { update: adminOrStaff },
+      admin: { position: 'sidebar', readOnly: true },
+    },
+    {
       name: 'customerNote',
       type: 'textarea',
       label: { cs: 'Poznámka zákazníka', en: 'Customer note' },
-      access: { update: adminOnly },
+      access: { update: adminOrStaff },
     },
     {
       name: 'notes',

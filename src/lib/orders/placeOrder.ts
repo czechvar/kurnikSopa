@@ -30,7 +30,7 @@ export type PlaceOrderInput = {
 export type ValidationError = {
   productId: number | string
   productName: string
-  code: 'outOfStock' | 'insufficientStock' | 'belowMinimumOrder' | 'outOfSeason' | 'productNotFound'
+  code: 'outOfStock' | 'insufficientStock' | 'belowMinimumOrder' | 'outOfSeason' | 'productNotFound' | 'bookingOnly'
   min?: number
 }
 
@@ -79,6 +79,7 @@ export async function placeOrder(payload: Payload, input: PlaceOrderInput): Prom
     const p = byId.get(pid)
     if (!p || p.status !== 'published') { errors.push({ productId: pid, productName: '?', code: 'productNotFound' }); continue }
     const pname = localizedName(p, input.locale)
+    if (p.soldBy === 'batch') { errors.push({ productId: pid, productName: pname, code: 'bookingOnly' }); continue }
     const availability = availabilityOf(p)
     if (!availability.available) { errors.push({ productId: pid, productName: pname, code: availability.reason }); continue }
     if (typeof p.stockQuantity === 'number' && p.stockQuantity < item.quantity) {
@@ -138,7 +139,7 @@ export async function placeOrder(payload: Payload, input: PlaceOrderInput): Prom
       deliveryMethod: 'pickup',
       paymentMethod: 'cash',
       paymentStatus: 'unpaid',
-      orderStatus: 'received',
+      orderStatus: 'confirmed',
       preferredDate: input.preferredDate,
       customerNote: input.customerNote ?? undefined,
       locale: input.locale,

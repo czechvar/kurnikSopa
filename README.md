@@ -12,6 +12,7 @@ This repo is the farm's bilingual (Czech / English) e-shop and content site.
 - 🎓 **Workshops & events** — schedule, capacity, on-site registration.
 - 📖 **Blog & news** — what's growing, what's coming to the farm shop.
 - 🛒 **Cart + checkout** — guest or registered, pickup at a Pickup Point, cash at pickup (no online payment).
+- 🐔 **Batches (turnusy)** — poultry booked by the piece against a batch, confirmed once the owner sets pickup days; `/api/cron/batches` runs the daily reminders and releases (needs `CRON_SECRET`).
 - 📬 **Order tracking** — automatic email confirmations with embedded QR code; logged-in customers see full order history at `/cs/ucet/objednavky`.
 - 🇨🇿🇬🇧 **Czech and English** — full storefront in both languages.
 - ♿ **Accessible, mobile-first** — WCAG 2.1 AA targets, fast on phones (where most of our customers shop).

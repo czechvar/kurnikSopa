@@ -1,5 +1,5 @@
 import type { Payload } from 'payload'
-import type { Cart, PickupPoint, Post, Product, User } from '@/payload-types'
+import type { Batch, Cart, PickupPoint, Post, Product, User } from '@/payload-types'
 
 let userCounter = 0
 let productCounter = 0
@@ -160,6 +160,36 @@ export async function createTestPost(
         overrides.publishedAt === undefined
           ? new Date('2026-01-01T00:00:00.000Z').toISOString()
           : overrides.publishedAt,
+    } as any,
+  })
+}
+
+let batchCounter = 0
+
+export async function createTestBatch(
+  payload: Payload,
+  product: Product,
+  overrides: Partial<{
+    label: string
+    status: 'planned' | 'open' | 'closed' | 'completed' | 'cancelled'
+    capacity: number
+    confirmationDeadline: string | null
+    pickupDays: Array<{ date: string; pickupPoint: PickupPoint }>
+    note: string | null
+  }> = {},
+): Promise<Batch> {
+  batchCounter += 1
+  return payload.create({
+    collection: 'batches',
+    locale: 'cs',
+    data: {
+      label: overrides.label ?? `Turnus ${batchCounter}`,
+      product: product.id,
+      status: overrides.status ?? 'planned',
+      capacity: overrides.capacity ?? 10,
+      confirmationDeadline: overrides.confirmationDeadline ?? undefined,
+      pickupDays: (overrides.pickupDays ?? []).map(d => ({ date: d.date, pickupPoint: d.pickupPoint.id })),
+      note: overrides.note ?? undefined,
     } as any,
   })
 }
