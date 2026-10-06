@@ -1,14 +1,17 @@
 import type { Access, CollectionConfig } from 'payload'
 import { slugField } from '@/fields/slug'
 import { isAdminOrEditor } from '../access'
+import { publishedPostsWhere } from '@/lib/posts/queries'
+import { fillPublishedAt } from './hooks/fillPublishedAt'
 
 /**
  * Admins and editors read everything. Everyone else — signed in or not — gets
- * published posts only, so a draft cannot be fetched through `/api/posts`.
+ * posts that are published and due, so neither a draft nor a scheduled post
+ * can be fetched through `/api/posts` ahead of time.
  */
 const readPublishedOrEditorial: Access = (args) => {
   if (isAdminOrEditor(args)) return true
-  return { _status: { equals: 'published' } }
+  return publishedPostsWhere()
 }
 
 export const Posts: CollectionConfig = {
@@ -19,6 +22,9 @@ export const Posts: CollectionConfig = {
   },
   versions: {
     drafts: true,
+  },
+  hooks: {
+    beforeChange: [fillPublishedAt],
   },
   access: {
     read: readPublishedOrEditorial,

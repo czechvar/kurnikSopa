@@ -1,5 +1,5 @@
 import type { Payload } from 'payload'
-import type { Cart, Product, User } from '@/payload-types'
+import type { Cart, Post, Product, User } from '@/payload-types'
 
 let userCounter = 0
 let productCounter = 0
@@ -96,6 +96,33 @@ export async function createTestCart(
     data: {
       user: user.id,
       items: items.map(it => ({ product: it.product.id, quantity: it.quantity })),
+    } as any,
+  })
+}
+
+let postCounter = 0
+
+export async function createTestPost(
+  payload: Payload,
+  overrides: Partial<{
+    title: string
+    slug: string
+    status: 'draft' | 'published'
+    publishedAt: string | null
+  }> = {},
+): Promise<Post> {
+  postCounter += 1
+  return payload.create({
+    collection: 'posts',
+    locale: 'cs',
+    data: {
+      title: overrides.title ?? `Test Post ${postCounter}`,
+      slug: overrides.slug ?? `test-post-${postCounter}`,
+      _status: overrides.status ?? 'published',
+      publishedAt:
+        overrides.publishedAt === undefined
+          ? new Date('2026-01-01T00:00:00.000Z').toISOString()
+          : overrides.publishedAt,
     } as any,
   })
 }

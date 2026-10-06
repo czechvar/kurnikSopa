@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next'
 import { getPayload } from '@/lib/payload'
 import { SITE_URL } from '@/lib/site'
+import { publishedPostsWhere } from '@/lib/posts/queries'
 
 type Locale = 'cs' | 'en'
 const LOCALES: Locale[] = ['cs', 'en']
@@ -101,7 +102,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Blog posts
   const posts = await payload.find({
     collection: 'posts',
-    where: { _status: { equals: 'published' } },
+    where: publishedPostsWhere(),
     limit: 1000,
     depth: 0,
     pagination: false,
