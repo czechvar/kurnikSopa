@@ -21,6 +21,10 @@ const isAdmin: Access = ({ req }) => req.user?.role === 'admin'
 
 export const Orders: CollectionConfig = {
   slug: 'orders',
+  labels: {
+    singular: { cs: 'Objednávka', en: 'Order' },
+    plural: { cs: 'Objednávky', en: 'Orders' },
+  },
   access: {
     create: ({ req }) => Boolean(req.user),
     read: isAdminOrStaffOrOrderOwner,

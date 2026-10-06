@@ -4,6 +4,10 @@ import { isAdminOrEditor, publicRead } from '../access'
 
 export const Authors: CollectionConfig = {
   slug: 'authors',
+  labels: {
+    singular: { cs: 'Autor', en: 'Author' },
+    plural: { cs: 'Autoři', en: 'Authors' },
+  },
   access: {
     read: publicRead,
     create: isAdminOrEditor,

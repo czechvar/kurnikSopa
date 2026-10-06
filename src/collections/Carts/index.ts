@@ -15,6 +15,10 @@ const ownerOnlyUpdate: Access = ({ req }) => {
 
 export const Carts: CollectionConfig = {
   slug: 'carts',
+  labels: {
+    singular: { cs: 'Košík', en: 'Cart' },
+    plural: { cs: 'Košíky', en: 'Carts' },
+  },
   admin: {
     useAsTitle: 'id',
     defaultColumns: ['user', 'updatedAt'],

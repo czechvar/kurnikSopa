@@ -31,6 +31,10 @@ const canSetRoleOnCreate: FieldAccess = async ({ req }) => {
 
 export const Users: CollectionConfig = {
   slug: 'users',
+  labels: {
+    singular: { cs: 'Uživatel', en: 'User' },
+    plural: { cs: 'Uživatelé', en: 'Users' },
+  },
   auth: {
     verify: {
       generateEmailSubject: ({ req }) =>

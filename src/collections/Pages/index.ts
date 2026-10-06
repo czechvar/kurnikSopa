@@ -4,6 +4,10 @@ import { isAdmin, publicRead } from '../access'
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
+  labels: {
+    singular: { cs: 'Stránka', en: 'Page' },
+    plural: { cs: 'Stránky', en: 'Pages' },
+  },
   access: {
     read: publicRead,
     create: isAdmin,

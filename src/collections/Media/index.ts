@@ -3,6 +3,10 @@ import { isAdminOrEditor, publicRead } from '../access'
 
 export const Media: CollectionConfig = {
   slug: 'media',
+  labels: {
+    singular: { cs: 'Obrázek', en: 'Image' },
+    plural: { cs: 'Obrázky', en: 'Media' },
+  },
   access: {
     read: publicRead,
     create: isAdminOrEditor,

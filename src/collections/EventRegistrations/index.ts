@@ -3,6 +3,10 @@ import { isAdmin } from '../access'
 
 export const EventRegistrations: CollectionConfig = {
   slug: 'event-registrations',
+  labels: {
+    singular: { cs: 'Registrace na akci', en: 'Event Registration' },
+    plural: { cs: 'Registrace na akce', en: 'Event Registrations' },
+  },
   // Registrations carry guests' names, e-mails and phone numbers. They are
   // entered by an admin today; a public sign-up form would need its own
   // create rule.

@@ -7,7 +7,7 @@ export const SiteSettings: GlobalConfig = {
     read: isAdmin,
     update: isAdmin,
   },
-  label: 'Nastavení webu',
+  label: { cs: 'Nastavení webu', en: 'Site Settings' },
   admin: {
     hidden: ({ user }) => user?.role !== 'admin',
   },
