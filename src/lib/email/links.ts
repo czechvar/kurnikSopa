@@ -1,4 +1,4 @@
-type AuthLinkKind = 'verify' | 'reset'
+type AuthLinkKind = 'reset' | 'invite'
 
 function baseUrl(): string {
   return process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
@@ -11,10 +11,10 @@ export function buildAuthUrl(
   email?: string,
 ): string {
   const slug =
-    kind === 'verify'
+    kind === 'invite'
       ? locale === 'en'
-        ? 'verify-email'
-        : 'overeni-emailu'
+        ? 'invitation'
+        : 'pozvanka'
       : locale === 'en'
         ? 'reset-password'
         : 'obnova-hesla'

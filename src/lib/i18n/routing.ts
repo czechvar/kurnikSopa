@@ -67,9 +67,9 @@ export const routing = defineRouting({
       cs: '/obnova-hesla/[token]',
       en: '/reset-password/[token]',
     },
-    '/overeni-emailu/[token]': {
-      cs: '/overeni-emailu/[token]',
-      en: '/verify-email/[token]',
+    '/pozvanka/[token]': {
+      cs: '/pozvanka/[token]',
+      en: '/invitation/[token]',
     },
     '/ucet': {
       cs: '/ucet',

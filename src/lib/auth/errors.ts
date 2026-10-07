@@ -1,4 +1,4 @@
-type ErrorContext = 'signup' | 'login' | 'forgot' | 'reset' | 'verify' | 'account'
+type ErrorContext = 'request' | 'invite' | 'login' | 'forgot' | 'reset' | 'account'
 
 interface PayloadErrorBody {
   errors?: Array<{ message?: string; data?: { code?: string; field?: string } }>
@@ -15,19 +15,21 @@ export function mapPayloadError(
   const field = b.errors?.[0]?.data?.field
   const code = b.errors?.[0]?.data?.code
 
-  if (context === 'signup') {
-    if (field === 'email' && (code === 'unique' || message.includes('already'))) {
-      return 'auth.signup.errors.emailTaken'
-    }
-    if (field === 'email') return 'auth.signup.errors.emailInvalid'
-    if (field === 'password') return 'auth.signup.errors.passwordTooShort'
-    return 'auth.signup.errors.generic'
+  if (context === 'request') {
+    if (status === 429) return 'auth.request.errors.rateLimited'
+    if (field === 'email') return 'auth.request.errors.emailInvalid'
+    return 'auth.request.errors.generic'
+  }
+
+  if (context === 'invite') {
+    if (message.includes('passwordtooshort')) return 'auth.invite.errors.passwordTooShort'
+    if (status === 400 || message.includes('token')) return 'auth.invite.errors.tokenExpired'
+    return 'auth.invite.errors.generic'
   }
 
   if (context === 'login') {
-    if (status === 401 && message.includes('verified')) {
-      return 'auth.login.errors.notVerified'
-    }
+    if (status === 403 && message.includes('blocked')) return 'auth.login.errors.accountBlocked'
+    if (status === 403 && message.includes('notactive')) return 'auth.login.errors.accountNotActive'
     if (status === 401) return 'auth.login.errors.invalidCredentials'
     return 'auth.login.errors.generic'
   }
@@ -37,10 +39,6 @@ export function mapPayloadError(
       return 'auth.reset.errors.tokenExpired'
     }
     return 'auth.reset.errors.generic'
-  }
-
-  if (context === 'verify') {
-    return 'auth.verify.tokenExpired'
   }
 
   if (context === 'account') {

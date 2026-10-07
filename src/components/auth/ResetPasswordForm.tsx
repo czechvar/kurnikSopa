@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter } from '@/lib/i18n/routing'
 import { useTranslations } from 'next-intl'
 import { mapPayloadError } from '@/lib/auth/errors'
 
@@ -40,7 +40,7 @@ export function ResetPasswordForm({ token }: { token: string }) {
         setSubmitting(false)
         return
       }
-      router.push('/prihlaseni?toast=passwordReset&type=success')
+      router.push({ pathname: '/prihlaseni', query: { toast: 'passwordReset', type: 'success' } })
     } catch {
       setErrorKey('generic')
       setSubmitting(false)
