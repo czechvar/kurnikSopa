@@ -1,16 +1,29 @@
-import type { CollectionConfig, Access } from 'payload'
+import type { CollectionConfig, Access, Where } from 'payload'
+import { guestTokenFromCookieHeader } from '@/lib/cart/guestToken'
 import { enforceOneCartPerUser } from './hooks/enforceOneCartPerUser'
+import { pinCartOwner } from './hooks/pinCartOwner'
+import { validateCartItems } from './hooks/validateCartItems'
+import { addItemEndpoint } from './endpoints/addItem'
 
-const isAdminOrStaffOrOwner: Access = ({ req }) => {
-  if (!req.user) return false
-  if (req.user.role === 'admin' || req.user.role === 'staff') return true
-  return { user: { equals: req.user.id } }
-}
+/**
+ * A cart is visible to its owner: the signed-in user it belongs to, or the
+ * anonymous visitor whose cookie carries its guest token.
+ */
+const ownerOrStaff =
+  (staffAllowed: boolean): Access =>
+  ({ req }): Where | boolean => {
+    if (req.user) {
+      if (req.user.role === 'admin') return true
+      if (req.user.role === 'staff') return staffAllowed
+      return { user: { equals: req.user.id } }
+    }
+    const token = guestTokenFromCookieHeader(req.headers.get('cookie'))
+    return token ? { guestToken: { equals: token } } : false
+  }
 
-const ownerOnlyUpdate: Access = ({ req }) => {
-  if (!req.user) return false
-  if (req.user.role === 'admin') return true
-  return { user: { equals: req.user.id } }
+const canCreate: Access = ({ req }) => {
+  if (req.user) return true
+  return Boolean(guestTokenFromCookieHeader(req.headers.get('cookie')))
 }
 
 export const Carts: CollectionConfig = {
@@ -21,29 +34,42 @@ export const Carts: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'id',
-    defaultColumns: ['user', 'updatedAt'],
+    defaultColumns: ['user', 'guestToken', 'updatedAt'],
     hidden: ({ user }) => user?.role !== 'admin' && user?.role !== 'staff',
   },
   access: {
-    create: ({ req }) => Boolean(req.user),
-    read: isAdminOrStaffOrOwner,
-    update: ownerOnlyUpdate,
+    create: canCreate,
+    read: ownerOrStaff(true),
+    update: ownerOrStaff(false),
     delete: ({ req }) => req.user?.role === 'admin',
   },
+  endpoints: [addItemEndpoint],
   hooks: {
-    beforeChange: [enforceOneCartPerUser],
+    beforeChange: [pinCartOwner, enforceOneCartPerUser, validateCartItems],
   },
   fields: [
     {
       name: 'user',
       type: 'relationship',
       relationTo: 'users',
-      required: true,
       hasMany: false,
+      index: true,
+      label: { cs: 'Uživatel', en: 'User' },
+    },
+    {
+      name: 'guestToken',
+      type: 'text',
+      index: true,
+      label: { cs: 'Token hosta', en: 'Guest token' },
+      admin: {
+        readOnly: true,
+        description: { cs: 'Košík nepřihlášeného návštěvníka (podle cookie).', en: 'Cart of an anonymous visitor (by cookie).' },
+      },
     },
     {
       name: 'items',
       type: 'array',
+      label: { cs: 'Položky', en: 'Items' },
       fields: [
         {
           name: 'product',

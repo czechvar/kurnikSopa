@@ -4,11 +4,14 @@ import { useState, useTransition } from 'react'
 import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
+import { toast } from 'sonner'
 import { Link } from '@/lib/i18n/routing'
+import { buttonClass } from '@/components/ui/button'
 import type { Cart, Product, Media } from '@/payload-types'
 
 type Props = {
-  cart: Cart
+  /** Null when a guest has not added anything yet. */
+  cart: Cart | null
   locale: 'cs' | 'en'
 }
 
@@ -34,7 +37,7 @@ function getProductImage(p: Product | number): string | null {
 export function CartView({ cart, locale }: Props) {
   const t = useTranslations('cart')
   const router = useRouter()
-  const [items, setItems] = useState(cart.items ?? [])
+  const [items, setItems] = useState(cart?.items ?? [])
   const [submitting, startTransition] = useTransition()
 
   const subtotal = items.reduce((sum, it) => {
@@ -44,6 +47,8 @@ export function CartView({ cart, locale }: Props) {
   }, 0)
 
   function persist(nextItems: typeof items) {
+    if (!cart) return
+    const previous = items
     setItems(nextItems)
     startTransition(async () => {
       const res = await fetch(`/api/carts/${cart.id}`, {
@@ -57,7 +62,12 @@ export function CartView({ cart, locale }: Props) {
           })),
         }),
       })
-      if (res.ok) router.refresh()
+      if (res.ok) {
+        router.refresh()
+      } else {
+        setItems(previous)
+        toast.error(t('errors.generic'))
+      }
     })
   }
 
@@ -71,12 +81,12 @@ export function CartView({ cart, locale }: Props) {
     persist(items.filter((_, i) => i !== idx))
   }
 
-  if (items.length === 0) {
+  if (!cart || items.length === 0) {
     return (
-      <div className="text-center py-12 space-y-4">
-        <h2 className="text-xl font-semibold">{t('empty.title')}</h2>
+      <div className="space-y-4 py-12 text-center">
+        <h2 className="text-xl font-semibold text-ink">{t('empty.title')}</h2>
         <p className="text-ink-muted">{t('empty.body')}</p>
-        <Link href="/produkty" className="inline-block bg-ink text-ground hover:bg-ink-deep px-6 py-3 rounded-lg font-medium">
+        <Link href="/produkty" className={buttonClass('primary')}>
           {t('empty.cta')}
         </Link>
       </div>
@@ -85,7 +95,7 @@ export function CartView({ cart, locale }: Props) {
 
   return (
     <div className="space-y-6">
-      <ul className="divide-y divide-gray-200">
+      <ul className="divide-y divide-line">
         {items.map((it, idx) => {
           const p = it.product as Product | number
           const name = getProductName(p, locale)
@@ -93,31 +103,34 @@ export function CartView({ cart, locale }: Props) {
           const unitPrice = typeof p === 'object' ? p.price : 0
           const minOrder = typeof p === 'object' ? (p.minimumOrder ?? 1) : 1
           return (
-            <li key={idx} className="py-4 flex gap-4 items-center">
-              <div className="w-20 h-20 bg-gray-100 rounded-lg flex-shrink-0 overflow-hidden">
-                {img && <Image src={img} alt={name} width={80} height={80} className="object-cover w-full h-full" />}
+            <li key={idx} className="flex items-center gap-4 py-4">
+              <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-md bg-ground-sunken">
+                {img && <Image src={img} alt={name} width={80} height={80} className="h-full w-full object-cover" />}
               </div>
-              <div className="flex-1 min-w-0">
-                <div className="font-semibold truncate">{name}</div>
+              <div className="min-w-0 flex-1">
+                <div className="truncate font-semibold text-ink">{name}</div>
                 <div className="text-sm text-ink-muted">{formatCzk(unitPrice)}{typeof p === 'object' && p.unit ? ` / ${p.unit}` : ''}</div>
               </div>
               <div className="flex items-center gap-2">
                 <button
+                  type="button"
                   onClick={() => updateQty(idx, Math.max(minOrder, it.quantity - 1))}
                   disabled={submitting || it.quantity <= minOrder}
                   aria-label={t('lineItem.qty')}
-                  className="w-8 h-8 rounded border border-gray-300 disabled:opacity-30"
+                  className="h-8 w-8 rounded border border-line disabled:opacity-30"
                 >−</button>
                 <span className="w-8 text-center">{it.quantity}</span>
                 <button
+                  type="button"
                   onClick={() => updateQty(idx, it.quantity + 1)}
                   disabled={submitting}
                   aria-label={t('lineItem.qty')}
-                  className="w-8 h-8 rounded border border-gray-300 disabled:opacity-30"
+                  className="h-8 w-8 rounded border border-line disabled:opacity-30"
                 >+</button>
               </div>
               <div className="w-24 text-right font-semibold">{formatCzk(unitPrice * it.quantity)}</div>
               <button
+                type="button"
                 onClick={() => remove(idx)}
                 disabled={submitting}
                 className="text-sm text-red-700 hover:underline"
@@ -127,7 +140,7 @@ export function CartView({ cart, locale }: Props) {
         })}
       </ul>
 
-      <div className="border-t border-gray-200 pt-4 space-y-2">
+      <div className="space-y-2 border-t border-line pt-4">
         <div className="flex justify-between text-sm">
           <span>{t('summary.subtotal')}</span>
           <span>{formatCzk(subtotal)}</span>
@@ -136,13 +149,13 @@ export function CartView({ cart, locale }: Props) {
           <span>{t('summary.shipping')}</span>
           <span>{t('summary.shippingFree')}</span>
         </div>
-        <div className="flex justify-between text-lg font-bold pt-2 border-t border-gray-200">
+        <div className="flex justify-between border-t border-line pt-2 text-lg font-bold text-ink">
           <span>{t('summary.total')}</span>
           <span>{formatCzk(subtotal)}</span>
         </div>
       </div>
 
-      <Link href="/pokladna" className="block w-full text-center bg-ink text-ground hover:bg-ink-deep py-3 rounded-lg font-semibold">
+      <Link href="/pokladna" className={buttonClass('primary', 'md', 'w-full')}>
         {t('cta.checkout')}
       </Link>
     </div>

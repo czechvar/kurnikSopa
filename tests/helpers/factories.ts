@@ -1,8 +1,9 @@
 import type { Payload } from 'payload'
-import type { Cart, Post, Product, User } from '@/payload-types'
+import type { Cart, PickupPoint, Post, Product, User } from '@/payload-types'
 
 let userCounter = 0
 let productCounter = 0
+let pickupPointCounter = 0
 
 export async function createTestUser(
   payload: Payload,
@@ -67,6 +68,34 @@ export async function createTestProduct(
   })
 }
 
+export async function createTestPickupPoint(
+  payload: Payload,
+  overrides: Partial<{
+    name: string
+    street: string
+    city: string
+    zip: string
+    note: string | null
+    isFarm: boolean
+    active: boolean
+  }> = {},
+): Promise<PickupPoint> {
+  pickupPointCounter += 1
+  return payload.create({
+    collection: 'pickup-points',
+    locale: 'cs',
+    data: {
+      name: overrides.name ?? (pickupPointCounter === 1 ? 'Farma Křepice' : `Odběrné místo ${pickupPointCounter}`),
+      street: overrides.street ?? 'Č.p. 313',
+      city: overrides.city ?? 'Křepice u Hustopečí',
+      zip: overrides.zip ?? '691 65',
+      note: overrides.note ?? 'Po domluvě',
+      isFarm: overrides.isFarm ?? pickupPointCounter === 1,
+      active: overrides.active ?? true,
+    } as any,
+  })
+}
+
 export async function setTestSiteSettings(payload: Payload): Promise<void> {
   await payload.updateGlobal({
     slug: 'site-settings',
@@ -75,12 +104,6 @@ export async function setTestSiteSettings(payload: Payload): Promise<void> {
       contact: { phone: '+420123456789', email: 'test@kurnik-sopa.cz' },
       address: { street: 'Test 1', city: 'Praha', zip: '11000' },
       notificationEmail: 'staff@kurnik-sopa.cz',
-      payment: {
-        bankName: 'KB',
-        accountPrefix: '',
-        accountNumber: '2901234567',
-        bankCode: '2010',
-      },
       owner: 'Test Owner',
     } as any,
   })
@@ -95,6 +118,20 @@ export async function createTestCart(
     collection: 'carts',
     data: {
       user: user.id,
+      items: items.map(it => ({ product: it.product.id, quantity: it.quantity })),
+    } as any,
+  })
+}
+
+export async function createTestGuestCart(
+  payload: Payload,
+  guestToken: string,
+  items: Array<{ product: Product; quantity: number }>,
+): Promise<Cart> {
+  return payload.create({
+    collection: 'carts',
+    data: {
+      guestToken,
       items: items.map(it => ({ product: it.product.id, quantity: it.quantity })),
     } as any,
   })

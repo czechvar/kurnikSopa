@@ -1,13 +1,10 @@
 import { getTranslations } from 'next-intl/server'
-import type { Order, Product, SiteSetting } from '@/payload-types'
-import { QrInline } from '@/components/checkout/QrInline'
+import type { Order, PickupPoint, Product, SiteSetting } from '@/payload-types'
 
 type Props = {
   order: Order
   settings: SiteSetting
   locale: 'cs' | 'en'
-  /** When false, the QR / bank details block is hidden even for bank_transfer orders. */
-  showQr: boolean
 }
 
 function formatCzk(n: number): string {
@@ -23,13 +20,6 @@ function formatDate(iso: string | null | undefined, locale: 'cs' | 'en'): string
   })
 }
 
-function fmtCzAccount(p: SiteSetting): string {
-  const pay = p.payment
-  if (!pay?.accountNumber || !pay?.bankCode) return ''
-  const left = pay.accountPrefix ? `${pay.accountPrefix.replace(/\D/g, '')}-` : ''
-  return `${left}${pay.accountNumber.replace(/\D/g, '')}/${pay.bankCode.replace(/\D/g, '')}`
-}
-
 function productName(p: Product | number, locale: 'cs' | 'en'): string {
   if (typeof p !== 'object') return '?'
   if (typeof p.name === 'string') return p.name
@@ -41,17 +31,35 @@ function productUnit(p: Product | number): string | null {
   return p.unit ?? null
 }
 
-export async function OrderDetail({ order, settings, locale, showQr }: Props) {
-  const t = await getTranslations({ locale, namespace: 'orderDetail' })
+/**
+ * Where the order is collected. Orders carry a Pickup Point; the farm's
+ * address from SiteSettings is the fallback for orders placed before pickup
+ * points existed.
+ */
+function pickupPlace(order: Order, settings: SiteSetting): { name: string; address: string; note: string | null } {
+  const pp = order.pickupPoint
+  if (pp && typeof pp === 'object') {
+    const p = pp as PickupPoint
+    return { name: p.name, address: `${p.street}, ${p.zip} ${p.city}`, note: p.note ?? null }
+  }
+  const a = settings.address
+  return {
+    name: settings.farmName,
+    address: [a?.street, [a?.zip, a?.city].filter(Boolean).join(' ')].filter(Boolean).join(', '),
+    note: settings.openingHours ?? null,
+  }
+}
 
-  const isBank = order.paymentMethod === 'bank_transfer'
-  const orderNumber = String(order.orderNumber)
+export async function OrderDetail({ order, settings, locale }: Props) {
+  const t = await getTranslations({ locale, namespace: 'orderDetail' })
   const items = order.items ?? []
+  const isHistoricDelivery = order.deliveryMethod === 'delivery'
+  const place = pickupPlace(order, settings)
 
   return (
     <div className="space-y-6">
-      <section className="bg-white rounded-lg p-6 border border-gray-200">
-        <h2 className="text-lg font-semibold mb-3">{t('itemsTitle')}</h2>
+      <section className="rounded-md border border-line bg-ground p-6">
+        <h2 className="mb-3 text-lg font-semibold text-ink">{t('itemsTitle')}</h2>
         <table className="w-full text-sm">
           <thead>
             <tr className="text-left text-ink-muted">
@@ -69,7 +77,7 @@ export async function OrderDetail({ order, settings, locale, showQr }: Props) {
               const unitPrice = it.priceAtPurchase
               const lineTotal = unitPrice * it.quantity
               return (
-                <tr key={idx} className="border-t border-gray-200">
+                <tr key={idx} className="border-t border-line">
                   <td className="py-2">
                     {name}
                     {unit && <span className="text-ink-muted"> ({unit})</span>}
@@ -82,7 +90,7 @@ export async function OrderDetail({ order, settings, locale, showQr }: Props) {
             })}
           </tbody>
           <tfoot>
-            <tr className="border-t border-gray-300">
+            <tr className="border-t border-line">
               <td colSpan={3} className="pt-3 text-right font-bold">{t('total')}</td>
               <td className="pt-3 text-right font-bold">{formatCzk(order.totalAmount)}</td>
             </tr>
@@ -90,17 +98,21 @@ export async function OrderDetail({ order, settings, locale, showQr }: Props) {
         </table>
       </section>
 
-      <section className="bg-white rounded-lg p-6 border border-gray-200 space-y-2 text-sm">
-        <h2 className="text-lg font-semibold mb-3">{t('deliveryTitle')}</h2>
-        {order.deliveryMethod === 'pickup' ? (
-          <p>{t('pickup')}</p>
-        ) : (
+      <section className="space-y-2 rounded-md border border-line bg-ground p-6 text-sm">
+        <h2 className="mb-3 text-lg font-semibold text-ink">{t('pickupTitle')}</h2>
+        {isHistoricDelivery ? (
           <p>
-            {t('delivery')}
+            {t('deliveryHistoric')}
             {order.deliveryAddress?.street && (
               <>: <strong>{order.deliveryAddress.street}, {order.deliveryAddress.zip} {order.deliveryAddress.city}</strong></>
             )}
           </p>
+        ) : (
+          <div className="space-y-1">
+            <p><span className="text-ink-muted">{t('pickupPoint')}: </span><strong>{place.name}</strong></p>
+            <p>{place.address}</p>
+            {place.note && <p className="whitespace-pre-line text-ink-muted">{place.note}</p>}
+          </div>
         )}
         {order.preferredDate && (
           <p><span className="text-ink-muted">{t('preferredDate')}: </span>{formatDate(order.preferredDate, locale)}</p>
@@ -110,33 +122,9 @@ export async function OrderDetail({ order, settings, locale, showQr }: Props) {
         )}
       </section>
 
-      <section className="bg-white rounded-lg p-6 border border-gray-200">
-        <h2 className="text-lg font-semibold mb-3">{t('paymentTitle')}</h2>
-        {isBank ? (
-          showQr && order.qrSpayd ? (
-            <div className="space-y-4">
-              <p className="text-sm">{t('paymentBankTransfer')}</p>
-              <div className="flex justify-center">
-                <QrInline spayd={order.qrSpayd} alt={t('qrAlt')} />
-              </div>
-              <p className="text-sm text-ink-muted">{t('manualFallback')}</p>
-              <dl className="grid grid-cols-2 gap-2 text-sm">
-                <dt className="text-ink-muted">{t('accountLabel')}</dt>
-                <dd className="font-semibold">{fmtCzAccount(settings)}</dd>
-                <dt className="text-ink-muted">{t('bankLabel')}</dt>
-                <dd className="font-semibold">{settings.payment?.bankName ?? ''}</dd>
-                <dt className="text-ink-muted">{t('amountLabel')}</dt>
-                <dd className="font-semibold">{formatCzk(order.totalAmount)}</dd>
-                <dt className="text-ink-muted">{t('vsLabel')}</dt>
-                <dd className="font-semibold">{orderNumber}</dd>
-              </dl>
-            </div>
-          ) : (
-            <p className="text-sm">{t('paymentPaid')}</p>
-          )
-        ) : (
-          <p className="text-sm">{t('paymentCashOnDelivery')}</p>
-        )}
+      <section className="rounded-md border border-line bg-ground p-6">
+        <h2 className="mb-3 text-lg font-semibold text-ink">{t('paymentTitle')}</h2>
+        <p className="text-sm">{order.paymentStatus === 'paid' ? t('paymentPaid') : t('paymentCash', { amount: formatCzk(order.totalAmount) })}</p>
       </section>
     </div>
   )

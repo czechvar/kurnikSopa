@@ -124,12 +124,13 @@
     "lead": "Co je právě k mání přímo z farmy.",
     "filterLabel": "Kategorie",
     "backToList": "Zpět na produkty",
-    "weight": "Hmotnost: {weight}",
     "seasonalNotice": "Sezónní produkt",
     "availability": "dostupné {from} až {to}",
     "orderByPhone": "Objednat telefonicky: {phone}",
     "description": "Popis",
-    "empty": "V této kategorii teď nic nemáme."
+    "empty": "V této kategorii teď nic nemáme.",
+    "outOfSeason": "Mimo sezónu",
+    "unavailable": "Momentálně není k dispozici"
   },
   "events": {
     "title": "Akce na farmě",
@@ -174,8 +175,8 @@
     },
     "summary": {
       "subtotal": "Mezisoučet",
-      "shipping": "Doprava",
-      "shippingFree": "Zdarma v rámci regionu",
+      "shipping": "Vyzvednutí",
+      "shippingFree": "Osobně na odběrném místě",
       "total": "Celkem"
     },
     "cta": {
@@ -186,13 +187,18 @@
       "toast": "Přidáno do košíku",
       "action": "Otevřít košík"
     },
-    "comingSoon": "Košík zatím připravujeme. Vracíme se s ním brzy."
+    "comingSoon": "Košík zatím připravujeme. Vracíme se s ním brzy.",
+    "errors": {
+      "belowMinimumOrder": "Minimální množství je {min} ks",
+      "unavailable": "Produkt momentálně není k dispozici",
+      "generic": "Košík se nepodařilo upravit, zkuste to prosím znovu"
+    }
   },
   "checkout": {
     "title": "Pokladna",
     "sections": {
       "customer": "Vaše údaje",
-      "delivery": "Doručení",
+      "pickup": "Vyzvednutí",
       "payment": "Platba",
       "note": "Poznámka k objednávce"
     },
@@ -201,28 +207,14 @@
       "lastName": "Příjmení",
       "email": "E-mail",
       "phone": "Telefon",
-      "street": "Ulice a č.p.",
-      "city": "Město",
-      "zip": "PSČ",
-      "preferredDate": "Preferované datum",
+      "preferredDate": "Preferovaný den vyzvednutí",
       "customerNote": "Poznámka (čas, dietní preference apod.)",
-      "useOtherAddress": "Použít jinou doručovací adresu",
-      "agreement": "Souhlasím s <a href=\"/cs/obchodni-podminky\" class=\"underline\">obchodními podmínkami</a> a <a href=\"/cs/ochrana-osobnich-udaju\" class=\"underline\">zpracováním osobních údajů</a>."
-    },
-    "deliveryMethod": {
-      "pickup": "Osobní odběr",
-      "delivery": "Doručení",
-      "pickupInfo": "Vyzvedněte si objednávku na farmě v Křepicích.",
-      "deliveryFreeRegion": "Doručení zdarma v rámci regionu"
-    },
-    "paymentMethod": {
-      "bankTransfer": "Bankovní převod (QR platba)",
-      "cashOnDelivery": "Hotově při odběru / doručení"
+      "agreement": "Souhlasím s <a href=\"/cs/obchodni-podminky\" class=\"underline\">obchodními podmínkami</a> a <a href=\"/cs/ochrana-osobnich-udaju\" class=\"underline\">zpracováním osobních údajů</a>.",
+      "pickupPoint": "Odběrné místo"
     },
     "submit": "Závazně objednat",
     "errors": {
       "required": "Toto pole je povinné",
-      "zipInvalid": "PSČ musí mít formát 123 45",
       "generic": "Něco se pokazilo, zkuste to prosím znovu",
       "agreementRequired": "Pro pokračování musíte souhlasit s podmínkami",
       "outOfStock": "Položka {name} už není skladem",
@@ -230,66 +222,29 @@
       "belowMinimumOrder": "Položku {name} je třeba objednat v minimálním množství {min}",
       "outOfSeason": "Položka {name} aktuálně není dostupná",
       "productNotFound": "Položka už není v nabídce",
-      "paymentMethodMissingBankDetails": "Bankovní účet pro převod není nastaven. Zvolte prosím platbu v hotovosti nebo nás kontaktujte."
+      "pickupPointRequired": "Vyberte odběrné místo",
+      "pickupPointInvalid": "Toto odběrné místo už není dostupné, vyberte prosím jiné",
+      "emailInvalid": "Zadejte platný e-mail",
+      "guestEmailRequired": "Zadejte e-mail, pošleme vám na něj potvrzení",
+      "cartEmpty": "Košík je prázdný"
     },
     "thankYou": {
       "title": "Děkujeme za objednávku",
       "body": "Vaše objednávka č. {orderNumber} byla přijata. Potvrzení jsme vám poslali e-mailem.",
-      "paymentTitle": "Platba",
-      "paymentBankTransfer": "Naskenujte QR kód ve své bankovní aplikaci, nebo zadejte údaje ručně:",
-      "paymentCashOnDelivery": "Částku uhradíte v hotovosti při odběru / doručení.",
-      "qrAlt": "QR kód pro platbu",
-      "accountLabel": "Číslo účtu",
-      "vsLabel": "Variabilní symbol",
-      "amountLabel": "Částka",
-      "bankLabel": "Banka",
-      "manualFallback": "Pokud vám QR kód nefunguje, použijte tyto údaje:"
+      "guestKeepEmail": "Odkaz na tuto stránku jsme vám poslali e-mailem. Uschovejte si ho, je to váš přístup k objednávce."
     },
-    "delivery": "Způsob doručení",
-    "pickup": "Osobní odběr",
-    "deliveryOption": "Doručení",
-    "balikovna": "Balíkovna",
-    "payment": "Platba",
-    "stripe": "Platba kartou",
-    "bankTransfer": "Bankovní převod",
-    "cashOnDelivery": "Dobírka",
-    "success": "Objednávka přijata!",
-    "orderNumber": "Číslo objednávky: {number}"
-  },
-  "email": {
-    "orderConfirmation": {
-      "subject": "Objednávka č. {orderNumber} přijata",
-      "greeting": "Dobrý den {name},",
-      "intro": "Děkujeme za objednávku v Kurníku Šopa. Níže najdete shrnutí a pokyny k platbě.",
-      "summaryTitle": "Vaše objednávka",
-      "deliveryTitle": "Doručení",
-      "pickupInfo": "Osobní odběr na adrese: {address}. Otevírací doba: {hours}. Tel.: {phone}.",
-      "deliveryInfo": "Doručíme na: {address}. Doprava zdarma v rámci regionu.",
-      "preferredDate": "Preferované datum: {date}",
-      "customerNote": "Poznámka: {note}",
-      "paymentTitle": "Platba",
-      "paymentBankTransferPrompt": "Prosíme uhraďte částku {amount} převodem na náš účet.",
-      "paymentBankTransferScan": "Naskenujte QR kód v aplikaci své banky:",
-      "paymentBankTransferManual": "Pokud váš banking nepodporuje QR, vyplňte údaje ručně:",
-      "paymentCash": "Částku {amount} uhradíte v hotovosti při odběru / doručení.",
-      "closing": "Brzy se vám ozveme. S pozdravem, {owner}"
+    "pickup": {
+      "intro": "Objednávku si vyzvednete osobně. Vyberte, kde.",
+      "farm": "Farma"
     },
-    "staffNotification": {
-      "subject": "Nová objednávka {orderNumber} — {customerName}",
-      "intro": "Přišla nová objednávka.",
-      "viewInAdmin": "Otevřít v administraci"
+    "payment": {
+      "cash": "Platíte hotově při převzetí. Předem nic neplatíte."
     },
-    "paymentReceived": {
-      "subject": "Platba k objednávce {orderNumber} přijata",
-      "body": "Děkujeme, platba dorazila. Vaši objednávku již připravujeme.",
-      "pickupNote": "Až bude objednávka připravená k odběru, dáme vědět dalším e-mailem.",
-      "deliveryNote": "Brzy vás budeme kontaktovat ohledně termínu doručení."
-    },
-    "orderShipped": {
-      "subjectPickup": "Vaše objednávka {orderNumber} je připravena k odběru",
-      "subjectDelivery": "Vaše objednávka {orderNumber} je na cestě",
-      "bodyPickup": "Objednávku si můžete vyzvednout na adrese: {address}. Otevírací doba: {hours}. Tel.: {phone}.",
-      "bodyDelivery": "Vaši objednávku právě vezeme. Brzy vás budeme kontaktovat ohledně času doručení."
+    "guest": {
+      "title": "Nakupujete bez účtu",
+      "hint": "Potvrzení a odkaz na objednávku vám pošleme e-mailem.",
+      "haveAccount": "Máte účet?",
+      "login": "Přihlásit se"
     }
   },
   "about": {
@@ -433,10 +388,6 @@
     "orderPlaced": {
       "title": "Objednávka odeslána",
       "body": ""
-    },
-    "paymentMethodMissingBankDetails": {
-      "title": "Bankovní účet pro převod není nastaven",
-      "body": "Zvolte prosím platbu v hotovosti nebo nás kontaktujte."
     }
   },
   "notFound": {
@@ -517,45 +468,35 @@
       },
       "detail": {
         "breadcrumb": "Objednávky",
-        "backToList": "← Zpět na seznam objednávek",
-        "unpaidNotice": "Tato objednávka čeká na platbu. Naskenujte QR kód níže nebo zadejte údaje ručně."
+        "backToList": "← Zpět na seznam objednávek"
       },
       "paymentStatus": {
-        "pending": "Čeká na platbu",
-        "paid": "Zaplaceno",
-        "failed": "Selhalo",
-        "refunded": "Vráceno"
+        "unpaid": "Platba při převzetí",
+        "paid": "Zaplaceno"
       },
       "orderStatus": {
         "received": "Přijato",
         "preparing": "Připravuje se",
-        "shipped": "Odesláno",
-        "delivered": "Doručeno",
+        "shipped": "Připraveno k vyzvednutí",
+        "delivered": "Převzato",
         "cancelled": "Zrušeno"
       }
     }
   },
   "orderDetail": {
     "itemsTitle": "Položky",
-    "deliveryTitle": "Doručení",
+    "pickupTitle": "Vyzvednutí",
     "paymentTitle": "Platba",
     "qty": "Množství",
     "unitPrice": "Cena/ks",
     "lineTotal": "Celkem",
     "total": "Celkem",
-    "pickup": "Osobní odběr",
-    "delivery": "Doručení",
-    "preferredDate": "Preferované datum",
+    "pickupPoint": "Odběrné místo",
+    "deliveryHistoric": "Doručení",
+    "preferredDate": "Preferovaný den",
     "customerNote": "Poznámka",
-    "paymentBankTransfer": "Naskenujte QR kód ve své bankovní aplikaci, nebo zadejte údaje ručně:",
-    "paymentCashOnDelivery": "Částku uhradíte v hotovosti při odběru / doručení.",
-    "paymentPaid": "Platba přijata.",
-    "qrAlt": "QR kód pro platbu",
-    "accountLabel": "Číslo účtu",
-    "vsLabel": "Variabilní symbol",
-    "amountLabel": "Částka",
-    "bankLabel": "Banka",
-    "manualFallback": "Pokud vám QR kód nefunguje, použijte tyto údaje:"
+    "paymentCash": "Částku {amount} uhradíte hotově při převzetí.",
+    "paymentPaid": "Zaplaceno."
   },
   "cookieConsent": {
     "consentModal": {

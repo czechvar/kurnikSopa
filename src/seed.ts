@@ -36,6 +36,31 @@ const seed = async () => {
   })
 
   // ──────────────────────────────────────────
+  // 1b. Pickup Points — the farm is always the first one
+  // ──────────────────────────────────────────
+  console.log('  → Pickup Points')
+  const existingFarm = await payload.find({
+    collection: 'pickup-points',
+    where: { isFarm: { equals: true } },
+    limit: 1,
+    depth: 0,
+  })
+  if (existingFarm.docs.length === 0) {
+    await payload.create({
+      collection: 'pickup-points',
+      data: {
+        name: 'Farma Křepice',
+        street: 'Č.p. 313',
+        city: 'Křepice u Hustopečí',
+        zip: '691 65',
+        note: 'Po telefonické domluvě.',
+        isFarm: true,
+        active: true,
+      },
+    })
+  }
+
+  // ──────────────────────────────────────────
   // 2. Navigation (Global)
   // ──────────────────────────────────────────
   console.log('  → Navigation')
@@ -218,7 +243,6 @@ const seed = async () => {
       },
       price: 130,
       unit: 'ks',
-      weight: 1200,
       category: catDrubez.id,
       inStock: true,
       seasonal: true,
@@ -331,7 +355,6 @@ const seed = async () => {
       },
       price: 190,
       unit: 'kg',
-      weight: 2200,
       category: catDrubez.id,
       inStock: true,
       seasonal: true,
@@ -388,7 +411,6 @@ const seed = async () => {
       },
       price: 330,
       unit: 'ks',
-      weight: 6000,
       category: catDrubez.id,
       inStock: true,
       seasonal: true,
@@ -436,7 +458,6 @@ const seed = async () => {
       },
       price: 250,
       unit: 'kg',
-      weight: 2000,
       category: catKralici.id,
       inStock: true,
       seasonal: true,

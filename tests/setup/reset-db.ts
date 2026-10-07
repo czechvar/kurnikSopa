@@ -5,6 +5,7 @@ import { Client } from 'pg'
 const TABLES = [
   'orders',
   'carts',
+  'pickup_points',
   'users',
   'products',
   'product_categories',

@@ -11,7 +11,7 @@ This repo is the farm's bilingual (Czech / English) e-shop and content site.
 - 🐔 **Farm products** — pastured chicken, eggs, geese, rabbits, vegetables, dairy, honey, preserves. Seasonal availability, real-time stock.
 - 🎓 **Workshops & events** — schedule, capacity, on-site registration.
 - 📖 **Blog & news** — what's growing, what's coming to the farm shop.
-- 🛒 **Cart + checkout** — guest or registered, with QR Platba (Czech bank transfer) and cash on pickup/delivery.
+- 🛒 **Cart + checkout** — guest or registered, pickup at a Pickup Point, cash at pickup (no online payment).
 - 📬 **Order tracking** — automatic email confirmations with embedded QR code; logged-in customers see full order history at `/cs/ucet/objednavky`.
 - 🇨🇿🇬🇧 **Czech and English** — full storefront in both languages.
 - ♿ **Accessible, mobile-first** — WCAG 2.1 AA targets, fast on phones (where most of our customers shop).

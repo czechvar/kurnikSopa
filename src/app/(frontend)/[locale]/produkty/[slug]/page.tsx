@@ -1,5 +1,4 @@
 import Image from 'next/image'
-import { headers } from 'next/headers'
 import { notFound } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
 import { RichText } from '@payloadcms/richtext-lexical/react'
@@ -8,6 +7,7 @@ import { getMediaUrl } from '@/lib/media'
 import { getSiteSettings } from '@/lib/site-settings'
 import { formatPhone, formatPrice } from '@/lib/utils'
 import { telHref, whatsappHref } from '@/lib/contact'
+import { availabilityOf } from '@/lib/products/availability'
 import { Link } from '@/lib/i18n/routing'
 import { AddToCartButton } from '@/components/cart/AddToCartButton'
 import { buttonClass } from '@/components/ui/button'
@@ -23,7 +23,6 @@ export default async function ProductDetailPage({ params }: Props) {
   const t = await getTranslations('products')
   const tEvents = await getTranslations('events')
   const payload = await getPayload()
-  const { user } = await payload.auth({ headers: await headers() })
 
   const result = await payload.find({
     collection: 'products',
@@ -48,6 +47,7 @@ export default async function ProductDetailPage({ params }: Props) {
       new Date(iso),
     )
   const unit = product.unit ? t(`units.${product.unit}`) : null
+  const availability = availabilityOf(product)
 
   return (
     <div className="px-5 py-10 md:py-14">
@@ -84,13 +84,6 @@ export default async function ProductDetailPage({ params }: Props) {
               {formatPrice(product.price)}
               {unit && <span className="text-lg font-normal text-ink-muted"> / {unit}</span>}
             </p>
-            {product.weight && (
-              <p className="mt-1 text-sm text-ink-muted">
-                {t('weight', {
-                  weight: product.weight >= 1000 ? `${product.weight / 1000} kg` : `${product.weight} g`,
-                })}
-              </p>
-            )}
 
             {product.seasonal && (
               <div className="mt-5 rounded border border-accent bg-accent/25 p-3 text-sm text-ink-deep">
@@ -106,13 +99,17 @@ export default async function ProductDetailPage({ params }: Props) {
             )}
 
             <div className="mt-6">
-              <AddToCartButton
-                productId={product.id}
-                productName={product.name}
-                minimumOrder={product.minimumOrder ?? 1}
-                isLoggedIn={Boolean(user)}
-                loginRedirectPath={`/produkty/${product.slug}`}
-              />
+              {availability.available ? (
+                <AddToCartButton
+                  productId={product.id}
+                  productName={product.name}
+                  minimumOrder={product.minimumOrder ?? 1}
+                />
+              ) : (
+                <p role="status" className="rounded border border-line bg-ground-sunken p-3 text-sm font-semibold text-ink">
+                  {t(availability.reason)}
+                </p>
+              )}
             </div>
 
             {(phone || whatsapp) && (
