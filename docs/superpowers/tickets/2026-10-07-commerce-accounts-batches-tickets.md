@@ -67,6 +67,17 @@ The board is the live state; this file is the original write-up. Task ids:
 | Admin screens | Per-Batch **Roster** (printable) and a user admin with status columns and per-user actions. |
 | Launch scope | Launch with PR3 (buy-now eggs/vegetables, phone buttons on meat); PR4 and PR5 follow. |
 
+## Implementation notes (2026-10-07, overnight)
+
+- PR3 → GitHub #19, PR4 → #20 (stacked), PR5 → stacked on #20. All three on worktree
+  branches `feature/launch-commerce`, `feature/invitation-accounts`, `feature/batches`.
+- Batches: a full batch is **not** auto-closed (that would block the confirmations of
+  people who already hold units); new bookings simply stop when `remaining` is 0, and
+  the daily cron closes the batch after its deadline. `bookedCount` is kept by Orders
+  hooks with an atomic SQL guard, so phone orders entered by Staff count the same way.
+- The Roster lives at `/admin/collections/batches/<id>/roster` as a custom document
+  view (`src/components/admin/RosterView.tsx`); `importMap.js` regenerated.
+
 ## Audit findings folded into tickets
 
 - Thank-you page lets any logged-in user read any order by number → T3-1 (fixed with a per-order `accessToken`, which also serves guests).

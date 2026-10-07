@@ -130,7 +130,10 @@
     "description": "Popis",
     "empty": "V této kategorii teď nic nemáme.",
     "outOfSeason": "Mimo sezónu",
-    "unavailable": "Momentálně není k dispozici"
+    "unavailable": "Momentálně není k dispozici",
+    "estimatePerPiece": "přibližně {amount} za kus při průměrné váze {weight} kg",
+    "weightRange": "váha {range}",
+    "bookable": "Na rezervaci"
   },
   "events": {
     "title": "Akce na farmě",
@@ -191,7 +194,8 @@
     "errors": {
       "belowMinimumOrder": "Minimální množství je {min} ks",
       "unavailable": "Produkt momentálně není k dispozici",
-      "generic": "Košík se nepodařilo upravit, zkuste to prosím znovu"
+      "generic": "Košík se nepodařilo upravit, zkuste to prosím znovu",
+      "bookingOnly": "Tento produkt se rezervuje na turnus, ne přes košík."
     }
   },
   "checkout": {
@@ -227,12 +231,15 @@
       "emailInvalid": "Zadejte platný e-mail",
       "guestEmailRequired": "Zadejte e-mail, pošleme vám na něj potvrzení",
       "cartEmpty": "Košík je prázdný",
-      "accountNotActive": "Váš účet není aktivní, objednat nejde."
+      "accountNotActive": "Váš účet není aktivní, objednat nejde.",
+      "bookingOnly": "Položku {name} nelze koupit přes košík, rezervuje se na turnus."
     },
     "thankYou": {
       "title": "Děkujeme za objednávku",
       "body": "Vaše objednávka č. {orderNumber} byla přijata. Potvrzení jsme vám poslali e-mailem.",
-      "guestKeepEmail": "Odkaz na tuto stránku jsme vám poslali e-mailem. Uschovejte si ho, je to váš přístup k objednávce."
+      "guestKeepEmail": "Odkaz na tuto stránku jsme vám poslali e-mailem. Uschovejte si ho, je to váš přístup k objednávce.",
+      "bookingTitle": "Rezervace přijata",
+      "bookingBody": "Vaše rezervace č. {orderNumber} je zapsaná. Podrobnosti jsme poslali e-mailem."
     },
     "pickup": {
       "intro": "Objednávku si vyzvednete osobně. Vyberte, kde.",
@@ -474,10 +481,11 @@
         "paid": "Zaplaceno"
       },
       "orderStatus": {
-        "received": "Přijato",
-        "preparing": "Připravuje se",
-        "shipped": "Připraveno k vyzvednutí",
-        "delivered": "Převzato",
+        "booked": "Rezervováno",
+        "confirmed": "Potvrzeno",
+        "ready": "Připraveno k vyzvednutí",
+        "picked_up": "Převzato",
+        "released": "Uvolněno",
         "cancelled": "Zrušeno"
       }
     }
@@ -495,7 +503,13 @@
     "preferredDate": "Preferovaný den",
     "customerNote": "Poznámka",
     "paymentCash": "Částku {amount} uhradíte hotově při převzetí.",
-    "paymentPaid": "Zaplaceno."
+    "paymentPaid": "Zaplaceno.",
+    "estimate": "Odhad",
+    "estimateNote": "Odhad podle průměrné váhy. Konečná cena se spočítá podle skutečné váhy při převzetí.",
+    "actualWeight": "Váha",
+    "pickupDay": "Den vyzvednutí",
+    "pickupDayPending": "Den a místo vyzvednutí upřesníme, až budou známé termíny turnusu.",
+    "paymentCashByWeight": "Přibližně {amount}, hotově při převzetí podle skutečné váhy."
   },
   "cookieConsent": {
     "consentModal": {
@@ -622,5 +636,77 @@
     "section8_1": "Pokud vztah založený kupní smlouvou obsahuje mezinárodní (zahraniční) prvek, pak strany sjednávají, že vztah se řídí českým právem.",
     "section8_2": "Prodávající je oprávněn k prodeji zboží na základě živnostenského oprávnění. Živnostenskou kontrolu provádí v rámci své působnosti příslušný živnostenský úřad.",
     "section8_3": "Tyto obchodní podmínky nabývají účinnosti dnem [Doplňte datum, např. 19. 5. 2026]."
+  },
+  "booking": {
+    "title": "Rezervace na turnus",
+    "chooseBatch": "Vyberte turnus",
+    "planned": "Termíny vyzvednutí upřesníme a dáme vědět e-mailem",
+    "openUntil": "Potvrzení do {date}",
+    "remaining": "{count, plural, =0 {nic volného} one {# ks volný} few {# ks volné} other {# ks volných}}",
+    "full": "Obsazeno",
+    "pickupDay": "Den vyzvednutí",
+    "quantity": "Počet kusů",
+    "estimate": "přibližně {amount} ({weight} kg × {price}/kg), konečná cena podle váhy při převzetí",
+    "contact": "Vaše údaje",
+    "guestHint": "Rezervujete bez účtu. Potvrzení a odkaz na rezervaci vám pošleme e-mailem.",
+    "login": "Máte účet? Přihlaste se.",
+    "fields": {
+      "firstName": "Jméno",
+      "lastName": "Příjmení",
+      "phone": "Telefon",
+      "email": "E-mail",
+      "note": "Poznámka (nepovinné)"
+    },
+    "agreement": "Souhlasím s <a href=\"/cs/obchodni-podminky\" class=\"underline\">obchodními podmínkami</a> a <a href=\"/cs/ochrana-osobnich-udaju\" class=\"underline\">zpracováním osobních údajů</a>.",
+    "cashNote": "Teď nic neplatíte. Platí se hotově při převzetí podle skutečné váhy.",
+    "submitPlanned": "Rezervovat",
+    "submitOpen": "Závazně rezervovat",
+    "noBatches": "Další turnus zatím není vypsán. Zavolejte nám nebo napište a dáme vědět.",
+    "errors": {
+      "required": "Toto pole je povinné",
+      "batchRequired": "Vyberte turnus",
+      "pickupDayRequired": "Vyberte den vyzvednutí",
+      "batchFull": "Tolik kusů už v tomto turnusu není",
+      "batchNotBookable": "Na tento turnus už nelze rezervovat",
+      "belowMinimumOrder": "Minimální počet je {min} ks",
+      "guestEmailRequired": "Zadejte e-mail, pošleme vám na něj odkaz na rezervaci",
+      "emailInvalid": "Zadejte platný e-mail",
+      "agreementRequired": "Pro rezervaci je potřeba souhlas s podmínkami",
+      "accountNotActive": "Váš účet není aktivní, rezervovat nejde",
+      "generic": "Rezervace se nepovedla, zkuste to prosím znovu"
+    }
+  },
+  "bookingPanel": {
+    "title": "Vaše rezervace",
+    "batch": "Turnus",
+    "statusBooked": "Rezervováno. Termíny vyzvednutí upřesníme a pošleme e-mail; pak si vyberete den a rezervaci potvrdíte.",
+    "statusConfirmNow": "Termíny jsou známé. Vyberte si den vyzvednutí a potvrďte rezervaci do {date}, jinak ji uvolníme.",
+    "statusConfirmed": "Potvrzeno na {date}. Den nebo počet můžete změnit do {deadline}.",
+    "statusConfirmedFinal": "Potvrzeno na {date}.",
+    "released": "Rezervace byla uvolněna, protože nebyla potvrzena do termínu.",
+    "cancelled": "Rezervace je zrušená.",
+    "closed": "Změny už nejsou možné. Potřebujete-li něco upravit, zavolejte {phone}.",
+    "closedNoPhone": "Změny už nejsou možné.",
+    "pickupDay": "Den vyzvednutí",
+    "quantity": "Počet kusů",
+    "maxHint": "max. {max}",
+    "confirm": "Potvrdit rezervaci",
+    "update": "Uložit změnu",
+    "cancel": "Zrušit rezervaci",
+    "cancelConfirm": "Opravdu zrušit?",
+    "cancelYes": "Ano, zrušit",
+    "cancelNo": "Ne",
+    "confirmedToast": "Rezervace potvrzena",
+    "updatedToast": "Změna uložena",
+    "cancelledToast": "Rezervace zrušena",
+    "errors": {
+      "pickupDayRequired": "Vyberte den vyzvednutí",
+      "batchFull": "Tolik kusů už není volných",
+      "notConfirmable": "Rezervaci už nejde změnit",
+      "notCancellable": "Rezervaci už nejde zrušit",
+      "pickupDayInvalid": "Tento den není k dispozici",
+      "belowMinimumOrder": "Minimální počet je {min} ks",
+      "generic": "Něco se pokazilo, zkuste to prosím znovu"
+    }
   }
 }

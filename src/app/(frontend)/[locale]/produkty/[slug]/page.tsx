@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { headers } from 'next/headers'
 import { notFound } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
 import { RichText } from '@payloadcms/richtext-lexical/react'
@@ -8,11 +9,15 @@ import { getSiteSettings } from '@/lib/site-settings'
 import { formatPhone, formatPrice } from '@/lib/utils'
 import { telHref, whatsappHref } from '@/lib/contact'
 import { availabilityOf } from '@/lib/products/availability'
+import { findBookableBatches, remainingUnits } from '@/lib/batches/queries'
+import { formatDay } from '@/lib/orders/orderEmails'
 import { Link } from '@/lib/i18n/routing'
 import { AddToCartButton } from '@/components/cart/AddToCartButton'
+import { BatchBookingForm, type BatchOption } from '@/components/products/BatchBookingForm'
 import { buttonClass } from '@/components/ui/button'
 import { Illustration } from '@/components/illustrations/Illustration'
 import { illustrationForCategory } from '@/components/illustrations/category-map'
+import type { PickupPoint } from '@/payload-types'
 
 type Props = {
   params: Promise<{ locale: 'cs' | 'en'; slug: string }>
@@ -47,7 +52,30 @@ export default async function ProductDetailPage({ params }: Props) {
       new Date(iso),
     )
   const unit = product.unit ? t(`units.${product.unit}`) : null
+  const isBatchProduct = product.soldBy === 'batch'
   const availability = availabilityOf(product)
+
+  // Batch products are booked, not carted: load what can be booked and who is asking.
+  let batchOptions: BatchOption[] = []
+  let viewer: { firstName: string; lastName: string; phone: string; email: string } | null = null
+  if (isBatchProduct) {
+    const { user } = await payload.auth({ headers: await headers() })
+    if (user) viewer = { firstName: user.firstName ?? '', lastName: user.lastName ?? '', phone: user.phone ?? '', email: user.email }
+    const batches = await findBookableBatches(payload, product.id, locale)
+    batchOptions = batches.map(b => ({
+      id: b.id,
+      label: b.label,
+      status: b.status === 'open' ? 'open' : 'planned',
+      remaining: remainingUnits(b),
+      deadlineLabel: b.confirmationDeadline ? formatDay(b.confirmationDeadline, locale) : null,
+      note: b.note ?? null,
+      pickupDays: (b.pickupDays ?? []).map((d, index) => {
+        const point = d.pickupPoint && typeof d.pickupPoint === 'object' ? (d.pickupPoint as PickupPoint) : null
+        return { index, label: point ? `${formatDay(d.date, locale)} — ${point.name}` : formatDay(d.date, locale) }
+      }),
+    }))
+  }
+  const estimatePerPiece = isBatchProduct && product.averageWeight ? Math.round(product.averageWeight * product.price) : null
 
   return (
     <div className="px-5 py-10 md:py-14">
@@ -84,6 +112,12 @@ export default async function ProductDetailPage({ params }: Props) {
               {formatPrice(product.price)}
               {unit && <span className="text-lg font-normal text-ink-muted"> / {unit}</span>}
             </p>
+            {estimatePerPiece !== null && product.averageWeight && (
+              <p className="mt-1 text-sm text-ink-muted">
+                {t('estimatePerPiece', { amount: formatPrice(estimatePerPiece), weight: String(product.averageWeight).replace('.', locale === 'cs' ? ',' : '.') })}
+                {product.weightRange && <> · {t('weightRange', { range: product.weightRange })}</>}
+              </p>
+            )}
 
             {product.seasonal && (
               <div className="mt-5 rounded border border-accent bg-accent/25 p-3 text-sm text-ink-deep">
@@ -99,7 +133,21 @@ export default async function ProductDetailPage({ params }: Props) {
             )}
 
             <div className="mt-6">
-              {availability.available ? (
+              {isBatchProduct ? (
+                <BatchBookingForm
+                  product={{
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    averageWeight: product.averageWeight ?? null,
+                    weightRange: product.weightRange ?? null,
+                    minimumOrder: product.minimumOrder ?? 1,
+                  }}
+                  batches={batchOptions}
+                  user={viewer}
+                  locale={locale}
+                />
+              ) : availability.available ? (
                 <AddToCartButton
                   productId={product.id}
                   productName={product.name}

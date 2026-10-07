@@ -2,5 +2,11 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "installCommand": "npm install --legacy-peer-deps",
   "buildCommand": "npx payload generate:types && yes y | npx payload migrate && next build",
-  "framework": "nextjs"
+  "framework": "nextjs",
+  "crons": [
+    {
+      "path": "/api/cron/batches",
+      "schedule": "0 5 * * *"
+    }
+  ]
 }

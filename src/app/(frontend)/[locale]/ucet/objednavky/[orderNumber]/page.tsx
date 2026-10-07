@@ -5,7 +5,8 @@ import { notFound } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
 import { Link, redirect } from '@/lib/i18n/routing'
 import { OrderDetail } from '@/components/orders/OrderDetail'
-import { orderStatusClasses, paymentStatusClasses } from '@/components/orders/statusClasses'
+import { BookingPanel } from '@/components/orders/BookingPanel'
+import { DEFAULT_ORDER_STATUS, orderStatusClasses, paymentStatusClasses } from '@/components/orders/statusClasses'
 import type { SiteSetting } from '@/payload-types'
 
 type Props = { params: Promise<{ locale: 'cs' | 'en'; orderNumber: string }> }
@@ -36,7 +37,7 @@ export default async function OrderHistoryDetailPage({ params }: Props) {
   const t = await getTranslations({ locale, namespace: 'account.orders' })
 
   const paymentClass = paymentStatusClasses[order.paymentStatus ?? 'unpaid']
-  const orderClass = orderStatusClasses[order.orderStatus ?? 'received']
+  const orderClass = orderStatusClasses[order.orderStatus ?? DEFAULT_ORDER_STATUS]
 
   return (
     <div className="mx-auto max-w-3xl space-y-6 px-6 py-12">
@@ -53,11 +54,12 @@ export default async function OrderHistoryDetailPage({ params }: Props) {
             {t(`paymentStatus.${order.paymentStatus ?? 'unpaid'}`)}
           </span>
           <span className={`whitespace-nowrap rounded-full px-2 py-1 text-xs ${orderClass}`}>
-            {t(`orderStatus.${order.orderStatus ?? 'received'}`)}
+            {t(`orderStatus.${order.orderStatus ?? DEFAULT_ORDER_STATUS}`)}
           </span>
         </div>
       </div>
 
+      <BookingPanel payload={payload} order={order} settings={settings} locale={locale} token={null} />
       <OrderDetail order={order} settings={settings} locale={locale} />
     </div>
   )

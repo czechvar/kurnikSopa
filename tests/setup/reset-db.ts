@@ -6,6 +6,7 @@ const TABLES = [
   'orders',
   'carts',
   'pickup_points',
+  'batches',
   'users',
   'products',
   'product_categories',

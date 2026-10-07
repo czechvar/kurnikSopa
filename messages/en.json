@@ -130,7 +130,10 @@
     "description": "Description",
     "empty": "Nothing in this category right now.",
     "outOfSeason": "Out of season",
-    "unavailable": "Currently unavailable"
+    "unavailable": "Currently unavailable",
+    "estimatePerPiece": "approx. {amount} per piece at an average {weight} kg",
+    "weightRange": "weight {range}",
+    "bookable": "By booking"
   },
   "events": {
     "title": "Farm events",
@@ -191,7 +194,8 @@
     "errors": {
       "belowMinimumOrder": "The minimum quantity is {min}",
       "unavailable": "This product is currently unavailable",
-      "generic": "Could not update the cart, please try again"
+      "generic": "Could not update the cart, please try again",
+      "bookingOnly": "This product is booked against a batch, not through the cart."
     }
   },
   "checkout": {
@@ -227,12 +231,15 @@
       "emailInvalid": "Enter a valid email",
       "guestEmailRequired": "Enter your email so we can send the confirmation",
       "cartEmpty": "Your cart is empty",
-      "accountNotActive": "Your account is not active, so you cannot order."
+      "accountNotActive": "Your account is not active, so you cannot order.",
+      "bookingOnly": "{name} cannot be bought from the cart; it is booked against a batch."
     },
     "thankYou": {
       "title": "Thank you for your order",
       "body": "Your order #{orderNumber} has been received. We've sent the confirmation to your email.",
-      "guestKeepEmail": "We've emailed you a link to this page. Keep it, it's your access to the order."
+      "guestKeepEmail": "We've emailed you a link to this page. Keep it, it's your access to the order.",
+      "bookingTitle": "Booking received",
+      "bookingBody": "Your booking #{orderNumber} is in. We have emailed the details."
     },
     "pickup": {
       "intro": "You'll collect the order in person. Choose where.",
@@ -474,10 +481,11 @@
         "paid": "Paid"
       },
       "orderStatus": {
-        "received": "Received",
-        "preparing": "Preparing",
-        "shipped": "Ready for pickup",
-        "delivered": "Picked up",
+        "booked": "Booked",
+        "confirmed": "Confirmed",
+        "ready": "Ready for pickup",
+        "picked_up": "Picked up",
+        "released": "Released",
         "cancelled": "Cancelled"
       }
     }
@@ -495,7 +503,13 @@
     "preferredDate": "Preferred day",
     "customerNote": "Note",
     "paymentCash": "You'll pay {amount} in cash when you collect.",
-    "paymentPaid": "Paid."
+    "paymentPaid": "Paid.",
+    "estimate": "Estimate",
+    "estimateNote": "An estimate from the average weight. The final price follows the actual weight at pickup.",
+    "actualWeight": "Weight",
+    "pickupDay": "Pickup day",
+    "pickupDayPending": "Pickup day and place follow once the batch dates are set.",
+    "paymentCashByWeight": "Approx. {amount}, in cash at pickup by the actual weight."
   },
   "cookieConsent": {
     "consentModal": {
@@ -575,5 +589,77 @@
     "pageTitle": "Terms and Conditions",
     "czechAuthoritativeNotice": "The legally binding version of these Terms and Conditions is in Czech. Please refer to the Czech-language page at /cs/obchodni-podminky for the authoritative text. The translation below is provided for convenience only.",
     "czechLinkLabel": "Read the Czech version"
+  },
+  "booking": {
+    "title": "Book from a batch",
+    "chooseBatch": "Choose a batch",
+    "planned": "Pickup dates to be announced by email",
+    "openUntil": "Confirm by {date}",
+    "remaining": "{count, plural, =0 {none left} one {# left} other {# left}}",
+    "full": "Full",
+    "pickupDay": "Pickup day",
+    "quantity": "Number of pieces",
+    "estimate": "approx. {amount} ({weight} kg × {price}/kg), final price by weight at pickup",
+    "contact": "Your details",
+    "guestHint": "You're booking without an account. We'll email you the confirmation and a link to the booking.",
+    "login": "Have an account? Log in.",
+    "fields": {
+      "firstName": "First name",
+      "lastName": "Last name",
+      "phone": "Phone",
+      "email": "Email",
+      "note": "Note (optional)"
+    },
+    "agreement": "I agree to the <a href=\"/en/obchodni-podminky\" class=\"underline\">terms</a> and <a href=\"/en/privacy\" class=\"underline\">privacy policy</a>.",
+    "cashNote": "Nothing is paid now. You pay in cash at pickup, by the actual weight.",
+    "submitPlanned": "Book",
+    "submitOpen": "Book and confirm",
+    "noBatches": "The next batch is not announced yet. Call or message us and we will let you know.",
+    "errors": {
+      "required": "This field is required",
+      "batchRequired": "Choose a batch",
+      "pickupDayRequired": "Choose a pickup day",
+      "batchFull": "That many pieces are no longer left in this batch",
+      "batchNotBookable": "This batch no longer takes bookings",
+      "belowMinimumOrder": "The minimum is {min} pieces",
+      "guestEmailRequired": "Enter your email so we can send the booking link",
+      "emailInvalid": "Enter a valid email",
+      "agreementRequired": "You must agree to the terms to book",
+      "accountNotActive": "Your account is not active, so you cannot book",
+      "generic": "The booking failed, please try again"
+    }
+  },
+  "bookingPanel": {
+    "title": "Your booking",
+    "batch": "Batch",
+    "statusBooked": "Booked. We'll announce the pickup dates by email; you then pick a day and confirm.",
+    "statusConfirmNow": "The dates are set. Choose a pickup day and confirm by {date}, or the booking is released.",
+    "statusConfirmed": "Confirmed for {date}. You can change the day or quantity until {deadline}.",
+    "statusConfirmedFinal": "Confirmed for {date}.",
+    "released": "The booking was released because it was not confirmed by the deadline.",
+    "cancelled": "The booking is cancelled.",
+    "closed": "Changes are no longer possible. If you need to change something, call {phone}.",
+    "closedNoPhone": "Changes are no longer possible.",
+    "pickupDay": "Pickup day",
+    "quantity": "Number of pieces",
+    "maxHint": "max. {max}",
+    "confirm": "Confirm booking",
+    "update": "Save change",
+    "cancel": "Cancel booking",
+    "cancelConfirm": "Really cancel?",
+    "cancelYes": "Yes, cancel",
+    "cancelNo": "No",
+    "confirmedToast": "Booking confirmed",
+    "updatedToast": "Change saved",
+    "cancelledToast": "Booking cancelled",
+    "errors": {
+      "pickupDayRequired": "Choose a pickup day",
+      "batchFull": "That many pieces are no longer left",
+      "notConfirmable": "The booking can no longer be changed",
+      "notCancellable": "The booking can no longer be cancelled",
+      "pickupDayInvalid": "This day is not available",
+      "belowMinimumOrder": "The minimum is {min} pieces",
+      "generic": "Something went wrong, please try again"
+    }
   }
 }

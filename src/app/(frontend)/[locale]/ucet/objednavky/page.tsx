@@ -4,7 +4,7 @@ import config from '@payload-config'
 import { getTranslations } from 'next-intl/server'
 import { Link, redirect } from '@/lib/i18n/routing'
 import { buttonClass } from '@/components/ui/button'
-import { orderStatusClasses, paymentStatusClasses } from '@/components/orders/statusClasses'
+import { DEFAULT_ORDER_STATUS, orderStatusClasses, paymentStatusClasses } from '@/components/orders/statusClasses'
 
 type Props = { params: Promise<{ locale: 'cs' | 'en' }> }
 
@@ -54,11 +54,11 @@ export default async function OrdersListPage({ params }: Props) {
         <ul className="space-y-3">
           {orders.map((order) => {
             const paymentClass = paymentStatusClasses[order.paymentStatus ?? 'unpaid']
-            const orderClass = orderStatusClasses[order.orderStatus ?? 'received']
+            const orderClass = orderStatusClasses[order.orderStatus ?? DEFAULT_ORDER_STATUS]
             return (
               <li key={order.id}>
                 <Link
-                  href={{ pathname: '/ucet/objednavky/[orderNumber]', params: { orderNumber: order.orderNumber } }}
+                  href={{ pathname: '/ucet/objednavky/[orderNumber]', params: { orderNumber: String(order.orderNumber) } }}
                   className="block rounded-md border border-line bg-ground p-4 transition-colors hover:border-ink"
                 >
                   <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -72,7 +72,7 @@ export default async function OrdersListPage({ params }: Props) {
                         {t(`paymentStatus.${order.paymentStatus ?? 'unpaid'}`)}
                       </span>
                       <span className={`whitespace-nowrap rounded-full px-2 py-1 text-xs ${orderClass}`}>
-                        {t(`orderStatus.${order.orderStatus ?? 'received'}`)}
+                        {t(`orderStatus.${order.orderStatus ?? DEFAULT_ORDER_STATUS}`)}
                       </span>
                     </div>
                   </div>

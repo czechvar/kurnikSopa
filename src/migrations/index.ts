@@ -7,6 +7,7 @@ import * as migration_20261003_200248_editor_role from './20261003_200248_editor
 import * as migration_20261004_201045_posts_drafts from './20261004_201045_posts_drafts';
 import * as migration_20261006_230927_launch_commerce from './20261006_230927_launch_commerce';
 import * as migration_20261006_232158_invitation_accounts from './20261006_232158_invitation_accounts';
+import * as migration_20261006_234107_batches from './20261006_234107_batches';
 
 export const migrations = [
   {
@@ -52,6 +53,11 @@ export const migrations = [
   {
     up: migration_20261006_232158_invitation_accounts.up,
     down: migration_20261006_232158_invitation_accounts.down,
-    name: '20261006_232158_invitation_accounts'
+    name: '20261006_232158_invitation_accounts',
+  },
+  {
+    up: migration_20261006_234107_batches.up,
+    down: migration_20261006_234107_batches.down,
+    name: '20261006_234107_batches'
   },
 ];
