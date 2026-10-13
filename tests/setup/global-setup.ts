@@ -31,12 +31,16 @@ export default async function setup() {
   await admin.query(`CREATE DATABASE "${dbName}"`)
   await admin.end()
 
-  const result = spawnSync('npx', ['payload', 'migrate'], {
+  // Goes through scripts/payload-cli.mjs, which checks payload_migrations
+  // afterwards and retries: `npx payload migrate` has exited 0 in CI without
+  // applying anything, and the suite then failed with `relation "orders" does
+  // not exist` eighty times instead of once, here.
+  const result = spawnSync(process.execPath, [path.resolve(process.cwd(), 'scripts/payload-cli.mjs'), 'migrate'], {
     stdio: 'inherit',
     env: { ...process.env, DATABASE_URI: uri },
   })
   if (result.status !== 0) {
-    throw new Error(`payload migrate failed with exit code ${result.status}`)
+    throw new Error(`payload migrate failed with exit code ${result.status} — see the message above`)
   }
 
   return async () => {

@@ -1,6 +1,7 @@
 name: test
 on:
   push:
+    branches: [main, devel]
   pull_request:
 
 jobs:
@@ -34,6 +35,6 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'npm'
       - run: npm install --legacy-peer-deps
-      - run: npx payload generate:types
+      - run: node scripts/payload-cli.mjs generate:types
       - run: npx tsc --noEmit
       - run: npm test
