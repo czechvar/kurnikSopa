@@ -213,7 +213,7 @@
       "phone": "Phone",
       "preferredDate": "Preferred pickup day",
       "customerNote": "Note (time, dietary preferences, etc.)",
-      "agreement": "I agree to the <a href=\"/en/terms\" class=\"underline\">terms</a> and <a href=\"/en/privacy\" class=\"underline\">privacy policy</a>.",
+      "agreement": "I agree to the <a href=\"/en/obchodni-podminky\" class=\"underline\">terms</a> and <a href=\"/en/ochrana-osobnich-udaju\" class=\"underline\">privacy policy</a>.",
       "pickupPoint": "Pickup point"
     },
     "submit": "Place order",
@@ -345,7 +345,7 @@
         "phone": "Phone",
         "message": "Message (optional)"
       },
-      "agreement": "I agree to the <a href=\"/en/privacy\" class=\"underline\">privacy policy</a>.",
+      "agreement": "I agree to the <a href=\"/en/ochrana-osobnich-udaju\" class=\"underline\">privacy policy</a>.",
       "submit": "Request an account",
       "orderWithout": "You can order without an account, straight from the cart.",
       "haveAccount": "Already have an account?",
@@ -610,7 +610,7 @@
       "email": "Email",
       "note": "Note (optional)"
     },
-    "agreement": "I agree to the <a href=\"/en/obchodni-podminky\" class=\"underline\">terms</a> and <a href=\"/en/privacy\" class=\"underline\">privacy policy</a>.",
+    "agreement": "I agree to the <a href=\"/en/obchodni-podminky\" class=\"underline\">terms</a> and <a href=\"/en/ochrana-osobnich-udaju\" class=\"underline\">privacy policy</a>.",
     "cashNote": "Nothing is paid now. You pay in cash at pickup, by the actual weight.",
     "submitPlanned": "Book",
     "submitOpen": "Book and confirm",
@@ -661,5 +661,16 @@
       "belowMinimumOrder": "The minimum is {min} pieces",
       "generic": "Something went wrong, please try again"
     }
+  },
+  "ochranaOsobnichUdaju": {
+    "pageTitle": "Privacy Policy",
+    "czechAuthoritativeNotice": "The legally binding version of this Privacy Policy is in Czech. Please refer to the Czech-language page at /cs/ochrana-osobnich-udaju for the authoritative text. The summary below is provided for convenience only.",
+    "czechLinkLabel": "Read the Czech version",
+    "summaryTitle": "In short",
+    "summaryController": "The controller of your personal data is the farm operator listed on the Czech page. Contact us by e-mail for anything related to your data.",
+    "summaryData": "We process the details you give us when you order, book poultry for a batch, sign up for an event or ask for an account: name, phone, e-mail, the content of your order, your pickup point and day, and the actual weight and cash amount at pickup. We never process payment card data; everything is paid in cash at pickup.",
+    "summaryPurpose": "We use these details to fulfil your order and to meet Czech accounting and tax obligations. We send only transactional e-mails (order confirmation, booking confirmation and reminders, account invitation, password reset), never a newsletter.",
+    "summaryProcessors": "Our hosting (Vercel), database (Neon), e-mail delivery (Resend) and file storage (Cloudflare) providers act as processors; some of them store data in the USA under the EU–U.S. Data Privacy Framework. Analytics and marketing tools load only if you allow them in the cookie banner.",
+    "summaryRights": "You have the right to access, correct, delete or export your data, to restrict or object to processing, to withdraw consent at any time, and to lodge a complaint with the Czech Office for Personal Data Protection (www.uoou.cz)."
   }
 }
