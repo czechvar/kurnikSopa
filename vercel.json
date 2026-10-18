@@ -1,7 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "installCommand": "npm install --legacy-peer-deps",
-  "buildCommand": "npx payload generate:types && yes y | npx payload migrate && next build",
+  "buildCommand": "node scripts/payload-cli.mjs generate:types && yes y | node scripts/payload-cli.mjs migrate && next build",
   "framework": "nextjs",
   "crons": [
     {
