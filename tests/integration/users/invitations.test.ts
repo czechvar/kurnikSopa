@@ -1,9 +1,11 @@
 import { beforeEach, describe, expect, it } from 'vitest'
+import type { RequiredDataFromCollectionSlug } from 'payload'
 import { getTestPayload } from '../../helpers/payload'
 import { createTestUser, setTestSiteSettings } from '../../helpers/factories'
 import { resetDb } from '../../setup/reset-db'
 import { resetEmails, capturedEmails } from '../../setup/email-spy'
 import { requestAccess, sendInvitation, acceptInvitation } from '@/lib/users/invitations'
+import { rest } from '../../helpers/rest'
 
 describe('access requests and invitations', () => {
   beforeEach(async () => {
@@ -59,7 +61,7 @@ describe('access requests and invitations', () => {
     const requested = (await payload.find({ collection: 'users', where: { email: { equals: 'eva@example.com' } }, limit: 1 })).docs[0]
     resetEmails()
 
-    const sent = await sendInvitation(payload, { userId: requested.id, invitedBy: staff.id, locale: 'cs' })
+    const sent = await sendInvitation(payload, { userId: requested.id, invitedBy: staff.id })
     expect(sent.sent).toBe(true)
 
     const invited = await payload.findByID({ collection: 'users', id: requested.id, depth: 0, showHiddenFields: true })
@@ -130,5 +132,100 @@ describe('access requests and invitations', () => {
     const fresh = await payload.findByID({ collection: 'users', id: requested.id, depth: 0 })
     expect(fresh.status).toBe('invited')
     expect(fresh.sendInvitation).toBe(false)
+  })
+})
+
+describe('invitation language', () => {
+  beforeEach(async () => {
+    await resetDb()
+    resetEmails()
+    const payload = await getTestPayload()
+    await setTestSiteSettings(payload)
+    resetEmails()
+  })
+
+  async function requestedUser(email: string) {
+    const payload = await getTestPayload()
+    return (await payload.find({ collection: 'users', where: { email: { equals: email } }, limit: 1, depth: 0 })).docs[0]
+  }
+
+  it('the access-request endpoint stores the language the form was filled in', async () => {
+    const res = await rest('POST', '/api/users/request-access', {
+      body: { firstName: 'Anna', lastName: 'Smith', email: 'anna@example.com', phone: '5', locale: 'en' },
+    })
+    expect(res.status).toBe(200)
+    const user = await requestedUser('anna@example.com')
+    expect(user.locale).toBe('en')
+    expect(capturedEmails[0].subject).toBe('We received your request for an account')
+  })
+
+  it('a Czech requester gets a Czech invitation even when the admin works in English content', async () => {
+    const payload = await getTestPayload()
+    const admin = await createTestUser(payload, { role: 'admin' })
+    await requestAccess(payload, { firstName: 'Petr', lastName: 'N', email: 'petr@example.com', phone: '6', locale: 'cs' })
+    const requested = await requestedUser('petr@example.com')
+    expect(requested.locale).toBe('cs')
+    resetEmails()
+
+    await payload.update({
+      collection: 'users',
+      id: requested.id,
+      data: { sendInvitation: true },
+      user: admin,
+      overrideAccess: false,
+      locale: 'en',
+    })
+
+    expect(capturedEmails).toHaveLength(1)
+    expect(capturedEmails[0].subject).toBe('Pozvánka do Kurníku Šopa')
+    expect(capturedEmails[0].html).toContain('/cs/pozvanka/')
+    expect(capturedEmails[0].html).not.toContain('/en/invitation/')
+  })
+
+  it('an English requester gets an English invitation even when the admin works in Czech content', async () => {
+    const payload = await getTestPayload()
+    const admin = await createTestUser(payload, { role: 'admin' })
+    await requestAccess(payload, { firstName: 'Anna', lastName: 'S', email: 'anna@example.com', phone: '7', locale: 'en' })
+    const requested = await requestedUser('anna@example.com')
+    resetEmails()
+
+    await payload.update({
+      collection: 'users',
+      id: requested.id,
+      data: { sendInvitation: true },
+      user: admin,
+      overrideAccess: false,
+      locale: 'cs',
+    })
+
+    expect(capturedEmails).toHaveLength(1)
+    expect(capturedEmails[0].subject).toBe('Your invitation to Kurník Šopa')
+    expect(capturedEmails[0].html).toContain('/en/invitation/')
+  })
+
+  it('an account the admin creates by email starts Czech and can be switched before inviting', async () => {
+    const payload = await getTestPayload()
+    const admin = await createTestUser(payload, { role: 'admin' })
+    // No `locale` on purpose: the admin's create form leaves it at its default.
+    const withoutLocale: Omit<RequiredDataFromCollectionSlug<'users'>, 'locale'> = {
+      email: 'new@example.com', password: 'temporary-password-1', role: 'customer', status: 'requested',
+    }
+    const created = await payload.create({
+      collection: 'users',
+      data: withoutLocale as RequiredDataFromCollectionSlug<'users'>,
+      user: admin,
+      overrideAccess: false,
+    })
+    expect(created.locale).toBe('cs')
+
+    resetEmails()
+    await payload.update({
+      collection: 'users',
+      id: created.id,
+      data: { locale: 'en', sendInvitation: true },
+      user: admin,
+      overrideAccess: false,
+    })
+    expect(capturedEmails[0].subject).toBe('Your invitation to Kurník Šopa')
   })
 })

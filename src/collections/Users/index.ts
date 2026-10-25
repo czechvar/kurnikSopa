@@ -5,6 +5,7 @@ import { requestAccessEndpoint } from './endpoints/requestAccess'
 import { acceptInviteEndpoint } from './endpoints/acceptInvite'
 import { refuseInactiveLogin } from './hooks/refuseInactiveLogin'
 import { captureInvitationFlag, sendInvitationIfFlagged } from './hooks/invitationFlag'
+import { revokeSessionsUnlessActive } from './hooks/revokeSessionsUnlessActive'
 
 const isAdmin: Access = ({ req }) => req.user?.role === 'admin'
 
@@ -73,7 +74,7 @@ export const Users: CollectionConfig = {
   },
   endpoints: [requestAccessEndpoint, acceptInviteEndpoint],
   hooks: {
-    beforeChange: [captureInvitationFlag],
+    beforeChange: [captureInvitationFlag, revokeSessionsUnlessActive],
     afterChange: [sendInvitationIfFlagged],
     beforeLogin: [refuseInactiveLogin],
   },
@@ -146,6 +147,27 @@ export const Users: CollectionConfig = {
         description: {
           cs: 'Blokovaný uživatel se nepřihlásí ani neobjedná; jeho objednávky zůstávají.',
           en: 'A blocked user cannot log in or order; their orders stay.',
+        },
+      },
+    },
+    {
+      // The person's own language for emails and the set-password link. The
+      // access-request form stores the language it was filled in; an account
+      // created in the admin starts Czech. Not the admin's content locale.
+      name: 'locale',
+      type: 'select',
+      required: true,
+      defaultValue: 'cs',
+      label: { cs: 'Jazyk', en: 'Language' },
+      options: [
+        { label: 'Čeština', value: 'cs' },
+        { label: 'English', value: 'en' },
+      ],
+      admin: {
+        position: 'sidebar',
+        description: {
+          cs: 'V tomto jazyce přijde pozvánka a otevře se stránka pro nastavení hesla.',
+          en: 'The invitation email and the set-password page use this language.',
         },
       },
     },

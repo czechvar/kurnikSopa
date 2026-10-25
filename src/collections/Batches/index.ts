@@ -1,7 +1,7 @@
 import type { CollectionConfig } from 'payload'
-import { APIError } from 'payload'
 import { isAdminOrStaff, publicRead } from '../access'
 import { validateBatch, type BatchShape } from '@/lib/batches/transitions'
+import { batchRuleError, type BatchTFunction } from '@/lib/batches/messages'
 import { notifyBatchOpened } from '@/lib/batches/notifyOpened'
 
 /**
@@ -51,7 +51,7 @@ export const Batches: CollectionConfig = {
         if (req.context.skipBatchValidation) return data
         const merged = { ...(originalDoc ?? {}), ...data } as BatchShape & Record<string, unknown>
         const problem = validateBatch(merged, operation === 'update' && originalDoc ? (originalDoc as BatchShape) : null)
-        if (problem) throw new APIError(problem, 400)
+        if (problem) throw batchRuleError(problem, req.t as BatchTFunction, { booked: merged.bookedCount ?? 0 })
         if (merged.status === 'open' && (!originalDoc || originalDoc.status !== 'open') && !merged.openedAt) {
           return { ...data, openedAt: new Date().toISOString() }
         }
