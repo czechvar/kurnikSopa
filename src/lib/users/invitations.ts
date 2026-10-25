@@ -49,6 +49,7 @@ export async function requestAccess(payload: Payload, input: AccessRequestInput)
       phone: input.phone.trim(),
       role: 'customer',
       status: 'requested',
+      locale: input.locale,
       requestMessage: input.message?.trim() || undefined,
     },
     depth: 0,
@@ -94,10 +95,14 @@ export async function requestAccess(payload: Payload, input: AccessRequestInput)
  * Send (or resend) an Invitation: a set-password link valid for seven days,
  * built on Payload's own password-reset token so no new token machinery is
  * needed. Following the link activates the account.
+ *
+ * The email and the link's page are in the invitee's own `locale`, never the
+ * inviting admin's: an admin browsing English content must not send a Czech
+ * customer an English invitation.
  */
 export async function sendInvitation(
   payload: Payload,
-  input: { userId: number; invitedBy: number | null; locale?: Locale },
+  input: { userId: number; invitedBy: number | null },
   /** Pass the hook's request so nested writes share its transaction instead of waiting on it. */
   req?: PayloadRequest,
 ): Promise<{ sent: boolean; reason?: 'blocked' | 'notFound' }> {
@@ -130,7 +135,7 @@ export async function sendInvitation(
   })
 
   const settings = (await payload.findGlobal({ slug: 'site-settings', depth: 0, req })) as SiteSetting
-  const locale: Locale = input.locale ?? 'cs'
+  const locale: Locale = user.locale === 'en' ? 'en' : 'cs'
   let invitedByName: string | null = null
   if (input.invitedBy) {
     try {

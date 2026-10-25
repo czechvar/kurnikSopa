@@ -19,11 +19,9 @@ export const sendInvitationIfFlagged: CollectionAfterChangeHook = async ({ doc, 
   if (req.context[CONTEXT_KEY] !== true) return doc
   delete req.context[CONTEXT_KEY]
   try {
-    await sendInvitation(
-      req.payload,
-      { userId: doc.id, invitedBy: req.user?.id ?? null, locale: req.locale === 'en' ? 'en' : 'cs' },
-      req,
-    )
+    // The invitee's own language comes from their User record; req.locale is
+    // only the admin's content locale.
+    await sendInvitation(req.payload, { userId: doc.id, invitedBy: req.user?.id ?? null }, req)
   } catch (e) {
     req.payload.logger.error(`Invitation for user ${doc.id} failed: ${String(e)}`)
   }

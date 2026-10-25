@@ -12,6 +12,7 @@ import { resetEmails, capturedEmails } from '../../setup/email-spy'
 import { bookBatch, type BookInput } from '@/lib/orders/book'
 import { cancelBooking, confirmBooking } from '@/lib/orders/confirm'
 import { runDailyBatchJobs } from '@/lib/batches/dailyRun'
+import { batchTranslations } from '@/lib/batches/messages'
 import type { Order, PickupPoint, Product, User } from '@/payload-types'
 
 const customer = { firstName: 'Jana', lastName: 'Kuřecí', phone: '777 111 222' }
@@ -180,7 +181,10 @@ describe('opening a batch and confirming', () => {
   it('cannot be opened without dates', async () => {
     const { payload, product } = await setup()
     const batch = await createTestBatch(payload, product)
-    await expect(payload.update({ collection: 'batches', id: batch.id, data: { status: 'open' } })).rejects.toThrow(/openNeedsDeadline/)
+    // The Local API speaks the admin's fallback language, Czech.
+    await expect(payload.update({ collection: 'batches', id: batch.id, data: { status: 'open' } })).rejects.toThrow(
+      batchTranslations.cs.batches.openNeedsDeadline,
+    )
   })
 
   it('opening emails every booked customer, who then confirms a pickup day; quantity changes move bookedCount', async () => {

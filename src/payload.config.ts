@@ -8,6 +8,7 @@ import { s3Storage } from '@payloadcms/storage-s3'
 import { cs } from '@payloadcms/translations/languages/cs'
 import { en } from '@payloadcms/translations/languages/en'
 import { clientUploadsEnabled } from '@/lib/uploads'
+import { batchTranslations } from '@/lib/batches/messages'
 import sharp from 'sharp'
 
 import { Users } from '@/collections/Users'
@@ -90,6 +91,8 @@ export default buildConfig({
   i18n: {
     supportedLanguages: { cs, en },
     fallbackLanguage: 'cs',
+    // Our own admin messages (read through `req.t`), on top of Payload's.
+    translations: batchTranslations,
   },
 
   localization: {

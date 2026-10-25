@@ -8,6 +8,7 @@ import * as migration_20261004_201045_posts_drafts from './20261004_201045_posts
 import * as migration_20261006_230927_launch_commerce from './20261006_230927_launch_commerce';
 import * as migration_20261006_232158_invitation_accounts from './20261006_232158_invitation_accounts';
 import * as migration_20261006_234107_batches from './20261006_234107_batches';
+import * as migration_20261025_122629_user_locale from './20261025_122629_user_locale';
 
 export const migrations = [
   {
@@ -58,6 +59,11 @@ export const migrations = [
   {
     up: migration_20261006_234107_batches.up,
     down: migration_20261006_234107_batches.down,
-    name: '20261006_234107_batches'
+    name: '20261006_234107_batches',
+  },
+  {
+    up: migration_20261025_122629_user_locale.up,
+    down: migration_20261025_122629_user_locale.down,
+    name: '20261025_122629_user_locale'
   },
 ];
