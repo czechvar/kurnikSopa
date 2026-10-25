@@ -14,6 +14,7 @@ export async function createTestUser(
     firstName: string
     lastName: string
     phone: string
+    locale: 'cs' | 'en'
   }> = {},
 ): Promise<User> {
   userCounter += 1
@@ -26,6 +27,7 @@ export async function createTestUser(
       firstName: overrides.firstName ?? 'Test',
       lastName: overrides.lastName ?? `User${userCounter}`,
       phone: overrides.phone ?? '+420123456789',
+      locale: overrides.locale ?? 'cs',
     } as any,
   })
 }

@@ -1,10 +1,11 @@
 'use client'
 
 import { useState } from 'react'
-import { useTranslations } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 
 export function ForgotPasswordForm() {
   const t = useTranslations('auth.forgot')
+  const locale = useLocale() === 'en' ? 'en' : 'cs'
   const [email, setEmail] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [done, setDone] = useState(false)
@@ -12,7 +13,9 @@ export function ForgotPasswordForm() {
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault()
     setSubmitting(true)
-    await fetch('/api/users/forgot-password', {
+    // The email follows the account's own language; this page's language is
+    // only the fallback for an account without one.
+    await fetch(`/api/users/forgot-password?locale=${locale}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email }),
