@@ -37,5 +37,12 @@ person the farm knows.
   Order numbers are sequential, so the number alone never grants access.
 - People who order by phone and have no email never get an account. Their orders are
   entered by Staff with name and phone only, and appear on the Roster like any other.
+- Accepting an invitation links the person's earlier Guest Orders (same email, any
+  case) to the new account, so its order history starts with them. Only the
+  `customer` field changes; the guest details and prices stay. Decided 2026-10-28.
+- Blocking a User stops logging in and ordering through that account. It does not
+  stop the person ordering as a guest with the same email: guest ordering stays open
+  to anyone, and the farm turns away a person it does not want at pickup. Decided
+  2026-10-28.
 - The decision trades reach for control. If the farm later wants to grow beyond people
   it knows, this is the ADR to supersede.

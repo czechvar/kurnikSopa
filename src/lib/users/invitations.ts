@@ -208,5 +208,41 @@ export async function acceptInvitation(
     }
     return { ok: false, reason: 'tokenInvalid' }
   }
+
+  try {
+    await linkGuestOrders(payload, pending)
+  } catch (e) {
+    // The account works either way; only the order history would be short.
+    payload.logger.warn(`acceptInvitation: linking guest orders failed for user ${pending.id}: ${String(e)}`)
+  }
   return { ok: true, email: pending.email }
+}
+
+/**
+ * Guest Orders placed with this email before the account existed become the
+ * account's own, so they appear in its order history. The invitation link
+ * proves the person holds the email. Only `customer` changes: the guest
+ * details, prices and estimates stay as they were.
+ */
+export async function linkGuestOrders(payload: Payload, user: Pick<User, 'id' | 'email'>): Promise<number> {
+  const email = user.email.trim().toLowerCase()
+  // `like` is case-insensitive but matches substrings; the filter below keeps
+  // exact matches only. Phone orders may carry the email in any case.
+  const candidates = await payload.find({
+    collection: 'orders',
+    where: { and: [{ customer: { exists: false } }, { guestEmail: { like: email } }] },
+    depth: 0,
+    pagination: false,
+  })
+  const mine = candidates.docs.filter(o => o.guestEmail?.trim().toLowerCase() === email)
+  for (const order of mine) {
+    await payload.update({
+      collection: 'orders',
+      id: order.id,
+      data: { customer: user.id },
+      depth: 0,
+      context: { linkingCustomer: true },
+    })
+  }
+  return mine.length
 }

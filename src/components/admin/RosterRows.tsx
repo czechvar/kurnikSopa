@@ -143,7 +143,7 @@ export function RosterRows({ groups, waiting, dropped, totals }: Props) {
                     <input type="checkbox" checked={done} onChange={e => save(r.id, e.target.checked)} />
                     <span className="no-print">{done ? 'ano' : 'ne'}</span>
                   </label>
-                ) : (r.orderStatus === 'released' ? 'uvolněno' : r.orderStatus === 'cancelled' ? 'zrušeno' : 'čeká na potvrzení')}
+                ) : (r.orderStatus === 'released' ? 'uvolněno' : r.orderStatus === 'cancelled' ? 'zrušeno' : r.email ? 'čeká na potvrzení' : 'potvrďte telefonicky')}
               </td>
               <td className="no-print status">{saving[r.id] === 'saving' ? 'ukládám…' : saving[r.id] === 'saved' ? 'uloženo' : saving[r.id] === 'error' ? 'chyba, zkuste znovu' : ''}</td>
             </tr>
@@ -179,6 +179,11 @@ export function RosterRows({ groups, waiting, dropped, totals }: Props) {
       {waiting.length > 0 && (
         <section className="no-print">
           <h2>Nepotvrzené rezervace ({waiting.length})</h2>
+          {waiting.some(r => !rows[r.id]?.email) && (
+            <p className="status">
+              Rezervace bez e-mailu se po termínu potvrzení neuvolní. Zavolejte zákazníkovi a potvrďte ji v objednávce (stav „Potvrzeno“, den a místo výdeje).
+            </p>
+          )}
           {table(waiting, false)}
         </section>
       )}

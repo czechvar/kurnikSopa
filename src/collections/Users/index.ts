@@ -156,8 +156,8 @@ export const Users: CollectionConfig = {
       admin: {
         position: 'sidebar',
         description: {
-          cs: 'Blokovaný uživatel se nepřihlásí ani neobjedná; jeho objednávky zůstávají.',
-          en: 'A blocked user cannot log in or order; their orders stay.',
+          cs: 'Blokovaný uživatel se nepřihlásí a jeho účet nic neobjedná. Bez účtu (jako host) objednat může, jako kdokoli jiný. Jeho objednávky zůstávají.',
+          en: 'A blocked user cannot log in, and nothing is ordered through the account. Like anyone else, they can still order without an account. Their orders stay.',
         },
       },
     },

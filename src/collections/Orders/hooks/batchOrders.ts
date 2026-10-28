@@ -32,7 +32,10 @@ export const prepareOrder: CollectionBeforeValidateHook = async ({ data, operati
  * from the product when Staff leave them blank, and the estimate is
  * quantity × average weight × price per kilo.
  */
-export const applyBatchRules: CollectionBeforeChangeHook = async ({ data, originalDoc, operation, req }) => {
+export const applyBatchRules: CollectionBeforeChangeHook = async ({ data, originalDoc, operation, req, context }) => {
+  // Linking a Guest Order to its new account (`linkGuestOrders`) sets
+  // `customer` only; re-pricing it from today's average weight would be wrong.
+  if (context?.linkingCustomer) return data
   const batchId = relId(data.batch ?? originalDoc?.batch)
   if (!batchId) return data
 
