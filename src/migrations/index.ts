@@ -9,6 +9,7 @@ import * as migration_20261006_230927_launch_commerce from './20261006_230927_la
 import * as migration_20261006_232158_invitation_accounts from './20261006_232158_invitation_accounts';
 import * as migration_20261006_234107_batches from './20261006_234107_batches';
 import * as migration_20261025_122629_user_locale from './20261025_122629_user_locale';
+import * as migration_20261028_125127_seller_legal_details from './20261028_125127_seller_legal_details';
 
 export const migrations = [
   {
@@ -64,6 +65,11 @@ export const migrations = [
   {
     up: migration_20261025_122629_user_locale.up,
     down: migration_20261025_122629_user_locale.down,
-    name: '20261025_122629_user_locale'
+    name: '20261025_122629_user_locale',
+  },
+  {
+    up: migration_20261028_125127_seller_legal_details.up,
+    down: migration_20261028_125127_seller_legal_details.down,
+    name: '20261028_125127_seller_legal_details'
   },
 ];

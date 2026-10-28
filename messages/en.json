@@ -551,7 +551,7 @@
   },
   "cookies": {
     "pageTitle": "Cookie policy",
-    "intro": "This site, kurnik-sopa.cz, operated by [Name/Company, Address, Reg. No.] (the \"Operator\" or \"we\"), uses cookies. This policy explains what cookies are, which categories we use, and how you can manage or disable them.",
+    "intro": "This site, kurnik-sopa.cz, operated by {operator} (the “Operator” or “we”), uses cookies. This policy explains what cookies are, which categories we use, and how you can manage or disable them.",
     "section1Title": "1. What are cookies?",
     "section1Body": "Cookies are small text files that a website stores in your browser (on your computer, tablet, or mobile) when you visit it. They allow the site to remember information about your visit (such as your language, cart contents, or login state) so your next visit can be smoother.",
     "section2Title": "2. What categories of cookies do we use?",
@@ -574,7 +574,6 @@
     "section3Tool1": "Google Analytics: For traffic and behavior analysis (analytics cookies).",
     "section3Tool2": "Google Ads / Sklik: For ad campaign measurement and ad targeting (marketing cookies).",
     "section3Tool3": "Facebook Pixel: For conversion tracking and ad personalization on Facebook (marketing cookies).",
-    "section3ToolMore": "[Add others you use, or remove this line.]",
     "section4Title": "4. How can you change your cookie settings?",
     "section4ASubtitle": "A) Via the cookie banner on our site",
     "section4ABody": "On your first visit the cookie banner appears. There you can choose which categories of cookies (analytics, marketing) you allow. You can change or withdraw this consent at any time via the \"Cookie settings\" link in the footer.",
@@ -583,7 +582,8 @@
     "section4Warning": "Note: If you disable cookies entirely in your browser, parts of this site (especially cart and login) may not function correctly.",
     "section5Title": "5. Personal data processing",
     "section5Body": "Storing cookies may involve processing of personal data (e.g. IP address). For more on your rights and how we handle personal data, see our Privacy Policy.",
-    "validFrom": "This Cookie policy is effective from [Add date]."
+    "validFrom": "This Cookie policy is effective from {date}.",
+    "operatorIco": "Reg. No. {ico}"
   },
   "obchodniPodminky": {
     "pageTitle": "Terms and Conditions",
@@ -672,5 +672,8 @@
     "summaryPurpose": "We use these details to fulfil your order and to meet Czech accounting and tax obligations. We send only transactional e-mails (order confirmation, booking confirmation and reminders, account invitation, password reset), never a newsletter.",
     "summaryProcessors": "Our hosting (Vercel), database (Neon), e-mail delivery (Resend) and file storage (Cloudflare) providers act as processors; some of them store data in the USA under the EU–U.S. Data Privacy Framework. Analytics and marketing tools load only if you allow them in the cookie banner.",
     "summaryRights": "You have the right to access, correct, delete or export your data, to restrict or object to processing, to withdraw consent at any time, and to lodge a complaint with the Czech Office for Personal Data Protection (www.uoou.cz)."
+  },
+  "legal": {
+    "missing": "[fill in the admin: Site Settings]"
   }
 }

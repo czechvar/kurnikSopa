@@ -1,5 +1,7 @@
 import { getTranslations } from 'next-intl/server'
 import type { Metadata } from 'next'
+import { getSiteSettings } from '@/lib/site-settings'
+import { sellerIdentity } from '@/lib/legal/seller'
 
 type Props = {
   params: Promise<{ locale: 'cs' | 'en' }>
@@ -16,13 +18,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function CookiesPage({ params }: Props) {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'cookies' })
+  const tLegal = await getTranslations({ locale, namespace: 'legal' })
+  // The operator is named from Site Settings; anything missing shows a marker.
+  const seller = sellerIdentity(await getSiteSettings(), locale)
+  const or = (v: string | null) => v ?? tLegal('missing')
+  const operator = [or(seller.name), or(seller.address), t('operatorIco', { ico: or(seller.ico) })].join(', ')
 
   return (
     <div className="py-12 px-6">
       <div className="max-w-3xl mx-auto prose prose-lg max-w-none">
         <h1 className="font-heading text-4xl mb-8">{t('pageTitle')}</h1>
 
-        <p>{t('intro')}</p>
+        <p>{t('intro', { operator })}</p>
 
         <h2>{t('section1Title')}</h2>
         <p>{t('section1Body')}</p>
@@ -78,9 +85,6 @@ export default async function CookiesPage({ params }: Props) {
           <li>{t('section3Tool1')}</li>
           <li>{t('section3Tool2')}</li>
           <li>{t('section3Tool3')}</li>
-          <li>
-            <em>{t('section3ToolMore')}</em>
-          </li>
         </ul>
 
         <h2>{t('section4Title')}</h2>
@@ -96,7 +100,7 @@ export default async function CookiesPage({ params }: Props) {
         <p>{t('section5Body')}</p>
 
         <p className="mt-12 text-sm text-ink-muted">
-          <em>{t('validFrom')}</em>
+          <em>{t('validFrom', { date: or(seller.effectiveFrom) })}</em>
         </p>
       </div>
     </div>

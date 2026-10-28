@@ -86,5 +86,50 @@ export const SiteSettings: GlobalConfig = {
       type: 'text',
       defaultValue: 'Antonín Wies',
     },
+    {
+      // The legal pages (terms, privacy, cookies) name the seller from here and
+      // from owner/farmName/address/contact above, so the farm edits it once.
+      name: 'legal',
+      type: 'group',
+      label: { cs: 'Údaje prodávajícího pro právní stránky', en: 'Seller details for the legal pages' },
+      admin: {
+        description: {
+          cs: 'Zobrazí se v obchodních podmínkách, v zásadách ochrany osobních údajů a v zásadách cookies. Jméno, adresa, e-mail a telefon se berou z polí výše.',
+          en: 'Shown on the terms, privacy and cookie pages. Name, address, email and phone come from the fields above.',
+        },
+      },
+      fields: [
+        { name: 'ico', type: 'text', label: { cs: 'IČO', en: 'Company ID (IČO)' } },
+        {
+          name: 'dic',
+          type: 'text',
+          label: { cs: 'DIČ', en: 'VAT ID (DIČ)' },
+          admin: { description: { cs: 'Jen pokud je prodávající plátce DPH.', en: 'Only if the seller is a VAT payer.' } },
+        },
+        {
+          name: 'registration',
+          type: 'text',
+          label: { cs: 'Zápis v evidenci', en: 'Registration' },
+          admin: {
+            description: {
+              cs: 'Kde je prodávající evidován, např. „evidence zemědělského podnikatele, Městský úřad …“ nebo „živnostenský rejstřík, Živnostenský úřad …“.',
+              en: 'Where the seller is registered, e.g. as an agricultural entrepreneur with the municipal authority.',
+            },
+          },
+        },
+        {
+          name: 'effectiveFrom',
+          type: 'date',
+          label: { cs: 'Platné od', en: 'Effective from' },
+          admin: {
+            date: { pickerAppearance: 'dayOnly', displayFormat: 'd. M. yyyy' },
+            description: {
+              cs: 'Od kdy platí obchodní podmínky, zásady ochrany osobních údajů a zásady cookies. Při změně jejich textu datum posuňte.',
+              en: 'When the terms, privacy and cookie policies take effect. Move it when their text changes.',
+            },
+          },
+        },
+      ],
+    },
   ],
 }
