@@ -1,5 +1,7 @@
 import { getTranslations } from 'next-intl/server'
 import type { Metadata } from 'next'
+import { getSiteSettings } from '@/lib/site-settings'
+import { sellerIdentity } from '@/lib/legal/seller'
 
 type Props = {
   params: Promise<{ locale: 'cs' | 'en' }>
@@ -34,6 +36,11 @@ export default async function ObchodniPodminkyPage({ params }: Props) {
   }
 
   const t = await getTranslations({ locale, namespace: 'obchodniPodminky' })
+  const tLegal = await getTranslations({ locale, namespace: 'legal' })
+  // The seller's details live in Site Settings, so the farm edits them in the
+  // admin. Anything not filled in yet shows a visible marker.
+  const seller = sellerIdentity(await getSiteSettings(), locale)
+  const or = (v: string | null) => v ?? tLegal('missing')
 
   return (
     <div className="py-12 px-6">
@@ -50,12 +57,13 @@ export default async function ObchodniPodminkyPage({ params }: Props) {
             <strong>{t('identificationTitle')}</strong>
           </p>
           <ul>
-            <li>{t('identificationSeller')}</li>
-            <li>{t('identificationAddress')}</li>
-            <li>{t('identificationIco')}</li>
-            <li>{t('identificationRegistration')}</li>
-            <li>{t('identificationEmail')}</li>
-            <li>{t('identificationPhone')}</li>
+            <li>{t('identificationName', { name: or(seller.name) })}</li>
+            <li>{t('identificationAddress', { address: or(seller.address) })}</li>
+            <li>{t('identificationIco', { ico: or(seller.ico) })}</li>
+            {seller.dic && <li>{t('identificationDic', { dic: seller.dic })}</li>}
+            <li>{t('identificationRegistration', { registration: or(seller.registration) })}</li>
+            <li>{t('identificationEmail', { email: or(seller.email) })}</li>
+            <li>{t('identificationPhone', { phone: or(seller.phone) })}</li>
           </ul>
         </blockquote>
 
@@ -69,23 +77,19 @@ export default async function ObchodniPodminkyPage({ params }: Props) {
         <p>3.2. {t('section3_2')}</p>
         <p>3.3. {t('section3_3')}</p>
         <p>3.4. {t('section3_4')}</p>
+        <p>3.5. {t('section3_5')}</p>
 
         <h2>{t('section4Title')}</h2>
-        <p>4.1. {t('section4_1Intro')}</p>
-        <ul>
-          <li>{t('section4_1a')}</li>
-          <li>{t('section4_1b')}</li>
-          <li>{t('section4_1c')}</li>
-          <li>{t('section4_1d')}</li>
-        </ul>
+        <p>4.1. {t('section4_1')}</p>
         <p>4.2. {t('section4_2')}</p>
+        <p>4.3. {t('section4_3')}</p>
+        <p>4.4. {t('section4_4')}</p>
 
         <h2>{t('section5Title')}</h2>
         <p>5.1. {t('section5_1')}</p>
         <p>5.2. {t('section5_2')}</p>
         <p>5.3. {t('section5_3')}</p>
         <p>5.4. {t('section5_4')}</p>
-        <p>5.5. {t('section5_5')}</p>
 
         <h2>{t('section6Title')}</h2>
         <p>6.1. {t('section6_1')}</p>
@@ -97,7 +101,6 @@ export default async function ObchodniPodminkyPage({ params }: Props) {
         </ul>
         <p>6.3. {t('section6_3')}</p>
         <p>6.4. {t('section6_4')}</p>
-        <p>6.5. {t('section6_5')}</p>
 
         <h2>{t('section7Title')}</h2>
         <p>7.1. {t('section7_1')}</p>
@@ -107,6 +110,7 @@ export default async function ObchodniPodminkyPage({ params }: Props) {
         <p>8.1. {t('section8_1')}</p>
         <p>8.2. {t('section8_2')}</p>
         <p>8.3. {t('section8_3')}</p>
+        <p>8.4. {t('section8_4', { date: or(seller.effectiveFrom) })}</p>
       </div>
     </div>
   )

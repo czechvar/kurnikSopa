@@ -1,7 +1,7 @@
 import { getTranslations } from 'next-intl/server'
 import type { Metadata } from 'next'
 import { getSiteSettings } from '@/lib/site-settings'
-import { formatPhone } from '@/lib/utils'
+import { sellerIdentity } from '@/lib/legal/seller'
 
 type Props = {
   params: Promise<{ locale: 'cs' | 'en' }>
@@ -43,18 +43,11 @@ export default async function OchranaOsobnichUdajuPage({ params }: Props) {
   }
 
   // The controller's identity comes from Site Settings so the farm edits it in
-  // the admin rather than in code (same source the footer uses).
-  const settings = await getSiteSettings()
-  const owner = settings.owner ?? ''
-  const farmName = settings.farmName
-  const address = [
-    settings.address?.street,
-    [settings.address?.zip, settings.address?.city].filter(Boolean).join(' '),
-  ]
-    .filter(Boolean)
-    .join(', ')
-  const email = settings.contact?.email ?? ''
-  const phone = settings.contact?.phone ? formatPhone(settings.contact.phone) : ''
+  // the admin rather than in code (same source the footer uses). Anything not
+  // filled in yet shows a visible marker.
+  const tLegal = await getTranslations({ locale, namespace: 'legal' })
+  const seller = sellerIdentity(await getSiteSettings(), locale)
+  const or = (v: string | null) => v ?? tLegal('missing')
 
   return (
     <div className="py-12 px-6">
@@ -67,11 +60,11 @@ export default async function OchranaOsobnichUdajuPage({ params }: Props) {
         <p>{t('section1Intro')}</p>
         <blockquote>
           <ul>
-            <li>{t('identificationName', { owner, farmName })}</li>
-            <li>{t('identificationAddress', { address })}</li>
-            <li>{t('identificationIco')}</li>
-            <li>{t('identificationEmail', { email })}</li>
-            <li>{t('identificationPhone', { phone })}</li>
+            <li>{t('identificationName', { name: or(seller.name) })}</li>
+            <li>{t('identificationAddress', { address: or(seller.address) })}</li>
+            <li>{t('identificationIco', { ico: or(seller.ico) })}</li>
+            <li>{t('identificationEmail', { email: or(seller.email) })}</li>
+            <li>{t('identificationPhone', { phone: or(seller.phone) })}</li>
           </ul>
         </blockquote>
         <p>{t('section1Contact')}</p>
@@ -148,7 +141,7 @@ export default async function OchranaOsobnichUdajuPage({ params }: Props) {
 
         <h2>{t('section7Title')}</h2>
         <p>{t('section7Body')}</p>
-        <p>{t('validFrom')}</p>
+        <p>{t('validFrom', { date: or(seller.effectiveFrom) })}</p>
       </div>
     </div>
   )
