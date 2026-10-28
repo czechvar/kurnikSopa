@@ -36,6 +36,9 @@ const dirname = path.dirname(filename)
 export default buildConfig({
   admin: {
     user: Users.slug,
+    // Czech order and a 24-hour clock everywhere in the admin. Payload's
+    // default reads "října 25. 2026, 1:37 odp." in Czech.
+    dateFormat: 'd. M. yyyy H:mm',
     importMap: {
       baseDir: path.resolve(dirname),
     },

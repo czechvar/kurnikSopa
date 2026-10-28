@@ -274,7 +274,15 @@
     "empty": "Zatím tu žádné články nejsou. Brzy přibudou.",
     "backToList": "Zpět na blog",
     "readMore": "Číst dál",
-    "eyebrow": "Blog"
+    "eyebrow": "Blog",
+    "preview": {
+      "label": "Náhled",
+      "draft": "tuto verzi článku zatím nikdo kromě vás nevidí. Až bude hotová, publikujte ji v administraci.",
+      "scheduled": "článek je naplánovaný na {date}. Do té doby ho návštěvníci neuvidí.",
+      "published": "tato verze článku je publikovaná a návštěvníci ji vidí.",
+      "savedOnly": "Ukazuje se poslední uložená verze. Po úpravě v administraci klikněte na Uložit koncept a tuto stránku obnovte.",
+      "exit": "Ukončit náhled"
+    }
   },
   "contact": {
     "title": "Kontakt",

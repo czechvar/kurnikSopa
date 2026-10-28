@@ -274,7 +274,15 @@
     "empty": "No posts yet. Check back soon.",
     "backToList": "Back to blog",
     "readMore": "Read more",
-    "eyebrow": "Blog"
+    "eyebrow": "Blog",
+    "preview": {
+      "label": "Preview",
+      "draft": "nobody but you can see this version yet. Publish it in the admin when it is ready.",
+      "scheduled": "this post is scheduled for {date}. Visitors won't see it until then.",
+      "published": "this version is published and visitors can see it.",
+      "savedOnly": "This is the last saved version. After editing in the admin, click Save draft and reload this page.",
+      "exit": "Leave preview"
+    }
   },
   "contact": {
     "title": "Contact",
