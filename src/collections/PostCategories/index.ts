@@ -22,6 +22,7 @@ export const PostCategories: CollectionConfig = {
     {
       name: 'name',
       type: 'text',
+      label: { cs: 'Název', en: 'Name' },
       localized: true,
       required: true,
     },
@@ -29,6 +30,7 @@ export const PostCategories: CollectionConfig = {
     {
       name: 'description',
       type: 'textarea',
+      label: { cs: 'Popis', en: 'Description' },
       localized: true,
     },
   ],

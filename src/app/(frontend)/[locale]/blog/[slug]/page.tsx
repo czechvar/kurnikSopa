@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { draftMode, headers } from 'next/headers'
 import { notFound } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
 import { RichText } from '@payloadcms/richtext-lexical/react'
@@ -7,7 +8,10 @@ import { getPayload } from '@/lib/payload'
 import { getMediaUrl } from '@/lib/media'
 import { Link } from '@/lib/i18n/routing'
 import { SITE_URL, absoluteUrl } from '@/lib/site'
-import { publishedPostBySlugWhere } from '@/lib/posts/queries'
+import { findPostBySlug } from '@/lib/posts/find-post'
+import { hasPreviewSession } from '@/lib/posts/preview'
+import { publicationStatus } from '@/lib/posts/publication-status'
+import { PreviewBanner } from '@/components/blog/PreviewBanner'
 
 // Scheduled posts become visible when their date passes.
 export const revalidate = 300
@@ -16,21 +20,26 @@ type Props = {
   params: Promise<{ locale: 'cs' | 'en'; slug: string }>
 }
 
+/**
+ * Draft mode is switched on by /api/preview for admins and editors. It is
+ * honoured only while that session lasts, so a browser left in draft mode
+ * after logging out of the admin stops showing drafts.
+ */
+async function isPreviewing(): Promise<boolean> {
+  const { isEnabled } = await draftMode()
+  if (!isEnabled) return false
+  return hasPreviewSession(await getPayload(), await headers())
+}
+
 async function fetchPost(slug: string, locale: 'cs' | 'en') {
-  const payload = await getPayload()
-  const result = await payload.find({
-    collection: 'posts',
-    where: publishedPostBySlugWhere(slug),
-    depth: 2,
-    limit: 1,
-    locale,
-  })
-  return result.docs[0] ?? null
+  const draft = await isPreviewing()
+  const post = await findPostBySlug(await getPayload(), { slug, locale, draft })
+  return { post, draft }
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params
-  const post = await fetchPost(slug, locale)
+  const { post } = await fetchPost(slug, locale)
   if (!post) return {}
 
   const seo = post.seo ?? {}
@@ -79,7 +88,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function BlogPostPage({ params }: Props) {
   const { locale, slug } = await params
   const t = await getTranslations('blog')
-  const post = await fetchPost(slug, locale)
+  const { post, draft } = await fetchPost(slug, locale)
   if (!post) notFound()
 
   const cover =
@@ -133,6 +142,13 @@ export default async function BlogPostPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <div className="mx-auto max-w-[65ch]">
+        {draft && (
+          <PreviewBanner
+            status={publicationStatus(post)}
+            publishedAt={post.publishedAt}
+            locale={locale}
+          />
+        )}
         <Link
           href="/blog"
           className="mb-6 inline-block text-sm font-semibold text-ink-muted hover:text-ink hover:underline"

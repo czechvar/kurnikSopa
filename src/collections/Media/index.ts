@@ -45,14 +45,24 @@ export const Media: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'alt',
+    // `filename` is the column Payload draws as a thumbnail, so the photo
+    // picker shows photos rather than URLs.
+    defaultColumns: ['filename', 'alt', 'createdAt'],
     hidden: ({ user }) => user?.role !== 'admin' && user?.role !== 'editor',
   },
   fields: [
     {
       name: 'alt',
       type: 'text',
+      label: { cs: 'Popis fotky', en: 'Alt text' },
       localized: true,
       required: true,
+      admin: {
+        description: {
+          cs: 'Jednou větou, co je na fotce, např. „Slepice na pastvě u kurníku“. Přečte ho čtečka lidem, kteří fotku nevidí, a pomáhá vyhledávačům.',
+          en: 'One sentence on what the photo shows, e.g. “Hens grazing by the coop”. Screen readers read it to people who cannot see the photo, and it helps search engines.',
+        },
+      },
     },
   ],
 }
