@@ -15,6 +15,15 @@ export type DailyRunSummary = { reminders: number; released: number; closed: num
 
 const DAY = 24 * 60 * 60 * 1000
 
+/**
+ * Whether the deadline releases this booking. Only a Customer we can email can
+ * confirm online, so a phone booking with neither an account nor an email stays
+ * booked for Staff to confirm by phone (it waits on the Roster).
+ */
+export function releasesAtDeadline(order: Pick<Order, 'customer' | 'guestEmail'>): boolean {
+  return Boolean(order.customer) || Boolean(order.guestEmail?.trim())
+}
+
 function endOfDay(iso: string): number {
   const d = new Date(iso)
   d.setUTCHours(23, 59, 59, 999)
@@ -28,7 +37,8 @@ function endOfDay(iso: string): number {
  * 1. Reminder: booked orders on open batches whose deadline is within three
  *    days get one reminder.
  * 2. Release: booked orders whose batch deadline has passed are released and
- *    their units freed (the Orders hooks keep bookedCount in step).
+ *    their units freed (the Orders hooks keep bookedCount in step), except
+ *    phone bookings nobody can email — see `releasesAtDeadline`.
  * 3. Close: open batches past their deadline become closed.
  */
 export async function runDailyBatchJobs(payload: Payload, now: Date = new Date()): Promise<DailyRunSummary> {
@@ -50,6 +60,7 @@ export async function runDailyBatchJobs(payload: Payload, now: Date = new Date()
 
     if (past) {
       for (const order of booked.docs as Order[]) {
+        if (!releasesAtDeadline(order)) continue
         await payload.update({ collection: 'orders', id: order.id, data: { orderStatus: 'released' }, depth: 0 })
         summary.released += 1
         await sendReleased(payload, order, batch, settings)

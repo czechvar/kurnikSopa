@@ -1,10 +1,12 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import type { RequiredDataFromCollectionSlug } from 'payload'
 import { getTestPayload } from '../../helpers/payload'
-import { createTestUser, setTestSiteSettings } from '../../helpers/factories'
+import { createTestBatch, createTestProduct, createTestUser, setTestSiteSettings } from '../../helpers/factories'
 import { resetDb } from '../../setup/reset-db'
 import { resetEmails, capturedEmails } from '../../setup/email-spy'
 import { requestAccess, sendInvitation, acceptInvitation } from '@/lib/users/invitations'
+import { bookBatch } from '@/lib/orders/book'
+import type { Product } from '@/payload-types'
 import { rest } from '../../helpers/rest'
 
 describe('access requests and invitations', () => {
@@ -86,6 +88,56 @@ describe('access requests and invitations', () => {
 
     const login = await payload.login({ collection: 'users', data: { email: 'eva@example.com', password: 'eva-password-123' } })
     expect(login.user?.id).toBe(requested.id)
+  })
+
+  it('accepting links the earlier Guest Orders placed with that email, and nobody else\'s, without touching their prices', async () => {
+    const payload = await getTestPayload()
+    const staff = await createTestUser(payload, { role: 'staff' })
+    const chicken = await createTestProduct(payload, { name: 'Kuře', price: 190, unit: 'kg' })
+    await payload.update({ collection: 'products', id: chicken.id, data: { soldBy: 'batch', averageWeight: 2.2 } })
+    const product = (await payload.findByID({ collection: 'products', id: chicken.id, depth: 0 })) as Product
+    const batch = await createTestBatch(payload, product, { capacity: 20 })
+    const guest = { firstName: 'Eva', lastName: 'K', phone: '777 222 333' }
+
+    // A web booking (stored lowercase) and a phone order typed with capitals.
+    const booked = await bookBatch(payload, { user: null, guest: { email: 'eva@example.com' }, batchId: batch.id, quantity: 2, customer: guest, locale: 'cs' })
+    expect(booked.ok).toBe(true)
+    const phone = await payload.create({
+      collection: 'orders',
+      data: {
+        guestName: 'Eva K', guestPhone: '777 222 333', guestEmail: 'Eva@Example.COM',
+        batch: batch.id, items: [{ product: product.id, quantity: 1 }],
+        totalAmount: 0, deliveryMethod: 'pickup', paymentMethod: 'cash', locale: 'cs',
+      } as never,
+      user: staff, overrideAccess: false,
+    })
+    const other = await bookBatch(payload, { user: null, guest: { email: 'neva@example.com' }, batchId: batch.id, quantity: 1, customer: guest, locale: 'cs' })
+    expect(other.ok).toBe(true)
+    const before = await payload.find({ collection: 'orders', sort: 'id', depth: 0, limit: 10 })
+
+    // Weights change before Eva gets her account; her estimates must not.
+    await payload.update({ collection: 'products', id: product.id, data: { averageWeight: 3 } })
+
+    await requestAccess(payload, { firstName: 'Eva', lastName: 'K', email: 'eva@example.com', phone: '777 222 333', locale: 'cs' })
+    const requested = (await payload.find({ collection: 'users', where: { email: { equals: 'eva@example.com' } }, limit: 1 })).docs[0]
+    await sendInvitation(payload, { userId: requested.id, invitedBy: staff.id })
+    const token = (capturedEmails.at(-1)?.html ?? '').match(/\/cs\/pozvanka\/([A-Za-z0-9]+)/)![1]
+    resetEmails()
+
+    expect(await acceptInvitation(payload, { token, password: 'eva-password-123' })).toEqual({ ok: true, email: 'eva@example.com' })
+
+    const hers = await payload.find({ collection: 'orders', where: { customer: { equals: requested.id } }, sort: 'id', depth: 0 })
+    expect(hers.docs.map(o => o.id)).toEqual([before.docs[0].id, phone.id])
+    for (const order of hers.docs) {
+      const was = before.docs.find(o => o.id === order.id)!
+      expect(order.totalAmount).toBe(was.totalAmount)
+      expect(order.guestEmail).toBe(was.guestEmail)
+      expect(order.orderStatus).toBe(was.orderStatus)
+    }
+    const neva = (await payload.find({ collection: 'orders', where: { guestEmail: { equals: 'neva@example.com' } }, depth: 0 })).docs[0]
+    expect(neva.customer ?? null).toBeNull()
+    expect((await payload.findByID({ collection: 'batches', id: batch.id })).bookedCount).toBe(4)
+    expect(capturedEmails).toHaveLength(0)
   })
 
   it('accepting with a bad token or a short password fails without changing anything', async () => {

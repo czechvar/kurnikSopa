@@ -323,4 +323,52 @@ describe('daily batch jobs', () => {
     const idempotent = await runDailyBatchJobs(payload, new Date('2027-08-22T05:00:00Z'))
     expect(idempotent).toEqual({ reminders: 0, released: 0, closed: 0 })
   })
+
+  it('keeps a phone booking without email past the deadline; one with email is released as usual', async () => {
+    const { payload, product, point } = await setup()
+    const staff = await createTestUser(payload, { role: 'staff' })
+    const batch = await createTestBatch(payload, product, { capacity: 10 })
+    const phoneOrder = (guestEmail?: string) =>
+      payload.create({
+        collection: 'orders',
+        data: {
+          guestName: guestEmail ? 'Paní Emailová' : 'Pan Novák',
+          guestPhone: '777 000 000',
+          ...(guestEmail ? { guestEmail } : {}),
+          batch: batch.id,
+          items: [{ product: product.id, quantity: 2 }],
+          totalAmount: 0,
+          deliveryMethod: 'pickup',
+          paymentMethod: 'cash',
+          locale: 'cs',
+        } as never,
+        user: staff,
+        overrideAccess: false,
+      })
+    const noEmail = await phoneOrder()
+    const withEmail = await phoneOrder('emailova@example.com')
+    await payload.update({
+      collection: 'batches', id: batch.id,
+      data: { status: 'open', confirmationDeadline: '2027-08-20', pickupDays: [{ date: '2027-08-28', pickupPoint: point.id }] },
+    })
+    resetEmails()
+
+    const after = await runDailyBatchJobs(payload, new Date('2027-08-21T05:00:00Z'))
+    expect(after).toEqual({ reminders: 0, released: 1, closed: 1 })
+
+    expect((await payload.findByID({ collection: 'orders', id: noEmail.id, depth: 0 })).orderStatus).toBe('booked')
+    expect((await payload.findByID({ collection: 'orders', id: withEmail.id, depth: 0 })).orderStatus).toBe('released')
+    const closed = await payload.findByID({ collection: 'batches', id: batch.id })
+    expect(closed.status).toBe('closed')
+    expect(closed.bookedCount).toBe(2)
+
+    // Staff confirm it by phone after the batch has closed.
+    const confirmed = await payload.update({
+      collection: 'orders', id: noEmail.id,
+      data: { orderStatus: 'confirmed', pickupDay: '2027-08-28', pickupPoint: point.id },
+      user: staff, overrideAccess: false, depth: 0,
+    })
+    expect(confirmed.orderStatus).toBe('confirmed')
+    expect((await payload.findByID({ collection: 'batches', id: batch.id })).bookedCount).toBe(2)
+  })
 })

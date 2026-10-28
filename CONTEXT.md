@@ -14,7 +14,9 @@ _Avoid_: buyer, client, account
 
 **Guest Order**:
 An Order placed by a Customer without a User account. It is reached through the
-tokenised link in its confirmation email, never by its order number alone.
+tokenised link in its confirmation email, never by its order number alone. When the
+Customer later accepts an Invitation for the same email, their Guest Orders join the
+account's order history.
 _Avoid_: anonymous order, guest checkout (that is the act, this is the result)
 
 **Access Request**:
@@ -49,7 +51,9 @@ _Avoid_: purchase, transaction, reservation
 **Booking**:
 An Order placed against a Batch whose pickup dates are not yet confirmed. It becomes a
 confirmed Order when the Customer confirms it after the dates are announced, or is
-released if they do not.
+released if they do not. A phone Booking with no email is never released by the
+deadline: the Customer cannot confirm online, so Staff confirm it by phone from the
+Roster.
 _Avoid_: reservation, pre-order, waiting list
 
 **Pickup Point**:

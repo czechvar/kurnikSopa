@@ -130,7 +130,10 @@ export const Batches: CollectionConfig = {
       label: { cs: 'Potvrdit do', en: 'Confirm by' },
       admin: {
         date: { pickerAppearance: 'dayOnly', displayFormat: 'd. M. yyyy' },
-        description: { cs: 'Do kdy musí zákazníci rezervaci potvrdit. Nepotvrzené se po tomto dni uvolní.', en: 'By when customers must confirm. Unconfirmed bookings are released after this day.' },
+        description: {
+          cs: 'Do kdy musí zákazníci rezervaci potvrdit. Nepotvrzené se po tomto dni uvolní. Telefonické rezervace bez e-mailu zůstanou a potvrdíte je sami.',
+          en: 'By when customers must confirm. Unconfirmed bookings are released after this day. Phone bookings without an email stay; Staff confirm them.',
+        },
       },
     },
     {
