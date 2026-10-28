@@ -1,4 +1,4 @@
-import type { CollectionConfig, Access, FieldAccess } from 'payload'
+import type { CollectionConfig, Access, FieldAccess, PayloadRequest } from 'payload'
 import { forgotPasswordTemplate } from '@/lib/email/templates'
 import { isAdminOrStaff } from '../access'
 import { requestAccessEndpoint } from './endpoints/requestAccess'
@@ -6,6 +6,17 @@ import { acceptInviteEndpoint } from './endpoints/acceptInvite'
 import { refuseInactiveLogin } from './hooks/refuseInactiveLogin'
 import { captureInvitationFlag, sendInvitationIfFlagged } from './hooks/invitationFlag'
 import { revokeSessionsUnlessActive } from './hooks/revokeSessionsUnlessActive'
+
+/**
+ * The password-reset email and its link follow the person's own language
+ * (`locale` below). The page they asked from (`?locale=` on the request)
+ * counts only when the record has none.
+ */
+function resetEmailLocale(args?: { req?: PayloadRequest; user?: unknown }): 'cs' | 'en' {
+  const own = (args?.user as { locale?: string } | undefined)?.locale
+  if (own === 'cs' || own === 'en') return own
+  return args?.req?.locale === 'en' ? 'en' : 'cs'
+}
 
 const isAdmin: Access = ({ req }) => req.user?.role === 'admin'
 
@@ -54,10 +65,10 @@ export const Users: CollectionConfig = {
   auth: {
     forgotPassword: {
       generateEmailSubject: (args) =>
-        args?.req?.locale === 'en' ? 'Reset your password' : 'Obnovení hesla',
+        resetEmailLocale(args) === 'en' ? 'Reset your password' : 'Obnovení hesla',
       generateEmailHTML: (args) =>
         forgotPasswordTemplate({
-          locale: args?.req?.locale === 'en' ? 'en' : 'cs',
+          locale: resetEmailLocale(args),
           token: args?.token ?? '',
           firstName: (args?.user as { firstName?: string } | undefined)?.firstName,
         }),
@@ -166,8 +177,8 @@ export const Users: CollectionConfig = {
       admin: {
         position: 'sidebar',
         description: {
-          cs: 'V tomto jazyce přijde pozvánka a otevře se stránka pro nastavení hesla.',
-          en: 'The invitation email and the set-password page use this language.',
+          cs: 'Jazyk pozvánky, e-mailu pro obnovení hesla a stránky pro nastavení hesla.',
+          en: 'Language of the invitation, the password-reset email and the set-password page.',
         },
       },
     },
