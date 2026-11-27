@@ -8,6 +8,9 @@ import { DateBlock } from '@/components/ui/DateBlock'
 import { Illustration, type IllustrationName } from '@/components/illustrations/Illustration'
 import { ProductCard } from '@/components/products/ProductCard'
 import { PostCard } from '@/components/blog/PostCard'
+import { Photo } from '@/components/ui/Photo'
+import { PhotoGallery } from '@/components/ui/PhotoGallery'
+import { populatedMedia, populatedMediaList } from '@/lib/media'
 
 // Scheduled posts and the next event change over time; re-render every 5 min.
 export const revalidate = 300
@@ -29,12 +32,14 @@ export default async function HomePage({ params }: Props) {
   const { locale } = await params
   const t = await getTranslations('home')
   const tNav = await getTranslations('nav')
+  const tCommon = await getTranslations('common')
   const payload = await getPayload()
 
   const startOfToday = new Date()
   startOfToday.setHours(0, 0, 0, 0)
 
-  const [featured, posts, events] = await Promise.all([
+  const [settings, featured, posts, events] = await Promise.all([
+    payload.findGlobal({ slug: 'site-settings', depth: 1, locale }),
     payload.find({
       collection: 'products',
       where: { and: [{ featured: { equals: true } }, { status: { equals: 'published' } }] },
@@ -69,6 +74,9 @@ export default async function HomePage({ params }: Props) {
     nextEvent?.capacity && nextEvent.registeredCount != null
       ? nextEvent.capacity - nextEvent.registeredCount
       : null
+  // Both are set by the farm under Nastavení webu → Fotky na úvodní stránce.
+  const heroPhoto = populatedMedia(settings.homepage?.heroImage)
+  const farmPhotos = populatedMediaList(settings.homepage?.gallery)
 
   return (
     <>
@@ -84,7 +92,13 @@ export default async function HomePage({ params }: Props) {
             {t('hero.eventsCta')}
           </Link>
         </div>
-        <Illustration name="scene" className="mx-auto mt-10 block h-32 w-full max-w-6xl text-ink md:h-44" />
+        {heroPhoto ? (
+          <div className="relative mx-auto mt-10 aspect-[4/3] w-full max-w-6xl overflow-hidden rounded-md bg-ground-sunken sm:aspect-[16/9] md:aspect-[21/9]">
+            <Photo media={heroPhoto} sizes="(min-width: 1192px) 1152px, calc(100vw - 40px)" priority />
+          </div>
+        ) : (
+          <Illustration name="scene" className="mx-auto mt-10 block h-32 w-full max-w-6xl text-ink md:h-44" />
+        )}
       </section>
 
       {/* 2 · Three panels — on phones the marigold panel comes first */}
@@ -119,6 +133,7 @@ export default async function HomePage({ params }: Props) {
             </article>
           ))}
         </div>
+        <PhotoGallery photos={farmPhotos} label={tCommon('farmPhotos')} className="mx-auto mt-12 max-w-5xl" />
       </section>
 
       {/* 4 · Featured products — omitted when none are flagged */}

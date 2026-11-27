@@ -86,5 +86,38 @@ export const SiteSettings: GlobalConfig = {
       type: 'text',
       defaultValue: 'Antonín Wies',
     },
+    {
+      name: 'homepage',
+      type: 'group',
+      label: { cs: 'Fotky na úvodní stránce', en: 'Homepage photos' },
+      fields: [
+        {
+          name: 'heroImage',
+          type: 'upload',
+          relationTo: 'media',
+          label: { cs: 'Hlavní fotka', en: 'Main photo' },
+          admin: {
+            description: {
+              cs: 'Velká fotka pod nadpisem úvodní stránky. Na počítači se ořízne do širokého pruhu — co má zůstat vidět, nastavíte bodem zájmu v detailu fotky (Obrázky). Bez fotky se ukáže kreslená krajina.',
+              en: 'Large photo under the homepage heading. Computers crop it into a wide band — set what must stay in view with the focal point on the photo (Media). Without a photo the drawn landscape shows.',
+            },
+          },
+        },
+        {
+          name: 'gallery',
+          type: 'upload',
+          relationTo: 'media',
+          hasMany: true,
+          maxRows: 6,
+          label: { cs: 'Fotky v sekci „Co chováme a pěstujeme“', en: 'Photos in “What we raise and grow”' },
+          admin: {
+            description: {
+              cs: 'Řada fotek pod kartičkami zvířat, nejlépe 3 nebo 6. Pořadí změníte přetažením. Bez fotek se řada nezobrazí.',
+              en: 'A row of photos under the animal cards, ideally 3 or 6. Drag to reorder. Without photos the row is not shown.',
+            },
+          },
+        },
+      ],
+    },
   ],
 }
