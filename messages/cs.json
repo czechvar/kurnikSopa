@@ -10,7 +10,8 @@
     "price": "Cena",
     "phone": "Telefon",
     "email": "E-mail",
-    "address": "Adresa"
+    "address": "Adresa",
+    "farmPhotos": "Fotky z farmy"
   },
   "nav": {
     "home": "Úvod",

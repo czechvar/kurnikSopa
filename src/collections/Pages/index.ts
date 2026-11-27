@@ -2,6 +2,11 @@ import type { CollectionConfig } from 'payload'
 import { slugField } from '@/fields/slug'
 import { isAdmin, publicRead } from '../access'
 
+export const ABOUT_PAGE_SLUG = 'o-nas'
+
+const isAboutPage = (data: Partial<{ slug?: string | null }> | undefined): boolean =>
+  data?.slug === ABOUT_PAGE_SLUG
+
 export const Pages: CollectionConfig = {
   slug: 'pages',
   labels: {
@@ -30,6 +35,35 @@ export const Pages: CollectionConfig = {
       name: 'content',
       type: 'richText',
       localized: true,
+    },
+    {
+      name: 'heroImage',
+      type: 'upload',
+      relationTo: 'media',
+      label: { cs: 'Úvodní fotka', en: 'Cover photo' },
+      admin: {
+        // Only the About page renders its photos (src/app/(frontend)/[locale]/o-nas).
+        condition: isAboutPage,
+        description: {
+          cs: 'Široká fotka pod nadpisem stránky. Co má zůstat vidět, nastavíte bodem zájmu v detailu fotky (Obrázky).',
+          en: 'Wide photo under the page heading. Set what must stay in view with the focal point on the photo (Media).',
+        },
+      },
+    },
+    {
+      name: 'gallery',
+      type: 'upload',
+      relationTo: 'media',
+      hasMany: true,
+      maxRows: 12,
+      label: { cs: 'Galerie', en: 'Gallery' },
+      admin: {
+        condition: isAboutPage,
+        description: {
+          cs: 'Fotky pod textem stránky, nejlépe po třech (3, 6, 9…). Pořadí změníte přetažením.',
+          en: 'Photos under the page text, ideally in threes (3, 6, 9…). Drag to reorder.',
+        },
+      },
     },
     {
       name: 'seo',

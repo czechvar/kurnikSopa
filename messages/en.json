@@ -10,7 +10,8 @@
     "price": "Price",
     "phone": "Phone",
     "email": "Email",
-    "address": "Address"
+    "address": "Address",
+    "farmPhotos": "Photos from the farm"
   },
   "nav": {
     "home": "Home",
